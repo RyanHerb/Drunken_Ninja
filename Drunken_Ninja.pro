@@ -7,7 +7,11 @@ INCLUDEPATH += src
 
 SOURCES += \
             src/main.cpp \
-            src/tree.cpp
+    src/node.cpp \
+    src/graphgen.cpp \
+    src/graph.cpp
 
 HEADERS += \
-            src/tree.hpp
+    src/node.hpp \
+    src/graphgen.hpp \
+    src/graph.hpp
