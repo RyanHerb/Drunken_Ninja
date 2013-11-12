@@ -8,10 +8,12 @@ INCLUDEPATH += src
 SOURCES += \
             src/main.cpp \
     src/node.cpp \
-    src/graphgen.cpp \
-    src/graph.cpp
+    src/graph.cpp \
+    src/tree.cpp \
+    src/bipartiteGraph.cpp
 
 HEADERS += \
     src/node.hpp \
-    src/graphgen.hpp \
-    src/graph.hpp
+    src/graph.hpp \
+    src/tree.hpp \
+    src/bipartiteGraph.hpp

@@ -15,11 +15,12 @@ class Node: public std::list<Node> {
     int label;
 
   public:
-    Node(int, std::list<Node>);
-    Node(int);
+    Node(int label, std::list<Node>);
+    Node(int label);
     int getLabel();
     bool equals(Node);
 };
+
 
 bool operator==(const Node& node1, const Node& node2);
 

@@ -1,9 +1,10 @@
 #include "node.hpp"
+int Node::counter = 0;
 
 Node::Node(int label, std::list<Node> neighbours)
-  : label(label), list<Node>(neighbours) { this->id = this->counter++; }
+  : label(label), list<Node>(neighbours) { this->id = counter++; }
 
-Node::Node(int label) : label(label), list<Node>() { this->id = this->counter++; }
+Node::Node(int label) : label(label), list<Node>() { this->id = counter++; }
 
 int Node::getLabel() {
   return label;
