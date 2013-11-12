@@ -18,7 +18,7 @@ Graph::Graph(int n, int p){
 
     for (int i=0 ; i<n-1 ; i++){
         for (int j=i+1 ; j < n ; j++){
-            if (rand()%101 < p)
+            if (rand()%101 <= p)
                 addEdge(i,j);
         }
     }

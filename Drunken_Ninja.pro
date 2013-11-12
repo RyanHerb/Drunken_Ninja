@@ -10,10 +10,12 @@ SOURCES += \
     src/node.cpp \
     src/graph.cpp \
     src/tree.cpp \
-    src/bipartiteGraph.cpp
+    src/bipartiteGraph.cpp \
+    src/smallcovergraph.cpp
 
 HEADERS += \
     src/node.hpp \
     src/graph.hpp \
     src/tree.hpp \
-    src/bipartiteGraph.hpp
+    src/bipartiteGraph.hpp \
+    src/smallcovergraph.hpp
