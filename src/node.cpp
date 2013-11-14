@@ -1,5 +1,7 @@
 #include "node.hpp"
 
+Node::Node() {}
+
 Node::Node(int id, std::list<Node> neighbours)
   : id(id), list<Node>(neighbours) {}
 

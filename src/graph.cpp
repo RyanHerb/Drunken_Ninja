@@ -3,15 +3,17 @@
 
 using namespace std;
 
-Graph::Graph(){}
+Graph::Graph(){this->counter = 0;}
 
 Graph::Graph(int n){
+    Graph();
     for (int i=0 ; i<n ; i++){
         addNode();
     }
 }
 
 Graph::Graph(int n, int p){
+    Graph();
     p = p%101;
 
     for (int i=0 ; i<n ; i++){
@@ -28,15 +30,13 @@ Graph::Graph(int n, int p){
 
 int Graph::addNode(){
     Node n(counter);
-    graphNodes.insert(make_pair(counter, n));
+    this->graphNodes.insert(make_pair(counter, n));
     return counter++;
 }
 
 void Graph::addEdge(int a, int b){
-  Node n1, n2
-  n1 = graphNodes.find(a);
-  n2 = graphNodes.find(b);
-
-  n1.push_back(n2);
-  n2.push_back(n1);
+    Node n1 = this->graphNodes[a];
+    Node n2 = this->graphNodes[b];
+    n1.push_back(this->graphNodes[b]);
+    n2.push_back(this->graphNodes[a]);
 }

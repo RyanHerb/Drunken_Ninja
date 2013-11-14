@@ -13,9 +13,10 @@ class Node: public std::list<Node> {
     int id;
 
   public:
+    Node();
     Node(int id, std::list<Node>);
     Node(int id);
-    int getLabel();
+    int getId();
     bool equals(Node);
 };
 

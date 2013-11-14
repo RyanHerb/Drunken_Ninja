@@ -7,10 +7,10 @@ int main() {
     std::list<Node>* nodeList = new std::list<Node>();
     for(int i = 0; i < 10; ++i) {
         Node n(i);
-        cout << n.getLabel() << '\n';
+        cout << n.getId() << '\n';
         nodeList->push_back(n);
     }
 
-    cout << nodeList->front().getLabel() << '\n';
+    cout << nodeList->front().getId() << '\n';
 
 }
