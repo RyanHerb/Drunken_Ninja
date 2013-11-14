@@ -1,13 +1,12 @@
 #include "node.hpp"
-int Node::counter = 0;
 
-Node::Node(int label, std::list<Node> neighbours)
-  : label(label), list<Node>(neighbours) { this->id = counter++; }
+Node::Node(int id, std::list<Node> neighbours)
+  : id(id), list<Node>(neighbours) {}
 
-Node::Node(int label) : label(label), list<Node>() { this->id = counter++; }
+Node::Node(int id) : id(id), list<Node>() {}
 
-int Node::getLabel() {
-  return label;
+int Node::getId() {
+  return id;
 }
 
 bool Node::equals(Node n) {
@@ -15,18 +14,18 @@ bool Node::equals(Node n) {
 }
 
 bool operator<(Node& node1, Node& node2) {
-    return(node1.getLabel() < node2.getLabel());
+    return(node1.getId() < node2.getId());
 }
 
 bool operator<=(Node& node1, Node& node2) {
-    return(node1 < node2 || node1.getLabel() == node2.getLabel());
+    return(node1 < node2 || node1.getId() == node2.getId());
 }
 
 
 bool operator>(Node& node1, Node& node2) {
-    return(node2.getLabel() < node1.getLabel());
+    return(node2.getId() < node1.getId());
 }
 
 bool operator==(Node& node1, Node& node2) {
-    return(node1.getLabel() == node2.getLabel());
+    return(node1.getId() == node2.getId());
 }

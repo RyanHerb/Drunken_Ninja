@@ -10,13 +10,11 @@
 class Node: public std::list<Node> {
 
   private:
-    static int counter;
     int id;
-    int label;
 
   public:
-    Node(int label, std::list<Node>);
-    Node(int label);
+    Node(int id, std::list<Node>);
+    Node(int id);
     int getLabel();
     bool equals(Node);
 };
