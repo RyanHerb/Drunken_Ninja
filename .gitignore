@@ -11,5 +11,8 @@
 *.lai
 *.la
 *.a
+
+
 *.autosave
 *~
+*.user
