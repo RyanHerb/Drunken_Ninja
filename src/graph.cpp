@@ -3,19 +3,16 @@
 
 using namespace std;
 
-Graph::Graph(){this->counter = 0;}
+Graph::Graph():counter(0){}
 
-Graph::Graph(int n){
-    Graph();
+Graph::Graph(int n):counter(0){
     for (int i=0 ; i<n ; i++){
         addNode();
     }
 }
 
-Graph::Graph(int n, int p){
-    Graph();
+Graph::Graph(int n, int p):counter(0){
     p = p%101;
-
     for (int i=0 ; i<n ; i++){
         addNode();
     }
@@ -29,14 +26,25 @@ Graph::Graph(int n, int p){
 }
 
 int Graph::addNode(){
-    Node n(counter);
+    Node * n = new Node(counter);
     this->graphNodes.insert(make_pair(counter, n));
     return counter++;
 }
 
 void Graph::addEdge(int a, int b){
-    Node n1 = this->graphNodes[a];
-    Node n2 = this->graphNodes[b];
-    n1.push_back(this->graphNodes[b]);
-    n2.push_back(this->graphNodes[a]);
+    Node * n1 = this->graphNodes[a]; // ! n1 est une copie ici!
+    Node * n2 = this->graphNodes[b];
+    n1->addNeighbor(this->graphNodes[b]);
+    n2->addNeighbor(this->graphNodes[a]);
+}
+
+/*Node * Graph::getNode(int node) const{
+    return graphNodes[node];
+}*/
+
+list<Node *> Graph::getNodes() const{
+    map<int, Node *>::const_iterator currentNode (graphNodes.begin()), lend(graphNodes.end());
+    list<Node *> list;
+    for(;currentNode!=lend;++currentNode)list.push_back((*currentNode).second);
+    return list;
 }

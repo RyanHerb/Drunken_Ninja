@@ -1,26 +1,40 @@
+#ifndef NODE_H
+#define NODE_H
+
 #include <iostream>
 #include <cstdlib>
 #include <list>
 #include <iterator>
 
-#ifndef NODE_H
-#define NODE_H
+using namespace std;
 
+class Node {
 
-class Node: public std::list<Node> {
-
-  private:
+private:
     int id;
+    list<Node *> neighbors;
 
-  public:
+public:
     Node();
-    Node(int id, std::list<Node>);
     Node(int id);
-    int getId();
-    bool equals(Node);
+    Node(int id, list<Node *>);
+    int getId() const;
+    list<Node *> getNeighbors() const;
+    void addNeighbor(Node *);
+    //bool equals(Node);
 };
 
+//To print a Node
+inline ostream& operator<<(ostream& os, const Node & node)
+{
+    os << node.getId() << " : ";
+    list<Node *> neighbors = node.getNeighbors();
+    list<Node *>::const_iterator currentNode (neighbors.begin()), lend(neighbors.end());
+    for(;currentNode!=lend;++currentNode) os << (*currentNode)->getId() << " ";
+    return os;
+}
 
-bool operator==(const Node& node1, const Node& node2);
+
+//bool operator==(const Node& node1, const Node& node2);
 
 #endif // NODE_H

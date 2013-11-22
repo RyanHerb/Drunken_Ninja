@@ -9,8 +9,8 @@ using namespace std;
 class Graph {
 
 private:
-  int counter;
-  map<int, Node> graphNodes;
+    int counter;
+    map<int, Node *> graphNodes;
 
 public:
   Graph();
@@ -25,6 +25,18 @@ public:
 
   //add an adge between node A and node B
   void addEdge(int a, int b);
+
+  //return the a const list of Graph's Nodes;
+  list<Node *> getNodes() const;
 };
+
+//To print a Graph
+inline ostream& operator<<(ostream& os, const Graph & graph)
+{
+    list<Node *> nodes = graph.getNodes();
+    list<Node *>::const_iterator currentNode (nodes.begin()), lend(nodes.end());
+    for(;currentNode!=lend;++currentNode)os << *(*currentNode) << endl;
+    return os;
+}
 
 #endif // GRAPH_H

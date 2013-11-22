@@ -2,18 +2,25 @@
 
 Node::Node() {}
 
-Node::Node(int id, std::list<Node> neighbours)
-  : id(id), list<Node>(neighbours) {}
+Node::Node(int id): id(id), neighbors(list<Node *>()){}
 
-Node::Node(int id) : id(id), list<Node>() {}
+Node::Node(int id, list<Node *> neighbours) : id(id), neighbors(neighbours){}
 
-int Node::getId() {
+int Node::getId() const{
   return id;
 }
 
-bool Node::equals(Node n) {
-    return (this->id == n.id);
+list<Node *> Node::getNeighbors() const{
+    return neighbors;
 }
+
+void Node::addNeighbor(Node * n){
+    neighbors.push_back(n);
+}
+
+/*bool Node::equals(Node n) {
+    return (this->id == n.id);
+}*/
 
 bool operator<(Node& node1, Node& node2) {
     return(node1.getId() < node2.getId());
