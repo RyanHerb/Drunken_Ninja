@@ -32,10 +32,28 @@ int Graph::addNode(){
 }
 
 void Graph::addEdge(int a, int b){
-    Node * n1 = this->graphNodes[a]; // ! n1 est une copie ici!
+    Node * n1 = this->graphNodes[a];
     Node * n2 = this->graphNodes[b];
     n1->addNeighbor(this->graphNodes[b]);
     n2->addNeighbor(this->graphNodes[a]);
+}
+
+void Graph::removeEdge(int a, int b){
+    Node * n1 = this->graphNodes[a];
+    Node * n2 = this->graphNodes[b];
+    n1->removeNeighbor(this->graphNodes[b]);
+    n2->removeNeighbor(this->graphNodes[a]);
+}
+
+void Graph::removeAllEdges(int a){
+    Node * n = graphNodes[a];
+    list<Node *> neighbors = n->getNeighbors();
+    list<Node *>::const_iterator currentNeighbor (neighbors.begin()), lend(neighbors.end());
+    for(;currentNeighbor!=lend;++currentNeighbor){
+        Node * cNeighbor = (*currentNeighbor);
+        cNeighbor->removeNeighbor(n);
+        n->removeNeighbor(cNeighbor);
+    }
 }
 
 /*Node * Graph::getNode(int node) const{

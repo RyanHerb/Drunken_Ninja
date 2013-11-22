@@ -23,8 +23,14 @@ public:
 
   int addNode();
 
-  //add an adge between node A and node B
+  //add an edge between node A and node B
   void addEdge(int a, int b);
+
+  //remove the edge between node A and node B
+  void removeEdge(int a, int b);
+
+  //remove all the edge of the node A
+  void removeAllEdges(int a);
 
   //return the a const list of Graph's Nodes;
   list<Node *> getNodes() const;

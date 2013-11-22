@@ -14,8 +14,18 @@ list<Node *> Node::getNeighbors() const{
     return neighbors;
 }
 
+Node * Node::getNeighbor(){
+    if(neighbors.size() >= 1)
+        return (*neighbors.begin());
+    else return 0;
+}
+
 void Node::addNeighbor(Node * n){
     neighbors.push_back(n);
+}
+
+void Node::removeNeighbor(Node * neighbor){
+    neighbors.remove(neighbor);
 }
 
 int Node::degre() const{

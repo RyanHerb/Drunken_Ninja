@@ -19,3 +19,22 @@ list<Node *> Tree::getLeaves(){
     }
     return leaves;
 }
+
+list<Node *> Tree::getCover(){
+    Tree * copie(this);
+    list<Node *> cover;
+    list<Node *> leaves = copie->getLeaves();
+    while(leaves.size() != 0){
+        list<Node *>::const_iterator currentNode (leaves.begin()), lend(leaves.end());
+        for(;currentNode!=lend;++currentNode){
+            Node * currentLeaf = (*currentNode);
+            Node * leafFather = currentLeaf->getNeighbor();
+            if(leafFather){
+                cover.push_back(leafFather);
+                copie->removeAllEdges(leafFather->getId());
+            }
+        }
+        leaves = copie->getLeaves();
+    }
+    return cover;
+}
