@@ -41,6 +41,7 @@ inline ostream& operator<<(ostream& os, const list<Node *> & nodes){
     list<Node *>::const_iterator currentNode (nodes.begin()), lend(nodes.end());
     for(;currentNode!=lend;++currentNode) os << (*currentNode)->getId() << " ";
     os << endl;
+    return os;
 }
 
 //bool operator==(const Node& node1, const Node& node2);
