@@ -18,7 +18,11 @@ int main() {
 }
 */
 int main(){
-    Tree t(6); // random tree with 6 vertices;
+    Tree t(10); // random tree with 6 vertices;
+    list<Node *> nodes = t.getLeaves();
     cout << t;
+    cout << endl << "leaves : ";
+    list<Node *>::const_iterator currentNode (nodes.begin()), lend(nodes.end());
+    for(;currentNode!=lend;++currentNode)cout << (*currentNode)->getId() << " ";
 }
 

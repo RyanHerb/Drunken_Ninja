@@ -20,6 +20,7 @@ public:
     Node(int id, list<Node *>);
     int getId() const;
     list<Node *> getNeighbors() const;
+    int degre() const;
     void addNeighbor(Node *);
     //bool equals(Node);
 };

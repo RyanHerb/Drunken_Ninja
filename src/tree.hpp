@@ -6,15 +6,13 @@
 
 class Tree : public Graph {
 
+private:
+    Node * root;
+
 public:
     Tree(int n); // Generates a random tree with n vertices, labeled from 0 to n-1;
+    list<Node *> getLeaves();
 };
-
-/*ostream& operator<<(ostream& os, const Tree & tree)
-{
-    return os;
-}
-*/
 
 #endif // TREE_H
 

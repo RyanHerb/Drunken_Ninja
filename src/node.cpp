@@ -18,6 +18,10 @@ void Node::addNeighbor(Node * n){
     neighbors.push_back(n);
 }
 
+int Node::degre() const{
+    return neighbors.size();
+}
+
 /*bool Node::equals(Node n) {
     return (this->id == n.id);
 }*/
