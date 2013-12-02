@@ -1,16 +1,25 @@
 #include <iostream>
 #include "node.hpp"
+#include "graph.hpp"
+#include "tree.hpp"
 
 using namespace std;
-
+/*
 int main() {
-    std::list<Node>* nodeList = new std::list<Node>();
+    list<Node *> nodeList;
     for(int i = 0; i < 10; ++i) {
-        Node n(i);
-        cout << n.getId() << '\n';
-        nodeList->push_back(n);
+        Node * n = new Node(i);
+        cout << n->getId() << '\n';
+        nodeList.push_back(n);
     }
 
-    cout << nodeList->front().getId() << '\n';
+    cout << nodeList.front()->getId() << '\n';
 
+}
+*/
+int main(){
+    Tree t(6); // random tree with 6 vertices;
+    cout << t;
+    list<Node *> nodes = t.getCover();
+    cout << "couverture min :" << nodes;
 }
