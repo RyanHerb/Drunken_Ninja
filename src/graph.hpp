@@ -25,6 +25,13 @@ public:
 
   //add an adge between node A and node B
   void addEdge(int a, int b);
+
+  //return format :
+  //nbNodes
+  //nodeID : neighboursID
+  //nodeID : neighboursID
+  //...
+  String toString();
 };
 
 #endif // GRAPH_H
