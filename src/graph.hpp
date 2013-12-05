@@ -42,6 +42,8 @@ public:
 
     Node* getRandomNode();
     pair<Node*,Node*> *getRandomEdge();
+    list<Node *> getCoverGlouton();
+    Node * getHigherDegreeNode();
 };
 
 

@@ -106,6 +106,35 @@ list<Node *> Graph::getCover(){
     return cover;
 }
 
+Node * Graph::getHigherDegreeNode(){
+    //TODO optimiser, surement avec un tableau trié mis à jour à chaque ajout/retrait d'arete
+    Node* selectedNode;
+    int higherDegree = 0;
+    map<int, Node *>::const_iterator currentNode (graphNodes.begin()), lend(graphNodes.end());
+    for(;currentNode!=lend;++currentNode){
+        if(higherDegree < (*currentNode).second->degre()){
+            selectedNode = (*currentNode).second;
+            higherDegree = selectedNode->degre();
+        }
+    }
+    return selectedNode;
+}
+
+list<Node *> Graph::getCoverGlouton(){
+    Graph * localGraph(this);
+    list<Node *> cover;
+
+    while (localGraph->nbEdge>0){
+        Node * current = localGraph->getHigherDegreeNode();
+        cover.push_front(current);
+        localGraph->removeNode(current);
+    }
+    delete localGraph;
+    return cover;
+}
+
+
+
 list<Node *> Graph::getNodes() const{
     map<int, Node *>::const_iterator currentNode (graphNodes.begin()), lend(graphNodes.end());
     list<Node *> list;
