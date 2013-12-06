@@ -7,12 +7,12 @@
 class Tree : public Graph {
 
 private:
-    Node * root;
+    Node *root;
 
 public:
     Tree(int n); // Generates a random tree with n vertices, labeled from 0 to n-1;
-    list<Node *> getLeaves();
-    list<Node *> getCover();
+    list<Node*> getLeaves();
+    list<Node*> getCover();
 };
 
 #endif // TREE_H

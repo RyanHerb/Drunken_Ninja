@@ -11,7 +11,7 @@ class Graph {
 private:
     int counter;
     int nbEdge;
-    map<int, Node *> graphNodes;
+    map<int, Node*> graphNodes;
 
 public:
     Graph();
@@ -23,39 +23,38 @@ public:
     Graph(int n, int p);
 
     Node* addNode();
-    void removeNode(Node* n);
-    //add an edge between node A and node B
+
+    void removeNode(Node *n);
+
+    // Adds an edge between node A and node B
     void addEdge(int a, int b);
 
-    //remove the edge between node A and node B
+    // Removes the edge between node A and node B
     void removeEdge(int a, int b);
 
-    //remove all the edge of the node A
+    // Removes all the edges of the node A
     void removeAllEdges(int a);
 
+    // Returns the a const list of Graph's Nodes;
+    list<Node*> getNodes() const;
 
-    //return the a const list of Graph's Nodes;
-    list<Node *> getNodes() const;
-
-    //default cover
-    list<Node *> getCover();
+    // Default cover
+    list<Node*> getCover();
 
     Node* getRandomNode();
     pair<Node*,Node*> *getRandomEdge();
-    list<Node *> getCoverGlouton();
-    Node * getHigherDegreeNode();
+    list<Node*> getCoverGlouton();
+    Node* getHigherDegreeNode();
 };
 
-
-
-//To print a Graph
-inline ostream& operator<<(ostream& os, const Graph &graph){
-    list<Node *> nodes = graph.getNodes();
-    list<Node *>::const_iterator currentNode (nodes.begin()), lend(nodes.end());
-    for(;currentNode!=lend;++currentNode)os << *(*currentNode) << endl;
+// To print a Graph
+inline ostream& operator<<(ostream &os, const Graph &graph) {
+    list<Node*> nodes = graph.getNodes();
+    list<Node*>::const_iterator currentNode (nodes.begin()), lend(nodes.end());
+    for (; currentNode != lend; ++currentNode) {
+        os << *(*currentNode) << endl;
+    }
     return os;
 }
-
-
 
 #endif // GRAPH_H

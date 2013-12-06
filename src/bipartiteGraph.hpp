@@ -3,7 +3,7 @@
 
 #include "graph.hpp"
 
-class BipartiteGraph : public Graph{
+class BipartiteGraph : public Graph {
 
 public:
     BipartiteGraph(int n, int p);
