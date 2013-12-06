@@ -23,7 +23,7 @@ public:
 
     // retourne le nieme voisin
     Node* getNeighbor(int n);
-    int degre() const;
+    int degree() const;
     void addNeighbor(Node*);
     void removeNeighbor(Node*);
     //bool equals(Node);

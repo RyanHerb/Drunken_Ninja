@@ -71,12 +71,12 @@ pair<Node*,Node*>* Graph::getRandomEdge() {
     int select = rand() % nbEdge;
     map<int, Node*>::const_iterator currentNode (graphNodes.begin()), lend(graphNodes.end());
     for (; currentNode != lend; ++currentNode) {
-        if (select < (*currentNode).second->degre()) {
+        if (select < (*currentNode).second->degree()) {
             Node *a = (*currentNode).second;
             Node *b = a->getNeighbor(select);
             return new pair<Node*, Node*>(a, b);
         } else {
-            select -= (*currentNode).second->degre();
+            select -= (*currentNode).second->degree();
         }
     }
 }
@@ -108,9 +108,9 @@ Node* Graph::getHigherDegreeNode(){
     int higherDegree = 0;
     map<int, Node*>::const_iterator currentNode (graphNodes.begin()), lend(graphNodes.end());
     for (; currentNode != lend; ++currentNode) {
-        if (higherDegree < (*currentNode).second->degre()) {
+        if (higherDegree < (*currentNode).second->degree()) {
             selectedNode = (*currentNode).second;
-            higherDegree = selectedNode->degre();
+            higherDegree = selectedNode->degree();
         }
     }
     return selectedNode;

@@ -17,14 +17,15 @@ list<Node*> Node::getNeighbors() const {
 }
 
 Node* Node::getNeighbor(int n) {
-    list<Node*>::iterator result;
-    if (neighbors.size() > n) {
+    if (n < neighbors.size()) {
+        list<Node*>::iterator result;
         result = neighbors.begin();
         for (int i = 0; i < n; ++i) {
             ++result;
         }
+        return *result;
     }
-    return *result;
+    return NULL;
 }
 
 void Node::addNeighbor(Node *n) {
@@ -35,7 +36,7 @@ void Node::removeNeighbor(Node *neighbor) {
     neighbors.remove(neighbor);
 }
 
-int Node::degre() const {
+int Node::degree() const {
     return neighbors.size();
 }
 

@@ -17,9 +17,9 @@ int main() {
 
 }
 */
-int main(){
-    Tree t(6); // random tree with 6 vertices;
+int main() {
+    Tree t(6); // Random tree with 6 vertices;
     cout << t;
-    list<Node *> nodes = t.getCover();
-    cout << "couverture min :" << nodes;
+    list<Node*> nodes = t.getCover();
+    cout << "Couverture min : " << nodes;
 }
