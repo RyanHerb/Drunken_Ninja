@@ -19,7 +19,8 @@ public:
     // Generates a graph with n vertices, labeled from 0 to n-1, but no edges;
     Graph(int n);
 
-    // Generates a graph with n vertices, labeled from 0 to n-1, propbality p (from 0 to 100) to have an edge between to vertices
+    // Generates a graph with n vertices, labeled from 0 to n-1,
+    // with a propbality p for having an edge between two vertices
     Graph(int n, int p);
 
     Node* addNode();
@@ -28,6 +29,9 @@ public:
 
     // Adds an edge between node A and node B
     void addEdge(int a, int b);
+
+    // Returns true if an edge exists between node A and node B
+    bool hasEdge(int a, int b);
 
     // Removes the edge between node A and node B
     void removeEdge(int a, int b);

@@ -40,6 +40,15 @@ void Graph::addEdge(int a, int b) {
     ++nbEdge;
 }
 
+bool Graph::hasEdge(int a, int b) {
+    Node *node = this->graphNodes[a];
+    for (Node *neighbour : node->getNeighbors()) {
+        if (neighbour->getId() == b)
+            return true;
+    }
+    return false;
+}
+
 void Graph::removeEdge(int a, int b) {
     // TODO verifier que l'arete existe
     Node *n1 = this->graphNodes[a];
