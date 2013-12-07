@@ -41,9 +41,18 @@ void Graph::addEdge(int a, int b) {
 }
 
 bool Graph::hasEdge(int a, int b) {
-    Node *node = this->graphNodes[a];
-    for (Node *neighbour : node->getNeighbors()) {
-        if (neighbour->getId() == b)
+    Node *n1 = this->graphNodes[a];
+    Node *n2 = this->graphNodes[b];
+
+    Node *from = n1;
+    Node *to = n2;
+    if (n1->getNeighbors().size() > n2->getNeighbors().size()) {
+        from = n2;
+        to = n1;
+    }
+
+    for (Node *neighbour : from->getNeighbors()) {
+        if (neighbour->getId() == to->getId())
             return true;
     }
     return false;

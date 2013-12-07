@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     cout << "Loaded: " << endl;
     cout << *graph << endl;
 
-    list<Node*> nodes = graph->getCover();
+    list<Node*> nodes = ((Tree*)graph)->getCover();
     cout << "Couverture min : " << nodes;
 
 }
