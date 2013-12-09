@@ -1,5 +1,6 @@
 #include "graph.hpp"
 #include "node.hpp"
+#include <algorithm>
 
 using namespace std;
 
@@ -37,6 +38,8 @@ void Graph::addEdge(int a, int b) {
     Node *n2 = this->graphNodes[b];
     n1->addNeighbor(this->graphNodes[b]);
     n2->addNeighbor(this->graphNodes[a]);
+    pair<Node*,Node*> p(n1,n2);
+    edges.push_back(p);
     ++nbEdge;
 }
 
@@ -64,18 +67,21 @@ void Graph::removeEdge(int a, int b) {
     Node *n2 = this->graphNodes[b];
     n1->removeNeighbor(this->graphNodes[b]);
     n2->removeNeighbor(this->graphNodes[a]);
+    pair<Node*,Node*> p(n1,n2);
+    vector<pair<Node*, Node*> >::iterator it;
+    it = find(edges.begin(), edges.end(),p);
+    edges.erase(it);
     --nbEdge;
 }
 
-void Graph::removeAllEdges(int a) {
-    Node *n = graphNodes[a];
-    list<Node*> neighbors = n->getNeighbors();
-    list<Node*>::const_iterator currentNeighbor (neighbors.begin()), lend(neighbors.end());
-    for (; currentNeighbor != lend; ++currentNeighbor) {
-        Node *cNeighbor = (*currentNeighbor);
-        cNeighbor->removeNeighbor(n);
-        n->removeNeighbor(cNeighbor);
-        --nbEdge;
+
+void Graph::removeAllEdges(int a){
+    Node * n = graphNodes[a];
+    list<Node *> neighbors = n->getNeighbors();
+    list<Node *>::const_iterator currentNeighbor (neighbors.begin()), lend(neighbors.end());
+    for(;currentNeighbor!=lend;++currentNeighbor){
+        Node * cNeighbor = (*currentNeighbor);
+        removeEdge(a,cNeighbor->getId());
     }
 }
 
@@ -84,19 +90,11 @@ Node* Graph::getRandomNode() {
     return graphNodes[select];
 }
 
-pair<Node*,Node*>* Graph::getRandomEdge() {
-    // TODO Marche pas (aretes comptées deux fois)
-    int select = rand() % nbEdge;
-    map<int, Node*>::const_iterator currentNode (graphNodes.begin()), lend(graphNodes.end());
-    for (; currentNode != lend; ++currentNode) {
-        if (select < (*currentNode).second->degree()) {
-            Node *a = (*currentNode).second;
-            Node *b = a->getNeighbor(select);
-            return new pair<Node*, Node*>(a, b);
-        } else {
-            select -= (*currentNode).second->degree();
-        }
-    }
+
+pair<Node*,Node*> Graph::getRandomEdge(){
+    int select = rand()%nbEdge;
+    // list<pair<Node*,Node*> >::const_iterator currentEdge (edges.begin()), lend(edges.end());
+    return edges[select];
 }
 
 void Graph::removeNode(Node *n) {
@@ -109,11 +107,11 @@ list<Node*> Graph::getCover() {
     list<Node*> cover;
 
     while (localGraph->nbEdge > 0) {
-        pair<Node*, Node*> *edge = localGraph->getRandomEdge();
-        cover.push_front(edge->first);
-        cover.push_front(edge->second);
-        localGraph->removeNode(edge->first);
-        localGraph->removeNode(edge->second);
+        pair<Node*, Node*> edge = localGraph->getRandomEdge();
+        cover.push_front(edge.first);
+        cover.push_front(edge.second);
+        localGraph->removeNode(edge.first);
+        localGraph->removeNode(edge.second);
     }
     delete localGraph;
     return cover;

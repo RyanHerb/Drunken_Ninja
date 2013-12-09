@@ -3,6 +3,7 @@
 
 #include "node.hpp"
 #include <map>
+#include <vector>
 
 using namespace std;
 
@@ -11,7 +12,9 @@ class Graph {
 private:
     int counter;
     int nbEdge;
+
     map<int, Node*> graphNodes;
+    vector<pair<Node*, Node*> > edges;
 
 public:
     Graph();
@@ -46,7 +49,7 @@ public:
     list<Node*> getCover();
 
     Node* getRandomNode();
-    pair<Node*,Node*> *getRandomEdge();
+    pair<Node*,Node*> getRandomEdge();
     list<Node*> getCoverGlouton();
     Node* getHigherDegreeNode();
 };

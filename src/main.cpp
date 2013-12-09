@@ -6,7 +6,7 @@
 
 using namespace std;
 
-const string DEFAULT_INPUT = "../Drunken_Ninja/data/tree1.txt";
+const string DEFAULT_INPUT = "../../Drunken_Ninja/data/tree1.txt";
 
 int main(int argc, char *argv[]) {
     string filename = DEFAULT_INPUT;
@@ -37,4 +37,28 @@ void test() {
     }
 
     cout << nodeList.front()->getId() << endl;
+
+/*
+
+    Node* n1 = new Node();
+    Node* n2 = new Node();
+
+    pair<Node*, Node*>p1(n1, n2);
+    pair<Node*, Node*>p2(n1, n2);
+
+    if (p1 == p2)
+        cout << "c'est bon\n";
+    else
+        cout << "c'est pas bon\n";
+
+
+            srand((unsigned)time(0));
+            for (int i=0 ; i< 200 ; i++)
+                cout << rand()%101 << "\n";
+            Tree t(6); // random tree with 6 vertices;
+            cout << t;
+            list<Node *> nodes = t.getCover();
+            cout << "couverture min :" << nodes <<"\n";
+
+            return 0;*/
 }

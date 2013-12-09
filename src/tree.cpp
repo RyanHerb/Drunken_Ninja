@@ -5,7 +5,8 @@ Tree::Tree(int n):Graph(1) {
     root = (*getNodes().begin());
     for (int i = 1; i < n; i++) {
         addNode();
-        addEdge(i, rand()%i);
+        int neighboor = rand()%i;
+        addEdge(i, neighboor);
     }
 }
 
