@@ -9,7 +9,7 @@ using namespace std;
 
 class Graph {
 
-private:
+protected:
     int counter;
     int nbEdge;
 
@@ -29,6 +29,7 @@ public:
     Node* addNode();
 
     void removeNode(Node *n);
+    void removeNode(int id);
 
     // Adds an edge between node A and node B
     void addEdge(int a, int b);
@@ -40,7 +41,7 @@ public:
     void removeEdge(int a, int b);
 
     // Removes all the edges of the node A
-    void removeAllEdges(int a);
+    void removeEdges(int a);
 
     // Returns the a const list of Graph's Nodes;
     list<Node*> getNodes() const;

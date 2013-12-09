@@ -4,15 +4,15 @@
 
 using namespace std;
 
-Graph::Graph():counter(0), nbEdge(0){}
+Graph::Graph(){}
 
-Graph::Graph(int n):counter(0), nbEdge(0){
+Graph::Graph(int n){
     for (int i = 0; i < n; ++i) {
         addNode();
     }
 }
 
-Graph::Graph(int n, int p):counter(0), nbEdge(0) {
+Graph::Graph(int n, int p) {
     p = p%101;
     for (int i = 0; i < n; ++i) {
         addNode();
@@ -62,20 +62,26 @@ bool Graph::hasEdge(int a, int b) {
 }
 
 void Graph::removeEdge(int a, int b) {
-    // TODO verifier que l'arete existe
     Node *n1 = this->graphNodes[a];
     Node *n2 = this->graphNodes[b];
-    n1->removeNeighbor(this->graphNodes[b]);
-    n2->removeNeighbor(this->graphNodes[a]);
-    pair<Node*,Node*> p(n1,n2);
-    vector<pair<Node*, Node*> >::iterator it;
-    it = find(edges.begin(), edges.end(),p);
-    edges.erase(it);
-    --nbEdge;
+    pair<Node*,Node*> p1(n1,n2);
+    pair<Node*,Node*> p2(n2,n1);
+    vector<pair<Node*, Node*> >::iterator it1;
+    vector<pair<Node*, Node*> >::iterator it2;
+    it1 = find(edges.begin(), edges.end(),p1);
+    it2 = find(edges.begin(), edges.end(),p2);
+    if ((it1->first == n1 && it1->second == n2) || (it2->first == n2 && it2->second == n1)) {
+        n1->removeNeighbor(this->graphNodes[b]);
+        n2->removeNeighbor(this->graphNodes[a]);
+        if (it1->first == n1 && it1->second == n2)
+            edges.erase(it1);
+        else
+            edges.erase(it2);
+        --nbEdge;
+    }
 }
 
-
-void Graph::removeAllEdges(int a){
+void Graph::removeEdges(int a){
     Node * n = graphNodes[a];
     list<Node *> neighbors = n->getNeighbors();
     list<Node *>::const_iterator currentNeighbor (neighbors.begin()), lend(neighbors.end());
@@ -93,13 +99,16 @@ Node* Graph::getRandomNode() {
 
 pair<Node*,Node*> Graph::getRandomEdge(){
     int select = rand()%nbEdge;
-    // list<pair<Node*,Node*> >::const_iterator currentEdge (edges.begin()), lend(edges.end());
     return edges[select];
 }
 
+void Graph::removeNode(int id) {
+    removeEdges(id);
+    graphNodes.erase(id);
+}
+
 void Graph::removeNode(Node *n) {
-    removeAllEdges(n->getId());
-    graphNodes.erase(n->getId());
+    removeNode(n->getId());
 }
 
 list<Node*> Graph::getCover() {

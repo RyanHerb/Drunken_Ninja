@@ -32,7 +32,7 @@ list<Node*> Tree::getCover() {
             Node *leafParent = currentLeaf->getNeighbor(0);
             if (leafParent) {
                 cover.push_back(leafParent);
-                dup->removeAllEdges(leafParent->getId());
+                dup->removeEdges(leafParent->getId());
             }
         }
         leaves = dup->getLeaves();

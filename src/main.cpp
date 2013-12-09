@@ -9,6 +9,17 @@ using namespace std;
 const string DEFAULT_INPUT = "../../Drunken_Ninja/data/tree1.txt";
 
 int main(int argc, char *argv[]) {
+    srand((unsigned)time(0));
+    Graph*g = new Graph(3);
+    g->addEdge(1,2);
+    g->addEdge(0,1);
+    g->addEdge(2,0);
+    cout <<*g <<endl;
+    g->removeEdge(2,0);
+    cout <<*g <<endl;
+    g->removeEdge(2,0);
+    cout <<*g <<endl;
+  /*
     string filename = DEFAULT_INPUT;
     if (argc > 1) {
         if (string (argv[1]).compare("-h") == 0) {
@@ -37,7 +48,7 @@ void test() {
     }
 
     cout << nodeList.front()->getId() << endl;
-
+*/
 /*
 
     Node* n1 = new Node();

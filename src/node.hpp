@@ -40,6 +40,8 @@ inline ostream& operator<<(ostream &os, const Node &node) {
     return os;
 }
 
+
+
 // To print a list<Node*>
 inline ostream& operator<<(ostream &os, const list<Node*> &nodes){
     list<Node*>::const_iterator currentNode (nodes.begin()), lend(nodes.end());
