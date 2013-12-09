@@ -38,8 +38,8 @@ void Graph::addEdge(int a, int b) {
     Node *n2 = this->graphNodes[b];
     n1->addNeighbor(this->graphNodes[b]);
     n2->addNeighbor(this->graphNodes[a]);
-    pair<Node*,Node*> p(n1,n2);
-    edges.push_back(p);
+    Edge* e= new Edge(n1,n2);
+    edges.push_back(e);
     ++nbEdge;
 }
 
@@ -64,19 +64,14 @@ bool Graph::hasEdge(int a, int b) {
 void Graph::removeEdge(int a, int b) {
     Node *n1 = this->graphNodes[a];
     Node *n2 = this->graphNodes[b];
-    pair<Node*,Node*> p1(n1,n2);
-    pair<Node*,Node*> p2(n2,n1);
-    vector<pair<Node*, Node*> >::iterator it1;
-    vector<pair<Node*, Node*> >::iterator it2;
-    it1 = find(edges.begin(), edges.end(),p1);
-    it2 = find(edges.begin(), edges.end(),p2);
-    if ((it1->first == n1 && it1->second == n2) || (it2->first == n2 && it2->second == n1)) {
+    Edge *e = new Edge(n1,n2);
+    vector<Edge*>::iterator it (edges.begin()), lend(edges.end());
+    while(it != lend && !(**it == *e))
+        ++it;
+    if (it != lend) {
         n1->removeNeighbor(this->graphNodes[b]);
         n2->removeNeighbor(this->graphNodes[a]);
-        if (it1->first == n1 && it1->second == n2)
-            edges.erase(it1);
-        else
-            edges.erase(it2);
+        edges.erase(it);
         --nbEdge;
     }
 }
@@ -97,7 +92,7 @@ Node* Graph::getRandomNode() {
 }
 
 
-pair<Node*,Node*> Graph::getRandomEdge(){
+Edge* Graph::getRandomEdge(){
     int select = rand()%nbEdge;
     return edges[select];
 }
@@ -116,11 +111,11 @@ list<Node*> Graph::getCover() {
     list<Node*> cover;
 
     while (localGraph->nbEdge > 0) {
-        pair<Node*, Node*> edge = localGraph->getRandomEdge();
-        cover.push_front(edge.first);
-        cover.push_front(edge.second);
-        localGraph->removeNode(edge.first);
-        localGraph->removeNode(edge.second);
+        Edge* edge = localGraph->getRandomEdge();
+        cover.push_front(edge->first());
+        cover.push_front(edge->second());
+        localGraph->removeNode(edge->first());
+        localGraph->removeNode(edge->second());
     }
     delete localGraph;
     return cover;

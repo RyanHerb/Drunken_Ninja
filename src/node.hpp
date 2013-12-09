@@ -52,6 +52,24 @@ inline ostream& operator<<(ostream &os, const list<Node*> &nodes){
     return os;
 }
 
-//bool operator==(const Node &node1, const Node &node2);
+inline bool operator==(const Node &node1, const Node &node2){
+    return node1.getId() == node2.getId();
+}
+
+inline bool operator > (const Node &node1, const Node &node2){
+    return node1.degree() > node2.degree();
+}
+
+inline bool operator >= (const Node &node1, const Node &node2){
+    return node1.degree() >= node2.degree();
+}
+
+inline bool operator < (const Node &node1, const Node &node2){
+    return node1.degree() < node2.degree();
+}
+
+inline bool operator <= (const Node &node1, const Node &node2){
+    return node1.degree() <= node2.degree();
+}
 
 #endif // NODE_H

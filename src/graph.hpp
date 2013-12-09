@@ -1,6 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include "edge.hpp"
 #include "node.hpp"
 #include <map>
 #include <vector>
@@ -14,7 +15,7 @@ protected:
     int nbEdge;
 
     map<int, Node*> graphNodes;
-    vector<pair<Node*, Node*> > edges;
+    vector<Edge*> edges;
 
 public:
     Graph();
@@ -50,7 +51,7 @@ public:
     list<Node*> getCover();
 
     Node* getRandomNode();
-    pair<Node*,Node*> getRandomEdge();
+    Edge* getRandomEdge();
     list<Node*> getCoverGlouton();
     Node* getHigherDegreeNode();
 };

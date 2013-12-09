@@ -9,7 +9,24 @@ using namespace std;
 const string DEFAULT_INPUT = "../../Drunken_Ninja/data/tree1.txt";
 
 int main(int argc, char *argv[]) {
-    srand((unsigned)time(0));
+/*
+    Node* A = new Node(1);
+    Node* B = new Node(2);
+    Node* C = new Node(3);
+
+    Edge * e1 = new Edge(A,B);
+    Edge * e2 = new Edge(B,A);
+
+
+
+    if (*e1 == *e2)
+        cout << "c'est bon"<<endl;
+    else
+        cout << "c'est pas bon"<<endl;
+
+*/
+
+  /*  srand((unsigned)time(0));
     Graph*g = new Graph(3);
     g->addEdge(1,2);
     g->addEdge(0,1);
@@ -19,7 +36,7 @@ int main(int argc, char *argv[]) {
     cout <<*g <<endl;
     g->removeEdge(2,0);
     cout <<*g <<endl;
-  /*
+*/
     string filename = DEFAULT_INPUT;
     if (argc > 1) {
         if (string (argv[1]).compare("-h") == 0) {
@@ -48,7 +65,7 @@ void test() {
     }
 
     cout << nodeList.front()->getId() << endl;
-*/
+
 /*
 
     Node* n1 = new Node();

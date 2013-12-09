@@ -16,7 +16,8 @@ SOURCES += \
     src/tree.cpp \
     src/bipartiteGraph.cpp \
     src/smallcovergraph.cpp \
-    src/graphutils.cpp
+    src/graphutils.cpp \
+    src/edge.cpp
 
 HEADERS += \
     src/node.hpp \
@@ -24,4 +25,5 @@ HEADERS += \
     src/tree.hpp \
     src/bipartiteGraph.hpp \
     src/smallcovergraph.hpp \
-    src/graphutils.hpp
+    src/graphutils.hpp \
+    src/edge.hpp
