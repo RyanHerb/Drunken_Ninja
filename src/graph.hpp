@@ -12,8 +12,6 @@ class Graph {
 
 protected:
     int counter;
-    int nbEdge;
-
     map<int, Node*> graphNodes;
     vector<Edge*> edges;
 

@@ -4,15 +4,15 @@
 
 using namespace std;
 
-Graph::Graph() : counter(0), nbEdge(0){}
+Graph::Graph() : counter(0){}
 
-Graph::Graph(int n) : counter(0), nbEdge(0) {
+Graph::Graph(int n) : counter(0) {
     for (int i = 0; i < n; ++i) {
         addNode();
     }
 }
 
-Graph::Graph(int n, int p) : counter(0), nbEdge(0) {
+Graph::Graph(int n, int p) : counter(0) {
     p = p%101;
     for (int i = 0; i < n; ++i) {
         addNode();
@@ -40,7 +40,6 @@ void Graph::addEdge(int a, int b) {
     n2->addNeighbor(this->graphNodes[a]);
     Edge* e= new Edge(n1,n2);
     edges.push_back(e);
-    ++nbEdge;
 }
 
 bool Graph::hasEdge(int a, int b) {
@@ -72,7 +71,6 @@ void Graph::removeEdge(int a, int b) {
         n1->removeNeighbor(this->graphNodes[b]);
         n2->removeNeighbor(this->graphNodes[a]);
         edges.erase(it);
-        --nbEdge;
     }
 }
 
@@ -93,7 +91,7 @@ Node* Graph::getRandomNode() {
 
 
 Edge* Graph::getRandomEdge(){
-    int select = rand()%nbEdge;
+    int select = rand() % edges.size();
     return edges[select];
 }
 
@@ -110,7 +108,7 @@ list<Node*> Graph::getCover() {
     Graph *localGraph(this);
     list<Node*> cover;
 
-    while (localGraph->nbEdge > 0) {
+    while (localGraph->edges.size() > 0) {
         Edge* edge = localGraph->getRandomEdge();
         cover.push_front(edge->first());
         cover.push_front(edge->second());
@@ -140,7 +138,7 @@ list<Node*> Graph::getCoverGlouton() {
     Graph *localGraph(this);
     list<Node*> cover;
 
-    while (localGraph->nbEdge > 0) {
+    while (localGraph->edges.size() > 0) {
         Node *current = localGraph->getHigherDegreeNode();
         cover.push_front(current);
         localGraph->removeNode(current);
