@@ -6,7 +6,7 @@
 
 using namespace std;
 
-const string DEFAULT_INPUT = "../../Drunken_Ninja/data/tree1.txt";
+const string DEFAULT_INPUT = "../Drunken_Ninja/data/tree1.txt";
 
 int main(int argc, char *argv[]) {
 /*
@@ -48,11 +48,13 @@ int main(int argc, char *argv[]) {
         }
     }
     Graph *graph = GraphUtils::load(filename);
-    cout << "Loaded: " << endl;
-    cout << *graph << endl;
 
-    list<Node*> nodes = ((Tree*)graph)->getCover();
-    cout << "Couverture min : " << nodes;
+    if (graph) {
+        cout << "Loaded: " << endl;
+        cout << *graph << endl;
+        list<Node*> nodes = ((Tree*)graph)->getCover();
+        cout << "Couverture min : " << nodes;
+    }
 
 }
 

@@ -4,15 +4,15 @@
 
 using namespace std;
 
-Graph::Graph(){}
+Graph::Graph() : counter(0), nbEdge(0){}
 
-Graph::Graph(int n){
+Graph::Graph(int n) : counter(0), nbEdge(0) {
     for (int i = 0; i < n; ++i) {
         addNode();
     }
 }
 
-Graph::Graph(int n, int p) {
+Graph::Graph(int n, int p) : counter(0), nbEdge(0) {
     p = p%101;
     for (int i = 0; i < n; ++i) {
         addNode();
