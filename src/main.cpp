@@ -9,34 +9,6 @@ using namespace std;
 const string DEFAULT_INPUT = "../Drunken_Ninja/data/tree1.txt";
 
 int main(int argc, char *argv[]) {
-/*
-    Node* A = new Node(1);
-    Node* B = new Node(2);
-    Node* C = new Node(3);
-
-    Edge * e1 = new Edge(A,B);
-    Edge * e2 = new Edge(B,A);
-
-
-
-    if (*e1 == *e2)
-        cout << "c'est bon"<<endl;
-    else
-        cout << "c'est pas bon"<<endl;
-
-*/
-
-  /*  srand((unsigned)time(0));
-    Graph*g = new Graph(3);
-    g->addEdge(1,2);
-    g->addEdge(0,1);
-    g->addEdge(2,0);
-    cout <<*g <<endl;
-    g->removeEdge(2,0);
-    cout <<*g <<endl;
-    g->removeEdge(2,0);
-    cout <<*g <<endl;
-*/
     string filename = DEFAULT_INPUT;
     if (argc > 1) {
         if (string (argv[1]).compare("-h") == 0) {
@@ -47,13 +19,13 @@ int main(int argc, char *argv[]) {
             filename = argv[1];
         }
     }
-    Graph *graph = GraphUtils::load(filename);
 
+    Graph *graph = GraphUtils::load(filename);
     if (graph) {
         cout << "Loaded: " << endl;
         cout << *graph << endl;
         list<Node*> nodes = ((Tree*)graph)->getCover();
-        cout << "Couverture min : " << nodes;
+        cout << "Minimal cover : " << nodes;
     }
 
 }
@@ -67,28 +39,42 @@ void test() {
     }
 
     cout << nodeList.front()->getId() << endl;
+}
 
-/*
+/**
+ * @brief Tests the identity of an edge when referenced
+ *        by any permutation of two nodes.
+ */
+void testEdgeIdentity() {
+    Node* a = new Node(1);
+    Node* b = new Node(2);
 
-    Node* n1 = new Node();
-    Node* n2 = new Node();
+    Edge * e1 = new Edge(a, b);
+    Edge * e2 = new Edge(b, a);
 
-    pair<Node*, Node*>p1(n1, n2);
-    pair<Node*, Node*>p2(n1, n2);
-
-    if (p1 == p2)
-        cout << "c'est bon\n";
+    if (*e1 == *e2)
+        cout << "Test successful" << endl;
     else
-        cout << "c'est pas bon\n";
+        cout << "Test failed" << endl;
+}
 
+void test3() {
+    srand((unsigned)time(0));
+    Graph *g = new Graph(3);
+    g->addEdge(1, 2);
+    g->addEdge(0, 1);
+    g->addEdge(2, 0);
+    cout << *g << endl;
+    g->removeEdge(2, 0);
+    cout << *g << endl;
+    g->removeEdge(2, 0);
+    cout << *g << endl;
+}
 
-            srand((unsigned)time(0));
-            for (int i=0 ; i< 200 ; i++)
-                cout << rand()%101 << "\n";
-            Tree t(6); // random tree with 6 vertices;
-            cout << t;
-            list<Node *> nodes = t.getCover();
-            cout << "couverture min :" << nodes <<"\n";
-
-            return 0;*/
+void test4() {
+    srand((unsigned)time(0));
+    Tree t(6); // Random tree with 6 vertices;
+    cout << t;
+    list<Node*> nodes = t.getCover();
+    cout << "Minimal cover :" << nodes << endl;
 }

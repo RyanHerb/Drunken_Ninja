@@ -12,8 +12,6 @@ Graph* GraphUtils::load(string filename) {
         string line;
         getline(file, line);
         Graph *graph = new Graph(stoi(line));
-        cout << "Graph: " << endl;
-        cout << *graph << endl;
 
         while (getline(file, line)) {
             vector<string> tokens = split(line, ':');
