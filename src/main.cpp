@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     if (graph) {
         cout << "Loaded: " << endl << *graph << endl;
         vector<Node*> nodes = ((Tree*)graph)->getCover();
-        cout << "Minimal cover : " << nodes << endl;
+        cout << "Minimal cover: " << nodes << endl;
     }
 }
 

@@ -15,13 +15,15 @@ Graph* GraphUtils::load(string filename) {
 
         while (getline(file, line)) {
             vector<string> tokens = split(line, ':');
-            int from = stoi(tokens[0]);
-
-            string nodes = tokens[1].substr(1, tokens[1].length());
-            for (string node : split(nodes, ' ')) {
-                int to = stoi(node);
-                if (!graph->hasEdge(from, to))
-                    graph->addEdge(from, to);
+            if (tokens.size() == 2) {
+                int from = stoi(tokens[0]);
+                string adj = tokens[1];
+                string nodes = adj.substr(1, adj.length());
+                for (string node : split(nodes, ' ')) {
+                    int to = stoi(node);
+                    if (!graph->hasEdge(from, to))
+                        graph->addEdge(from, to);
+                }
             }
         }
         return graph;
