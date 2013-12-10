@@ -1,4 +1,4 @@
-#include "bipartiteGraph.hpp"
+#include "bipartitegraph.hpp"
 
 BipartiteGraph::BipartiteGraph(int n, int p) {
     // tire au hasard la taille d'une partie, entre 1 et n-1
