@@ -24,21 +24,9 @@ int main(int argc, char *argv[]) {
     Graph *graph = GraphUtils::load(filename);
     if (graph) {
         cout << "Loaded: " << endl << *graph << endl;
-        list<Node*> nodes = ((Tree*)graph)->getCover();
+        vector<Node*> nodes = ((Tree*)graph)->getCover();
         cout << "Minimal cover : " << nodes << endl;
     }
-
-}
-
-void test() {
-    list<Node*> nodeList;
-    for (int i = 0; i < 10; ++i) {
-        Node *n = new Node(i);
-        cout << n->getId() << endl;
-        nodeList.push_back(n);
-    }
-
-    cout << nodeList.front()->getId() << endl;
 }
 
 /**
@@ -75,7 +63,7 @@ void test4() {
     srand((unsigned)time(0));
     Tree t(6); // Random tree with 6 vertices;
     cout << t;
-    list<Node*> nodes = t.getCover();
+    vector<Node*> nodes = t.getCover();
     cout << "Minimal cover :" << nodes << endl;
 }
 

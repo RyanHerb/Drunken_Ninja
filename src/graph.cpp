@@ -36,8 +36,8 @@ Node* Graph::addNode() {
 void Graph::addEdge(int a, int b) {
     Node *n1 = this->nodes[a];
     Node *n2 = this->nodes[b];
-    n1->addNeighbor(this->nodes[b]);
-    n2->addNeighbor(this->nodes[a]);
+    n1->addNeighbour(this->nodes[b]);
+    n2->addNeighbour(this->nodes[a]);
     edges.push_back(new Edge(n1, n2));
 }
 
@@ -47,12 +47,12 @@ bool Graph::hasEdge(int a, int b) {
 
     Node *from = n1;
     Node *to = n2;
-    if (n1->getNeighbors().size() > n2->getNeighbors().size()) {
+    if (n1->getNeighbours().size() > n2->getNeighbours().size()) {
         from = n2;
         to = n1;
     }
 
-    for (Node *neighbour : from->getNeighbors()) {
+    for (Node *neighbour : from->getNeighbours()) {
         if (neighbour->getId() == to->getId())
             return true;
     }
@@ -67,15 +67,15 @@ void Graph::removeEdge(int a, int b) {
     while(it != lend && !(**it == *e))
         ++it;
     if (it != lend) {
-        n1->removeNeighbor(this->nodes[b]);
-        n2->removeNeighbor(this->nodes[a]);
+        n1->removeNeighbour(this->nodes[b]);
+        n2->removeNeighbour(this->nodes[a]);
         edges.erase(it);
     }
 }
 
 void Graph::removeEdges(int a){
-    Node * n = nodes[a];
-    for (Node* node : n->getNeighbors()) {
+    Node *n = nodes[a];
+    for (Node *node : n->getNeighbours()) {
         removeEdge(a, node->getId());
     }
 }
@@ -99,14 +99,14 @@ void Graph::removeNode(Node *n) {
     removeNode(n->getId());
 }
 
-list<Node*> Graph::getCover() {
+vector<Node*> Graph::getCover() {
     Graph *localGraph(this);
-    list<Node*> cover;
+    vector<Node*> cover;
 
     while (localGraph->edges.size() > 0) {
         Edge *edge = localGraph->getRandomEdge();
-        cover.push_front(edge->first());
-        cover.push_front(edge->second());
+        cover.push_back(edge->first());
+        cover.push_back(edge->second());
         localGraph->removeNode(edge->first());
         localGraph->removeNode(edge->second());
     }
@@ -129,23 +129,23 @@ Node* Graph::getHigherDegreeNode(){
     return selectedNode;
 }
 
-list<Node*> Graph::getCoverGlouton() {
+vector<Node*> Graph::getCoverGlouton() {
     Graph *localGraph(this);
-    list<Node*> cover;
+    vector<Node*> cover;
 
     while (localGraph->edges.size() > 0) {
         Node *current = localGraph->getHigherDegreeNode();
-        cover.push_front(current);
+        cover.push_back(current);
         localGraph->removeNode(current);
     }
     delete localGraph;
     return cover;
 }
 
-list<Node*> Graph::getNodes() const {
-    list<Node*> list;
+vector<Node*> Graph::getNodes() const {
+    vector<Node*> dup;
     for (pair<int,Node*> pair : nodes) {
-        list.push_back(pair.second);
+        dup.push_back(pair.second);
     }
-    return list;
+    return dup;
 }

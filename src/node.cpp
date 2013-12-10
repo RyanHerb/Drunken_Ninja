@@ -1,39 +1,35 @@
 #include "node.hpp"
 #include <iterator>
+#include <algorithm>
 
 Node::Node() {}
 
-Node::Node(int id): id(id), neighbors(list<Node*>()){}
+Node::Node(int id): id(id), neighbors(vector<Node*>()){}
 
-Node::Node(int id, list<Node*> neighbours) : id(id), neighbors(neighbours){}
+Node::Node(int id, vector<Node*> neighbours) : id(id), neighbors(neighbours){}
 
 
 int Node::getId() const {
     return id;
 }
 
-list<Node*> Node::getNeighbors() const {
+vector<Node*> Node::getNeighbours() const {
     return neighbors;
 }
 
-Node* Node::getNeighbor(int n) {
+Node* Node::getNeighbour(int n) {
     if (n < neighbors.size()) {
-        list<Node*>::iterator result;
-        result = neighbors.begin();
-        for (int i = 0; i < n; ++i) {
-            ++result;
-        }
-        return *result;
+        return neighbors.at(n);
     }
     return NULL;
 }
 
-void Node::addNeighbor(Node *n) {
+void Node::addNeighbour(Node *n) {
     neighbors.push_back(n);
 }
 
-void Node::removeNeighbor(Node *neighbor) {
-    neighbors.remove(neighbor);
+void Node::removeNeighbour(Node *neighbor) {
+    neighbors.erase(std::remove(neighbors.begin(), neighbors.end(), neighbor), neighbors.end());
 }
 
 int Node::degree() const {

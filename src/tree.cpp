@@ -10,26 +10,22 @@ Tree::Tree(int n):Graph(1) {
     }
 }
 
-list<Node*> Tree::getLeaves() {
-    list<Node*> leaves;
-    list<Node*> nodes = getNodes();
-    list<Node*>::const_iterator currentNode (nodes.begin()), lend(nodes.end());
-    for (; currentNode != lend; ++currentNode) {
-        if ((*currentNode)->degree() == 1 && ((*currentNode) != root))
-            leaves.push_back((*currentNode));
+vector<Node*> Tree::getLeaves() {
+    vector<Node*> leaves;
+    for (Node *node : getNodes()) {
+        if (node->degree() == 1 && (node != root))
+            leaves.push_back(node);
     }
     return leaves;
 }
 
-list<Node*> Tree::getCover() {
+vector<Node*> Tree::getCover() {
     Tree *dup(this);
-    list<Node*> cover;
-    list<Node*> leaves = dup->getLeaves();
+    vector<Node*> cover;
+    vector<Node*> leaves = dup->getLeaves();
     while (leaves.size() != 0) {
-        list<Node*>::const_iterator currentNode (leaves.begin()), lend(leaves.end());
-        for (; currentNode != lend; ++currentNode) {
-            Node *currentLeaf = (*currentNode);
-            Node *leafParent = currentLeaf->getNeighbor(0);
+        for (Node *leaf : leaves) {
+            Node *leafParent = leaf->getNeighbour(0);
             if (leafParent) {
                 cover.push_back(leafParent);
                 dup->removeEdges(leafParent->getId());

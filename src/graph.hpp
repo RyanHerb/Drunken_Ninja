@@ -43,23 +43,21 @@ public:
     void removeEdges(int a);
 
     // Returns the a const list of Graph's Nodes;
-    list<Node*> getNodes() const;
+    vector<Node*> getNodes() const;
 
     // Default cover
-    list<Node*> getCover();
+    vector<Node*> getCover();
 
     Node* getRandomNode();
     Edge* getRandomEdge();
-    list<Node*> getCoverGlouton();
+    vector<Node*> getCoverGlouton();
     Node* getHigherDegreeNode();
 };
 
 // To print a Graph
 inline ostream& operator<<(ostream &os, const Graph &graph) {
-    list<Node*> nodes = graph.getNodes();
-    list<Node*>::const_iterator currentNode (nodes.begin()), lend(nodes.end());
-    for (; currentNode != lend; ++currentNode) {
-        os << *(*currentNode) << endl;
+    for (Node *node : graph.getNodes()) {
+        os << *node << endl;
     }
     return os;
 }
