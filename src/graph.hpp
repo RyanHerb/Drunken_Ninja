@@ -12,7 +12,7 @@ class Graph {
 
 protected:
     int counter;
-    map<int, Node*> graphNodes;
+    map<int, Node*> nodes;
     vector<Edge*> edges;
 
 public:

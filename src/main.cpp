@@ -1,4 +1,5 @@
 #include <iostream>
+#include <time.h>
 #include "node.hpp"
 #include "graph.hpp"
 #include "tree.hpp"
@@ -22,10 +23,9 @@ int main(int argc, char *argv[]) {
 
     Graph *graph = GraphUtils::load(filename);
     if (graph) {
-        cout << "Loaded: " << endl;
-        cout << *graph << endl;
+        cout << "Loaded: " << endl << *graph << endl;
         list<Node*> nodes = ((Tree*)graph)->getCover();
-        cout << "Minimal cover : " << nodes;
+        cout << "Minimal cover : " << nodes << endl;
     }
 
 }
@@ -46,11 +46,11 @@ void test() {
  *        by any permutation of two nodes.
  */
 void testEdgeIdentity() {
-    Node* a = new Node(1);
-    Node* b = new Node(2);
+    Node *a = new Node(1);
+    Node *b = new Node(2);
 
-    Edge * e1 = new Edge(a, b);
-    Edge * e2 = new Edge(b, a);
+    Edge *e1 = new Edge(a, b);
+    Edge *e2 = new Edge(b, a);
 
     if (*e1 == *e2)
         cout << "Test successful" << endl;
@@ -78,3 +78,4 @@ void test4() {
     list<Node*> nodes = t.getCover();
     cout << "Minimal cover :" << nodes << endl;
 }
+

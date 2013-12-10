@@ -10,7 +10,7 @@ debug:DESTDIR = debug
 INCLUDEPATH += src
 
 SOURCES += \
-            src/main.cpp \
+    src/main.cpp \
     src/node.cpp \
     src/graph.cpp \
     src/tree.cpp \
