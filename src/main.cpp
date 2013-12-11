@@ -57,9 +57,9 @@ int main(int argc, char *argv[]) {
     Graph *graph = GraphUtils::load(filename);
     if (graph) {
         cout << "Loaded: " << endl << *graph << endl;
-        vector<Node*> nodes = ((Tree*)graph)->getCover();
+        vector<Node*> nodes = (graph)->getKCover(2);
         cout << "Minimal cover: " << nodes << endl;
-        cout << "isHere : " << endl << *graph << endl;
+        cout <<"size : " << nodes.size()<<endl;
     }
 }
 

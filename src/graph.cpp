@@ -12,9 +12,8 @@ Graph::Graph(Graph *g){
     for (int i = 0; i < srcNodes.size(); ++i) {
         addNode(srcNodes[i]->getId());
     }
-
     vector<Edge *> srcEdges = g->getEdges();
-    for (int i = 0; i < srcEdges.size(); ++i) {
+    for (int i = srcEdges.size()-1; i >= 0; --i) {
         addEdge(srcEdges[i]->first()->getId(), srcEdges[i]->second()->getId());
     }
 }
@@ -100,17 +99,17 @@ void Graph::removeEdges(int a){
 }
 
 Node* Graph::getRandomNode() {
-    int select = rand() % counter;
-    return nodes[select];
+    int select = rand()%nodes.size();
+    map<int,Node*>::iterator it = nodes.begin();
+    advance(it, select);
+    return it->second;
 }
 
 Edge* Graph::getRandomEdge(){
-    int select = rand()%nbEdge;
-   unordered_map<int,Edge*>::iterator it = edges.begin();
+    int select = rand()%nbEdges();
+    unordered_map<int,Edge*>::iterator it = edges.begin();
     advance(it, select);
     return it->second;
-    //TODO pourquoi ça marche pour les nodes mais pas pour les edges ?
-    //return edges[select];
 }
 
 void Graph::removeNode(int id) {
@@ -135,7 +134,7 @@ vector<Node*> Graph::getCover() {
         localGraph->removeNode(edge->second());
     }
     //TODO
-   // delete localGraph; ?
+    // delete localGraph; ?
     return cover;
 }
 
@@ -177,45 +176,38 @@ vector<Node*> Graph::getNodes() const {
     return dup;
 }
 
-void getKCoverRec(Graph *localGraph,int K, vector<int>cover ){
-
-    cout << "K : " << K <<endl;
-    cout << "localgraph"<<endl;
-    cout << *localGraph <<endl;
-    cout <<"\n\n"<<endl;
+vector<int> getKCoverRec(Graph *localGraph,int K, vector<int>cover ){
 
     if(localGraph->nbEdges() > 0){
         if(localGraph->nbEdges() >= K*localGraph->getNodes().size()){
             delete localGraph;
             cover.clear();
+            return cover;
         }
         else{
-            cout << "else entrée"<<endl;
             Edge *e = localGraph->getRandomEdge();
-            cout << "else 1"<<endl;
+            cout << "arete selectionnee : " << *e << endl;
             Graph* localGraph1 = new Graph(localGraph);
-            cout << "else 2"<<endl;
             vector<int> cover1(cover);
-            cout << "else 3"<<endl;
             Graph* localGraph2 = new Graph(localGraph);
             delete localGraph;
-            cout << "else 4"<<endl;
             vector<int> cover2(cover);
-            cout << "else 5"<<endl;
             cover1.push_back(e->first()->getId());
-            cout << "else 6"<<endl;
             localGraph1->removeNode(e->first()->getId());
-            cout << "else 7"<<endl;
             cover2.push_back(e->second()->getId());
-            cout << "else 8"<<endl;
             localGraph2->removeNode(e->second()->getId());
-            cout << "else 9"<<endl;
-            getKCoverRec(localGraph1,K-1, cover1);
-            getKCoverRec(localGraph2,K-1, cover2);
-            cover.insert(cover.end(), cover1.begin(), cover1.end());
-            cover.insert(cover.end(), cover2.begin(), cover2.end());
-            cout << "else sortie"<<endl;   
+            cover1 = getKCoverRec(localGraph1,K-1, cover1);
+            cover2 = getKCoverRec(localGraph2,K-1, cover2);
+            if (cover2.size() == 0)
+                cover2 = cover1;
+            if (cover1.size() == 0)
+                cover1 = cover2;
+            return cover1.size()>cover2.size() ? cover2 : cover1;
         }
+    }
+    else{
+        return cover;
+        delete localGraph;
     }
 }
 
@@ -231,13 +223,14 @@ vector<Node*> Graph::getKCover(int K){
         }
     }
 
-    K = K - cover.size();
-    cout << "K :" << K <<endl;
-    if(localGraph->nbEdges() > K*K){
+    int Kprime = K - cover.size();
+    cout << "Kprime :" << Kprime <<endl;
+    if(localGraph->nbEdges() > Kprime*K){
+        cout << "nbEdges : " << localGraph->nbEdges() << endl << "Kprime*K : " << Kprime*K <<endl;
         return result;
     }
     else{
-        getKCoverRec(localGraph, K, cover);
+        cover = getKCoverRec(localGraph, Kprime, cover);
         vector<int>::const_iterator currentNode (cover.begin()), lend(cover.end());
         for (; currentNode != lend; ++currentNode) {
             result.push_back(nodes[*currentNode]);
@@ -247,7 +240,7 @@ vector<Node*> Graph::getKCover(int K){
 }
 
 int Graph::nbEdges(){
-    return nbEdge;
+    return edges.size();
 }
 
 

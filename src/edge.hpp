@@ -23,7 +23,7 @@ inline bool operator==(const Edge& e1, const Edge& e2){
 }
 
 inline ostream& operator<<(ostream &os, const Edge &e) {
-    os << "from "<< *(e.first()) <<" to " << *(e.second()) << endl;
+    os << "from "<< (e.first())->getId() <<" to " << (e.second())->getId() << endl;
     return os;
 }
 
