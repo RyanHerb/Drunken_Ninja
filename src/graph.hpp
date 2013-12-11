@@ -54,9 +54,8 @@ public:
 
     vector<Edge*> getEdges() const;
     // Default cover
-    list<Node*> getCover();
-    list<Node*> getCoverGlouton();
-    list<Node*> getKCover(int K);
+    vector<Node*> getCover();
+    vector<Node*> getKCover(int K);
     int nbEdges();
 
     Node* getHigherDegreeNode();
