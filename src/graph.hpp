@@ -29,6 +29,7 @@ public:
     Graph(int n, int p);
 
     Node* addNode();
+    Node* addNode(int id);
 
     void removeNode(Node *n);
     void removeNode(int id);

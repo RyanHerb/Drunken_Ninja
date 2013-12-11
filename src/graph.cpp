@@ -8,25 +8,15 @@ Graph::Graph(){}
 
 
 Graph::Graph(Graph *g){
-    //TODO un graph peut avoir des ID plus grand que son nombre de sommets car on supprime des sommets
-    cout << "creation graph"<<endl;
-    for (int i = 0; i < g->getNodes().size(); ++i) {
-        addNode();
+    vector<Node *> srcNodes = g->getNodes();
+    for (int i = 0; i < srcNodes.size(); ++i) {
+        addNode(srcNodes[i]->getId());
     }
-    cout << "creation 2"<<endl;
-    vector<Edge *>gEdges = g->getEdges();
-    vector<Edge *>::const_iterator currentEdge (gEdges.begin()), lend(gEdges.end());
-    cout << "creation 2.5"<<endl;
-    for(;currentEdge!=lend;++currentEdge){
-        Node *n1 = (*currentEdge)->first();
-        Node *n2 = (*currentEdge)->second();
-        cout << "creation 2.6"<<endl;
 
-        //ça pose problème ici
-        addEdge(n1->getId(), n2->getId());
-        cout << "creation 2.7"<<endl;
+    vector<Edge *> srcEdges = g->getEdges();
+    for (int i = 0; i < srcEdges.size(); ++i) {
+        addEdge(srcEdges[i]->first()->getId(), srcEdges[i]->second()->getId());
     }
-    cout << "creation 3"<<endl;
 }
 
 Graph::Graph(int n){
@@ -52,6 +42,13 @@ Graph::Graph(int n, int p){
 Node* Graph::addNode() {
     Node *n = new Node(counter);
     this->nodes.insert(make_pair(counter, n));
+    ++counter;
+    return n;
+}
+
+Node * Graph::addNode(int id){
+    Node *n = new Node(id);
+    this->nodes.insert(make_pair(id, n));
     ++counter;
     return n;
 }

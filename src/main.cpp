@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const string DEFAULT_INPUT = "../Drunken_Ninja/data/tree1.txt";
+const string DEFAULT_INPUT = "../../Drunken_Ninja/data/tree1.txt";
 
 int main(int argc, char *argv[]) {
 
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
         cout << "Loaded: " << endl << *graph << endl;
         vector<Node*> nodes = ((Tree*)graph)->getCover();
         cout << "Minimal cover: " << nodes << endl;
-        cout << "size : " << nodes.size() << endl;
+        cout << "isHere : " << endl << *graph << endl;
     }
 }
 

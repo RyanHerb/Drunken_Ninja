@@ -10,6 +10,10 @@ Tree::Tree(int n):Graph(1) {
     }
 }
 
+Tree::Tree(Tree * t):Graph(t) {
+
+}
+
 vector<Node*> Tree::getLeaves() {
     vector<Node*> leaves;
     for (Node *node : getNodes()) {
@@ -20,18 +24,19 @@ vector<Node*> Tree::getLeaves() {
 }
 
 vector<Node*> Tree::getCover() {
-    Tree *dup(this);
+
+    Tree dup(this);
     vector<Node*> cover;
-    vector<Node*> leaves = dup->getLeaves();
+    vector<Node*> leaves = dup.getLeaves();
     while (leaves.size() != 0) {
         for (Node *leaf : leaves) {
             Node *leafParent = leaf->getNeighbour(0);
             if (leafParent) {
                 cover.push_back(leafParent);
-                dup->removeEdges(leafParent->getId());
+                dup.removeEdges(leafParent->getId());
             }
         }
-        leaves = dup->getLeaves();
+        leaves = dup.getLeaves();
     }
     return cover;
 }
