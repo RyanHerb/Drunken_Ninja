@@ -4,6 +4,7 @@
 #include "edge.hpp"
 #include "node.hpp"
 #include <map>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -13,11 +14,13 @@ class Graph {
 protected:
     int counter;
     map<int, Node*> nodes;
-    vector<Edge*> edges;
+
+    int nbEdge;
+    unordered_map<int, Edge*> edges;
 
 public:
     Graph();
-
+    Graph(Graph*g);
     // Generates a graph with n vertices, labeled from 0 to n-1, but no edges;
     Graph(int n);
 
@@ -45,12 +48,17 @@ public:
     // Returns the a const list of Graph's Nodes;
     vector<Node*> getNodes() const;
 
-    // Default cover
-    vector<Node*> getCover();
-
     Node* getRandomNode();
     Edge* getRandomEdge();
     vector<Node*> getCoverGlouton();
+
+    vector<Edge*> getEdges() const;
+    // Default cover
+    list<Node*> getCover();
+    list<Node*> getCoverGlouton();
+    list<Node*> getKCover(int K);
+    int nbEdges();
+
     Node* getHigherDegreeNode();
 };
 

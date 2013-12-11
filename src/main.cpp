@@ -10,6 +10,39 @@ using namespace std;
 const string DEFAULT_INPUT = "../Drunken_Ninja/data/tree1.txt";
 
 int main(int argc, char *argv[]) {
+<<<<<<< Updated upstream
+=======
+
+    srand((unsigned)time(0));
+    /*
+    Node* A = new Node(1);
+    Node* B = new Node(2);
+    Node* C = new Node(3);
+
+    Edge * e1 = new Edge(A,B);
+    Edge * e2 = new Edge(B,A);
+
+
+
+    if (*e1 == *e2)
+        cout << "c'est bon"<<endl;
+    else
+        cout << "c'est pas bon"<<endl;
+*/
+
+
+    /*
+    srand((unsigned)time(0));
+    Graph*g = new Graph(3);
+    g->addEdge(1,2);
+    g->addEdge(0,1);
+    g->addEdge(2,0);
+
+    for (int i = 0; i < 10 ; i++){
+        Edge* e= g->getRandomEdge();
+        cout << *e << endl;
+    }*/
+>>>>>>> Stashed changes
     string filename = DEFAULT_INPUT;
     if (argc > 1) {
         if (string (argv[1]).compare("-h") == 0) {
@@ -21,14 +54,29 @@ int main(int argc, char *argv[]) {
         }
     }
 
+<<<<<<< Updated upstream
     Graph *graph = GraphUtils::load(filename);
     if (graph) {
         cout << "Loaded: " << endl << *graph << endl;
         vector<Node*> nodes = ((Tree*)graph)->getCover();
         cout << "Minimal cover: " << nodes << endl;
+=======
+    list<Node*> nodes = (graph)->getKCover(3);
+    cout << "Couverture min : " << nodes <<endl;
+    cout << "taille : " << nodes.size() << endl;
+}
+
+void test() {
+    list<Node*> nodeList;
+    for (int i = 0; i < 10; ++i) {
+        Node *n = new Node(i);
+        cout << n->getId() << endl;
+        nodeList.push_back(n);
+>>>>>>> Stashed changes
     }
 }
 
+<<<<<<< Updated upstream
 /**
  * @brief Tests the identity of an edge when referenced
  *        by any permutation of two nodes.
@@ -36,6 +84,14 @@ int main(int argc, char *argv[]) {
 void testEdgeIdentity() {
     Node *a = new Node(1);
     Node *b = new Node(2);
+=======
+    cout << nodeList.front()->getId() << endl;
+
+    /*
+
+    Node* n1 = new Node();
+    Node* n2 = new Node();
+>>>>>>> Stashed changes
 
     Edge *e1 = new Edge(a, b);
     Edge *e2 = new Edge(b, a);

@@ -15,16 +15,18 @@ public:
     Node* second();
     const Node* first()const;
     const Node* second()const;
+    int hash()const;
 };
 
 inline bool operator==(const Edge& e1, const Edge& e2){
-    return (*(e1.first()) == *(e2.first()) && *(e1.second()) == *(e2.second()))
-            || (*(e1.first()) == *(e2.second()) && *(e1.second()) == *(e2.first()));
+    return e1.hash() == e2.hash();
 }
 
 inline ostream& operator<<(ostream &os, const Edge &e) {
-    os << "from "<< e.first() <<" to " << e.second() << endl;
+    os << "from "<< *(e.first()) <<" to " << *(e.second()) << endl;
     return os;
 }
+
+
 
 #endif // EDGE_H

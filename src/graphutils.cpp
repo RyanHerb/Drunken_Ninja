@@ -26,6 +26,7 @@ Graph* GraphUtils::load(string filename) {
                 }
             }
         }
+
         return graph;
     } else {
         cout << "Error reading file" << endl;

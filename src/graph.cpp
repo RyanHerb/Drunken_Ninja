@@ -4,15 +4,38 @@
 
 using namespace std;
 
-Graph::Graph() : counter(0){}
+Graph::Graph(){}
 
-Graph::Graph(int n) : counter(0) {
+
+Graph::Graph(Graph *g){
+    //TODO un graph peut avoir des ID plus grand que son nombre de sommets car on supprime des sommets
+    cout << "creation graph"<<endl;
+    for (int i = 0; i < g->getNodes().size(); ++i) {
+        addNode();
+    }
+    cout << "creation 2"<<endl;
+    list<Edge *>gEdges = g->getEdges();
+    list<Edge *>::const_iterator currentEdge (gEdges.begin()), lend(gEdges.end());
+    cout << "creation 2.5"<<endl;
+    for(;currentEdge!=lend;++currentEdge){
+        Node *n1 = (*currentEdge)->first();
+        Node *n2 = (*currentEdge)->second();
+        cout << "creation 2.6"<<endl;
+
+        //ça pose problème ici
+        addEdge(n1->getId(), n2->getId());
+        cout << "creation 2.7"<<endl;
+    }
+    cout << "creation 3"<<endl;
+}
+
+Graph::Graph(int n){
     for (int i = 0; i < n; ++i) {
         addNode();
     }
 }
 
-Graph::Graph(int n, int p) : counter(0) {
+Graph::Graph(int n, int p){
     p = p%101;
     for (int i = 0; i < n; ++i) {
         addNode();
@@ -34,11 +57,12 @@ Node* Graph::addNode() {
 }
 
 void Graph::addEdge(int a, int b) {
-    Node *n1 = this->nodes[a];
-    Node *n2 = this->nodes[b];
-    n1->addNeighbour(this->nodes[b]);
-    n2->addNeighbour(this->nodes[a]);
-    edges.push_back(new Edge(n1, n2));
+    Node *n1 = this->graphNodes[a];
+    Node *n2 = this->graphNodes[b];
+    n1->addNeighbor(this->graphNodes[b]);
+    n2->addNeighbor(this->graphNodes[a]);
+    Edge* e= new Edge(n1,n2);
+    edges.insert(make_pair(e->hash(),e));
 }
 
 bool Graph::hasEdge(int a, int b) {
@@ -63,12 +87,10 @@ void Graph::removeEdge(int a, int b) {
     Node *n1 = this->nodes[a];
     Node *n2 = this->nodes[b];
     Edge *e = new Edge(n1,n2);
-    vector<Edge*>::iterator it (edges.begin()), lend(edges.end());
-    while(it != lend && !(**it == *e))
-        ++it;
-    if (it != lend) {
-        n1->removeNeighbour(this->nodes[b]);
-        n2->removeNeighbour(this->nodes[a]);
+    unordered_map<int,Edge*>::iterator it= edges.find(e->hash());
+    if (it != edges.cend()) {
+        n1->removeNeighbor(this->graphNodes[b]);
+        n2->removeNeighbor(this->graphNodes[a]);
         edges.erase(it);
     }
 }
@@ -86,8 +108,12 @@ Node* Graph::getRandomNode() {
 }
 
 Edge* Graph::getRandomEdge(){
-    int select = rand() % edges.size();
-    return edges[select];
+    int select = rand()%nbEdge;
+   unordered_map<int,Edge*>::iterator it = edges.begin();
+    advance(it, select);
+    return it->second;
+    //TODO pourquoi ça marche pour les nodes mais pas pour les edges ?
+    //return edges[select];
 }
 
 void Graph::removeNode(int id) {
@@ -98,6 +124,7 @@ void Graph::removeNode(int id) {
 void Graph::removeNode(Node *n) {
     removeNode(n->getId());
 }
+
 
 vector<Node*> Graph::getCover() {
     Graph *localGraph(this);
@@ -110,7 +137,8 @@ vector<Node*> Graph::getCover() {
         localGraph->removeNode(edge->first());
         localGraph->removeNode(edge->second());
     }
-    delete localGraph;
+    //TODO
+   // delete localGraph; ?
     return cover;
 }
 
@@ -129,18 +157,20 @@ Node* Graph::getHigherDegreeNode(){
     return selectedNode;
 }
 
+
 vector<Node*> Graph::getCoverGlouton() {
     Graph *localGraph(this);
     vector<Node*> cover;
-
     while (localGraph->edges.size() > 0) {
         Node *current = localGraph->getHigherDegreeNode();
         cover.push_back(current);
         localGraph->removeNode(current);
     }
-    delete localGraph;
+    //TODO
+    //delete localGraph; ?
     return cover;
 }
+
 
 vector<Node*> Graph::getNodes() const {
     vector<Node*> dup;
@@ -148,4 +178,88 @@ vector<Node*> Graph::getNodes() const {
         dup.push_back(pair.second);
     }
     return dup;
+}
+
+void getKCoverRec(Graph *localGraph,int K, list<int>cover ){
+
+    cout << "K : " << K <<endl;
+    cout << "localgraph"<<endl;
+    cout << *localGraph <<endl;
+    cout <<"\n\n"<<endl;
+
+    if(localGraph->nbEdges() > 0){
+        if(localGraph->nbEdges() >= K*localGraph->getNodes().size()){
+            delete localGraph;
+            cover.clear();
+        }
+        else{
+            cout << "else entrée"<<endl;
+            Edge *e = localGraph->getRandomEdge();
+            cout << "else 1"<<endl;
+            Graph* localGraph1 = new Graph(localGraph);
+            cout << "else 2"<<endl;
+            list<int> cover1(cover);
+            cout << "else 3"<<endl;
+            Graph* localGraph2 = new Graph(localGraph);
+            delete localGraph;
+            cout << "else 4"<<endl;
+            list<int> cover2(cover);
+            cout << "else 5"<<endl;
+            cover1.push_back(e->first()->getId());
+            cout << "else 6"<<endl;
+            localGraph1->removeNode(e->first()->getId());
+            cout << "else 7"<<endl;
+            cover2.push_back(e->second()->getId());
+            cout << "else 8"<<endl;
+            localGraph2->removeNode(e->second()->getId());
+            cout << "else 9"<<endl;
+            getKCoverRec(localGraph1,K-1, cover1);
+            getKCoverRec(localGraph2,K-1, cover2);
+            cover.splice(cover.end(), cover1);
+            cover.splice(cover.end(), cover2);
+            cout << "else sortie"<<endl;   
+        }
+    }
+}
+
+list<Node*> Graph::getKCover(int K){
+    Graph *localGraph = new Graph(this);
+    list<int> cover;
+    list<Node*>result;
+    map<int, Node*>::const_iterator currentNode (graphNodes.begin()), lend(graphNodes.end());
+    for (; currentNode != lend; ++currentNode) {
+        if((*currentNode).second->degree() > K){
+            cover.push_back((currentNode->second)->getId());
+            localGraph->removeNode(currentNode->second);
+        }
+    }
+
+    K = K - cover.size();
+    cout << "K :" << K <<endl;
+    if(localGraph->nbEdges() > K*K){
+        return result;
+    }
+    else{
+        getKCoverRec(localGraph, K, cover);
+        list<int>::const_iterator currentNode (cover.begin()), lend(cover.end());
+        for (; currentNode != lend; ++currentNode) {
+            result.push_back(graphNodes[*currentNode]);
+        }
+        return result;
+    }
+}
+
+int Graph::nbEdges(){
+    return nbEdge;
+}
+
+
+//TODO change to vector
+list<Edge*> Graph::getEdges() const {
+    map<int, Edge*>::const_iterator currentEdge (edges.begin()), lend(edges.end());
+    list<Edge*> list;
+    for (; currentEdge != lend; ++currentEdge) {
+        list.push_back((*currentEdge).second);
+    }
+    return list;
 }
