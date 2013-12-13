@@ -12,7 +12,6 @@ Graph* GraphUtils::load(string filename) {
         string line;
         getline(file, line);
         Graph *graph = new Graph(stoi(line));
-
         while (getline(file, line)) {
             vector<string> tokens = split(line, ':');
             if (tokens.size() == 2) {

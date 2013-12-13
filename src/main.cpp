@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const string DEFAULT_INPUT = "../../Drunken_Ninja/data/tree1.txt";
+const string DEFAULT_INPUT = "../Drunken_Ninja/data/tree1.txt";
 
 int main(int argc, char *argv[]) {
 
@@ -41,7 +41,6 @@ int main(int argc, char *argv[]) {
         Edge* e= g->getRandomEdge();
         cout << *e << endl;
     }*/
-
     string filename = DEFAULT_INPUT;
     if (argc > 1) {
         if (string (argv[1]).compare("-h") == 0) {

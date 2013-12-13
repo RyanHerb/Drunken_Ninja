@@ -14,8 +14,6 @@ class Graph {
 protected:
     int counter;
     map<int, Node*> nodes;
-
-    int nbEdge;
     unordered_map<int, Edge*> edges;
 
 public:
@@ -59,6 +57,7 @@ public:
     vector<Node*> getKCover(int K);
     int nbEdges();
 
+    int Kernelisation(int K, vector<int> * cover);
     Node* getHigherDegreeNode();
 };
 
