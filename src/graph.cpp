@@ -171,9 +171,8 @@ vector<Node*> Graph::getNodes() const {
 }
 
 vector<int> getKCoverRec(Graph *localGraph,int K, vector<int>cover ){
-
     if(localGraph->nbEdges() > 0){
-        if(localGraph->nbEdges() >= K*localGraph->getNodes().size()){
+        if(localGraph->nbEdges() >= K*localGraph->nbNodes()){
             delete localGraph;
             cover.clear();
             return cover;
@@ -181,14 +180,16 @@ vector<int> getKCoverRec(Graph *localGraph,int K, vector<int>cover ){
         else{
             Edge *e = localGraph->getRandomEdge();
             Graph* localGraph1 = new Graph(localGraph);
-            vector<int> cover1(cover);
             Graph* localGraph2 = new Graph(localGraph);
+            int node1 = e->first()->getId();
+            int node2 = e->second()->getId();
             delete localGraph;
+            vector<int> cover1(cover);
             vector<int> cover2(cover);
-            cover1.push_back(e->first()->getId());
-            localGraph1->removeNode(e->first()->getId());
-            cover2.push_back(e->second()->getId());
-            localGraph2->removeNode(e->second()->getId());
+            cover1.push_back(node1);
+            localGraph1->removeNode(node1);
+            cover2.push_back(node2);
+            localGraph2->removeNode(node2);
             cover1 = getKCoverRec(localGraph1,K-1, cover1);
             cover2 = getKCoverRec(localGraph2,K-1, cover2);
             if (cover2.size() == 0)
@@ -199,8 +200,8 @@ vector<int> getKCoverRec(Graph *localGraph,int K, vector<int>cover ){
         }
     }
     else{
-        return cover;
         delete localGraph;
+        return cover;
     }
 }
 
@@ -217,13 +218,76 @@ int Graph::Kernelisation(int K, vector<int> * cover){
     return Kprime;
 }
 
+vector<int> getCoverFPT2Rec(Graph *localGraph,int K, vector<int>cover ){
+    if(localGraph->nbEdges() > 0){
+        if(localGraph->nbEdges() >= K*localGraph->nbNodes()){
+            delete localGraph;
+            cover.clear();
+            return cover;
+        }
+        else{
+            Node *node = localGraph->getHigherDegreeNode();
+            Graph* localGraph1 = new Graph(localGraph);
+            Graph* localGraph2 = new Graph(localGraph);
+            vector<int> neighboursId;
+            int nodeId = node->getId();
+            for (Node * n : node->getNeighbours()){
+                neighboursId.push_back(n->getId());
+            }
+            delete localGraph;
+            vector<int> cover1(cover);
+            vector<int> cover2(cover);
+            cover1.push_back(nodeId);
+            localGraph1->removeNode(nodeId);
+            for (int neigId : neighboursId){
+                cover2.push_back(neigId);
+                localGraph2->removeNode(neigId);
+            }
+            cover1 = getCoverFPT2Rec(localGraph1,K-1, cover1);
+            cover2 = getCoverFPT2Rec(localGraph2,K-neighboursId.size(), cover2);
+            if (cover2.size() == 0)
+                cover2 = cover1;
+            if (cover1.size() == 0)
+                cover1 = cover2;
+            return cover1.size()>cover2.size() ? cover2 : cover1;
+        }
+    }
+    else{
+        delete localGraph;
+        return cover;
+    }
+}
+
+vector<Node *> Graph::getCoverFPT2(int K){
+    Graph *localGraph = new Graph(this);
+    vector<int> cover;
+    vector<Node*>result;
+
+    int Kprime = localGraph->Kernelisation(K, &cover);
+    if(localGraph->nbEdges() > Kprime*localGraph->nbNodes()){
+        cout << "nbEdges : " << localGraph->nbEdges() << endl << "Kprime*K : " << Kprime*K <<endl;
+        delete localGraph;
+        return result;
+    }
+    else{
+        cover = getCoverFPT2Rec(localGraph, Kprime, cover);
+        vector<int>::const_iterator currentNode (cover.begin()), lend(cover.end());
+        for (; currentNode != lend; ++currentNode) {
+            result.push_back(nodes[*currentNode]);
+        }
+        return result;
+    }
+}
+
+
+
 vector<Node*> Graph::getKCover(int K){
     Graph *localGraph = new Graph(this);
     vector<int> cover;
     vector<Node*>result;
 
     int Kprime = localGraph->Kernelisation(K, &cover);
-    if(localGraph->nbEdges() > Kprime*K){
+    if(localGraph->nbEdges() > Kprime*localGraph->nbNodes()){
         cout << "nbEdges : " << localGraph->nbEdges() << endl << "Kprime*K : " << Kprime*K <<endl;
         delete localGraph;
         return result;
@@ -240,6 +304,10 @@ vector<Node*> Graph::getKCover(int K){
 
 int Graph::nbEdges(){
     return edges.size();
+}
+
+int Graph::nbNodes(){
+    return nodes.size();
 }
 
 

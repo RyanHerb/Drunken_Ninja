@@ -55,7 +55,9 @@ public:
     // Default cover
     vector<Node*> getCover();
     vector<Node*> getKCover(int K);
+    vector<Node *> getCoverFPT2(int K);
     int nbEdges();
+    int nbNodes();
 
     int Kernelisation(int K, vector<int> * cover);
     Node* getHigherDegreeNode();
