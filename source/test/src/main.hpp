@@ -17,8 +17,8 @@ void testNodeGetNeighbour();
 void testNodeRemoveNeighbour();
 void testNodeDegree();
 
-// Tree unit tests
-void testTreeGen();
+// Edge unit tests
+void testEdgeIdentity();
 
 
 void assertEquals(int result, int expected) {

@@ -9,14 +9,22 @@ int main(int argc, char *argv[]) {
     rlutil::setColor(7);
     cout << "Executing unit tests" << endl << endl;
 
+    // Node tests
     testNodeAddNeighbour();
     testNodeGetNeighbour();
     testNodeRemoveNeighbour();
     testNodeDegree();
 
+    // Edge tests
+    testEdgeIdentity();
+
     cout << endl << "Finished executing tests" << endl;
 }
 
+/**
+ * @brief Tests that adding a neighbour to a node
+ *        correctly updates its neighbours collection.
+ */
 void testNodeAddNeighbour() {
     cout << "node.addNeighbour:" << endl;
     Node *parent = new Node();
@@ -26,6 +34,10 @@ void testNodeAddNeighbour() {
     cout << endl;
 }
 
+/**
+ * @brief Tests that a node's neighbours can be correctly
+ *        retrieved by their insertion order.
+ */
 void testNodeGetNeighbour() {
     cout << "node.getNeighbour:" << endl;
     Node *parent = new Node();
@@ -40,6 +52,10 @@ void testNodeGetNeighbour() {
     cout << endl;
 }
 
+/**
+ * @brief Tests that removing a node's neighbour
+ *        correctly updates its degree.
+ */
 void testNodeRemoveNeighbour() {
     cout << "node.removeNeighbour:" << endl;
     Node *parent = new Node();
@@ -52,6 +68,10 @@ void testNodeRemoveNeighbour() {
     cout << endl;
 }
 
+/**
+ * @brief Tests that a node's degree is equal to
+ *        the sum of its neighbours.
+ */
 void testNodeDegree() {
     cout << "node.degree:" << endl;
     Node *parent = new Node();
@@ -61,9 +81,19 @@ void testNodeDegree() {
     cout << endl;
 }
 
-void testTreeGen(){
-    Tree t(6); // Random tree with 6 vertices;
-    cout << t;
+/**
+ * @brief Tests the identity of an edge when referenced
+ *        by any permutation of two nodes.
+ */
+void testEdgeIdentity() {
+    cout << "edge.identity:" << endl;
+    Node *a = new Node(1);
+    Node *b = new Node(2);
+
+    Edge *e1 = new Edge(a, b);
+    Edge *e2 = new Edge(b, a);
+
+    assertTrue(*e1 == *e2);
 }
 
 void testRemi2(){
@@ -76,23 +106,6 @@ void testRemi2(){
         Edge* e= g->getRandomEdge();
         cout << *e << endl;
     }
-}
-
-/**
- * @brief Tests the identity of an edge when referenced
- *        by any permutation of two nodes.
- */
-void testEdgeIdentity() {
-    Node *a = new Node(1);
-    Node *b = new Node(2);
-
-    Edge *e1 = new Edge(a, b);
-    Edge *e2 = new Edge(b, a);
-
-    if (*e1 == *e2)
-        cout << "Test successful" << endl;
-    else
-        cout << "Test failed" << endl;
 }
 
 void test3() {
