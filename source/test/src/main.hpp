@@ -20,6 +20,9 @@ void testNodeDegree();
 // Edge unit tests
 void testEdgeIdentity();
 
+// Tree unit tests
+void testTreeCover();
+
 
 void assertEquals(int result, int expected) {
     if (result == expected) {

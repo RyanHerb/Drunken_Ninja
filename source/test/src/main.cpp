@@ -18,6 +18,9 @@ int main(int argc, char *argv[]) {
     // Edge tests
     testEdgeIdentity();
 
+    // Tree tests
+    testTreeCover();
+
     cout << endl << "Finished executing tests" << endl;
 }
 
@@ -94,24 +97,35 @@ void testEdgeIdentity() {
     Edge *e2 = new Edge(b, a);
 
     assertTrue(*e1 == *e2);
+    cout << endl;
 }
 
-void testRemi2(){
-    Graph *g = new Graph(3);
-    g->addEdge(1,2);
-    g->addEdge(0,1);
-    g->addEdge(2,0);
+/**
+ * @brief Tests that Tree::getCover() returns
+ *        a minimal cover.
+ */
+void testTreeCover() {
+    cout << "tree.getCover:" << endl;
+#ifdef _WIN32
+    string input = "../data/tree1.txt";
+#else
+    string input = "../../data/tree1.txt";
+#endif // _WIN32
 
-    for (int i = 0; i < 10 ; i++){
-        Edge* e= g->getRandomEdge();
-        cout << *e << endl;
+    Graph *graph = GraphUtils::load(input);
+    if (graph) {
+        vector<Node*> nodes = ((Tree*)graph)->getCover();
+        assertEquals(nodes.size(), 2);
+        assertTrue(nodes.at(0)->getId() == 1);
+        assertTrue(nodes.at(1)->getId() == 4);
+        delete graph;
     }
 }
 
 void test3() {
     Graph *g = new Graph(3);
-    g->addEdge(1, 2);
     g->addEdge(0, 1);
+    g->addEdge(1, 2);
     g->addEdge(2, 0);
     cout << *g << endl;
     g->removeEdge(2, 0);
@@ -119,19 +133,3 @@ void test3() {
     g->removeEdge(2, 0);
     cout << *g << endl;
 }
-
-void test4() {
-    /*Graph *graph = GraphUtils::load(filename);
-    if (graph) {
-        cout << "Loaded: " << endl << *graph << endl;
-        vector<Node*> nodes = (graph)->getCoverFPT2(2);
-        cout << "Minimal cover: " << nodes << endl;
-        cout <<"size : " << nodes.size()<<endl;
-        delete graph;
-    }*/
-    Tree t(6); // Random tree with 6 vertices;
-    cout << t;
-    vector<Node*> nodes = t.getCover();
-    cout << "Minimal cover :" << nodes << endl;
-}
-
