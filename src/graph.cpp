@@ -38,6 +38,15 @@ Graph::Graph(int n, int p) : counter(0){
     }
 }
 
+Graph::~Graph(){
+    for (int i = 0; i < nodes.size(); ++i) {
+        delete nodes[i];
+    }
+    for (int i = 0; i < edges.size(); ++i) {
+        delete edges[i];
+    }
+}
+
 Node* Graph::addNode() {
     Node *n = new Node(counter);
     this->nodes.insert(make_pair(counter, n));

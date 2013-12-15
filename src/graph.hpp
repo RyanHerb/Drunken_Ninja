@@ -26,6 +26,8 @@ public:
     // with a propbality p for having an edge between two vertices
     Graph(int n, int p);
 
+    ~Graph();
+
     Node* addNode();
     Node* addNode(int id);
 
