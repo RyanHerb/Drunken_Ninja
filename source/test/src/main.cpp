@@ -7,12 +7,15 @@ using namespace std;
 //const string DEFAULT_INPUT = "../Drunken_Ninja/data/tree1.txt";
 
 int main(int argc, char *argv[]) {
-
     srand((unsigned)time(0));
-    cout << "Executing unit tests" << endl;
-    testTreeGene();
+    cout << "Executing unit tests" << endl << endl;
 
-    cout << "Finished executing tests" << endl;
+    testNodeAddNeighbour();
+    testNodeGetNeighbour();
+    testNodeRemoveNeighbour();
+    testNodeDegree();
+
+    cout << endl << "Finished executing tests" << endl;
 
     /*string filename = DEFAULT_INPUT;
 
@@ -26,27 +29,54 @@ int main(int argc, char *argv[]) {
     }*/
 }
 
-void assertEquals(int result, int expected) {
-    if (result != expected) {
-        cout << "FAILED :" << "\tUnexpected result: " << result
-             << ", the expected result was: " << expected << endl;
-    } else {
-        cout << "OK" << endl;
-    }
-}
-
-void testTreeGene(){
-    Tree t(6); // Random tree with 6 vertices;
-    cout << t;
-}
-
 void testNodeAddNeighbour() {
+    cout << "node.addNeighbour:" << endl;
+    Node *parent = new Node();
+    parent->addNeighbour(new Node());
+    parent->addNeighbour(new Node());
+    assertEquals(parent->getNeighbours().size(), 2);
+    cout << endl;
+}
+
+void testNodeGetNeighbour() {
+    cout << "node.getNeighbour:" << endl;
+    Node *parent = new Node();
+    Node *child1 = new Node();
+    Node *child2 = new Node();
+    parent->addNeighbour(child1);
+    parent->addNeighbour(child2);
+    assertTrue(parent->getNeighbour(0) == child1);
+    assertTrue(parent->getNeighbour(1) == child2);
+    assertTrue(parent->getNeighbour(2) == NULL);
+    assertTrue(parent->getNeighbour(-1) == NULL);
+    cout << endl;
+}
+
+void testNodeRemoveNeighbour() {
+    cout << "node.removeNeighbour:" << endl;
+    Node *parent = new Node();
+    Node *child1 = new Node();
+    Node *child2 = new Node();
+    parent->addNeighbour(child1);
+    parent->addNeighbour(child2);
+    parent->removeNeighbour(child1);
+    assertEquals(parent->degree(), 1);
+    cout << endl;
+}
+
+void testNodeDegree() {
+    cout << "node.degree:" << endl;
     Node *parent = new Node();
     parent->addNeighbour(new Node());
     parent->addNeighbour(new Node());
     assertEquals(parent->degree(), 2);
+    cout << endl;
 }
 
+void testTreeGen(){
+    Tree t(6); // Random tree with 6 vertices;
+    cout << t;
+}
 
 void testRemi2(){
     Graph *g = new Graph(3);
