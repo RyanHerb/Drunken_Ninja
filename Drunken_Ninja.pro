@@ -17,7 +17,8 @@ SOURCES += \
     src/smallcovergraph.cpp \
     src/graphutils.cpp \
     src/edge.cpp \
-    src/bipartitegraph.cpp
+    src/bipartitegraph.cpp \
+    src/minisatconverter.cpp
 
 HEADERS += \
     src/node.hpp \
@@ -26,4 +27,6 @@ HEADERS += \
     src/smallcovergraph.hpp \
     src/graphutils.hpp \
     src/edge.hpp \
-    src/bipartitegraph.hpp
+    src/bipartitegraph.hpp \
+    src/minisatconverter.hpp \
+    src/config.h
