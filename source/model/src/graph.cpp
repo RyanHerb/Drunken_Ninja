@@ -176,13 +176,16 @@ vector<Node*> Graph::getCoverGlouton() {
     }
 
     while(localGraph->nbEdges()>0){
+        while(nodesByDegree[nodesByDegree.size()-1].size() == 0){
+            nodesByDegree.pop_back();
+        }
         int node = nodesByDegree[nodesByDegree.size()-1].front();
         nodesByDegree[nodesByDegree.size()-1].pop_front();
-        if(nodesByDegree[nodesByDegree.size()-1].size() == 0)
+        while(nodesByDegree[nodesByDegree.size()-1].size() == 0){
             nodesByDegree.pop_back();
+        }
         cover.push_back(node);
-
-        for(Node *n : localGraph->getNodes()[node]->getNeighbours()){
+        for(Node *n : localGraph->getNode(node)->getNeighbours()){
             int id = n->getId();
             nodesByDegree[degrees[id]].remove(id);
             --degrees[id];
@@ -197,6 +200,9 @@ vector<Node*> Graph::getCoverGlouton() {
     return result;
 }
 
+Node * Graph::getNode(int id){
+    return nodes[id];
+}
 
 vector<Node*> Graph::getNodes() const {
     vector<Node*> dup;

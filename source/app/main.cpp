@@ -8,7 +8,7 @@
 
 using namespace std;
 
-const string DEFAULT_INPUT = "../../data/tree1.txt";
+const string DEFAULT_INPUT = "../../data/graph12.txt";
 
 int main(int argc, char *argv[]) {
 

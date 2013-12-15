@@ -30,7 +30,7 @@ public:
 
     Node* addNode();
     Node* addNode(int id);
-
+    Node* getNode(int id);
     void removeNode(Node *n);
     void removeNode(int id);
 
