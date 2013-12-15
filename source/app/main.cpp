@@ -4,6 +4,7 @@
 #include "../model/src/graph.hpp"
 #include "../model/src/tree.hpp"
 #include "../model/src/graphutils.hpp"
+#include "../model/src/smallcovergraph.hpp"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ int main(int argc, char *argv[]) {
     Graph *graph = GraphUtils::load(filename);
     if (graph) {
         cout << "Loaded: " << endl << *graph << endl;
-        vector<Node*> nodes = (graph)->getCoverFPT2(2);
+        vector<Node*> nodes = ((SmallCoverGraph*)graph)->getCover(2);
         cout << "Minimal cover: " << nodes << endl;
         cout <<"size : " << nodes.size()<<endl;
         delete graph;

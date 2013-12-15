@@ -12,6 +12,10 @@ SmallCoverGraph::SmallCoverGraph(int n, int p, int coverSize) {
     }
 }
 
+SmallCoverGraph::SmallCoverGraph(SmallCoverGraph *g):Graph(g) {
+
+}
+
 vector<int> getCoverFPT2Rec(Graph *localGraph,int K, vector<int>cover ){
     if(localGraph->nbEdges() > 0){
         if(localGraph->nbEdges() >= K*localGraph->nbNodes()){
