@@ -21,6 +21,10 @@ int main(int argc, char *argv[]) {
     cout << endl << "Finished executing tests" << endl;
 }
 
+/**
+ * @brief Tests that adding a neighbour to a node
+ *        correctly updates its neighbours collection.
+ */
 void testNodeAddNeighbour() {
     cout << "node.addNeighbour:" << endl;
     Node *parent = new Node();
@@ -30,6 +34,10 @@ void testNodeAddNeighbour() {
     cout << endl;
 }
 
+/**
+ * @brief Tests that a node's neighbours can be correctly
+ *        retrieved by their insertion order.
+ */
 void testNodeGetNeighbour() {
     cout << "node.getNeighbour:" << endl;
     Node *parent = new Node();
@@ -44,6 +52,10 @@ void testNodeGetNeighbour() {
     cout << endl;
 }
 
+/**
+ * @brief Tests that removing a node's neighbour
+ *        correctly updates its degree.
+ */
 void testNodeRemoveNeighbour() {
     cout << "node.removeNeighbour:" << endl;
     Node *parent = new Node();
@@ -56,6 +68,10 @@ void testNodeRemoveNeighbour() {
     cout << endl;
 }
 
+/**
+ * @brief Tests that a node's degree is equal to
+ *        the sum of its neighbours.
+ */
 void testNodeDegree() {
     cout << "node.degree:" << endl;
     Node *parent = new Node();
