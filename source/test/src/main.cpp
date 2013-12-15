@@ -9,10 +9,14 @@ int main(int argc, char *argv[]) {
     rlutil::setColor(7);
     cout << "Executing unit tests" << endl << endl;
 
+    // Node tests
     testNodeAddNeighbour();
     testNodeGetNeighbour();
     testNodeRemoveNeighbour();
     testNodeDegree();
+
+    // Edge tests
+    testEdgeIdentity();
 
     cout << endl << "Finished executing tests" << endl;
 }
@@ -61,9 +65,19 @@ void testNodeDegree() {
     cout << endl;
 }
 
-void testTreeGen(){
-    Tree t(6); // Random tree with 6 vertices;
-    cout << t;
+/**
+ * @brief Tests the identity of an edge when referenced
+ *        by any permutation of two nodes.
+ */
+void testEdgeIdentity() {
+    cout << "edge.identity:" << endl;
+    Node *a = new Node(1);
+    Node *b = new Node(2);
+
+    Edge *e1 = new Edge(a, b);
+    Edge *e2 = new Edge(b, a);
+
+    assertTrue(*e1 == *e2);
 }
 
 void testRemi2(){
@@ -76,23 +90,6 @@ void testRemi2(){
         Edge* e= g->getRandomEdge();
         cout << *e << endl;
     }
-}
-
-/**
- * @brief Tests the identity of an edge when referenced
- *        by any permutation of two nodes.
- */
-void testEdgeIdentity() {
-    Node *a = new Node(1);
-    Node *b = new Node(2);
-
-    Edge *e1 = new Edge(a, b);
-    Edge *e2 = new Edge(b, a);
-
-    if (*e1 == *e2)
-        cout << "Test successful" << endl;
-    else
-        cout << "Test failed" << endl;
 }
 
 void test3() {
