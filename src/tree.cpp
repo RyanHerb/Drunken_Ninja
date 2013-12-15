@@ -2,13 +2,48 @@
 
 // Generates a random tree with n vertices;
 Tree::Tree(int n):Graph(1) {
-    root = (*getNodes().begin());
-    for (int i = 1; i < n; i++) {
+    for(int i=0 ; i<n ; i++){
         addNode();
-        int neighboor = rand()%i;
-        addEdge(i, neighboor);
+    }
+
+    if (n > 2){
+        int degrees[n];
+        fill_n(degrees, n, 0);
+        list<int> randomWord;
+
+        for (int i=0 ; i<n-2 ; i++) {
+            int node = rand()%n;
+            randomWord.push_back(node);
+            ++degrees[node];
+        }
+
+        list<int>leafs;
+        for (int i=0 ; i<n ; i++) {
+            if (degrees[i]==0) {
+                leafs.push_back(i);
+            }
+        }
+        while(!leafs.empty()){
+            int father = randomWord.front();
+            randomWord.pop_front();
+            int son = leafs.front();
+            leafs.pop_front();
+            addEdge(father, son);
+
+            if(--degrees[father] == 0){
+                list<int>::iterator it = leafs.begin();
+                while(it != leafs.end() && *it < father) {
+                    ++it;
+                }
+                leafs.insert(it,father);
+            }
+        }
+    }
+    else if (n==2){
+        addEdge(0,1);
     }
 }
+
 
 Tree::Tree(Tree * t):Graph(t) {
 
