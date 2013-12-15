@@ -7,10 +7,6 @@
 #include "tree.hpp"
 #include "graphutils.hpp"
 
-
-void assertEquals(int result, int expected);
-void assertTrue(bool result);
-
 // Node unit tests
 void testNodeAddNeighbour();
 void testNodeGetNeighbour();
@@ -19,6 +15,11 @@ void testNodeDegree();
 
 // Edge unit tests
 void testEdgeIdentity();
+
+// Graph unit tests
+void testGraphAddEdge();
+void testGraphHasEdge();
+void testGraphRemoveEdge();
 
 // Tree unit tests
 void testTreeCover();

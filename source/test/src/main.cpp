@@ -18,11 +18,20 @@ int main(int argc, char *argv[]) {
     // Edge tests
     testEdgeIdentity();
 
+    // Graph tests
+    testGraphAddEdge();
+    testGraphHasEdge();
+    testGraphRemoveEdge();
+
     // Tree tests
     testTreeCover();
 
     cout << endl << "Finished executing tests" << endl;
 }
+
+/****************************************/
+/************** Node tests **************/
+/****************************************/
 
 /**
  * @brief Tests that adding a neighbour to a node
@@ -84,9 +93,13 @@ void testNodeDegree() {
     cout << endl;
 }
 
+/****************************************/
+/************** Edge tests **************/
+/****************************************/
+
 /**
  * @brief Tests the identity of an edge when referenced
- *        by any permutation of two nodes.
+ *        by both permutations of its underlying nodes.
  */
 void testEdgeIdentity() {
     cout << "edge.identity:" << endl;
@@ -99,6 +112,54 @@ void testEdgeIdentity() {
     assertTrue(*e1 == *e2);
     cout << endl;
 }
+
+/****************************************/
+/************* Graph tests **************/
+/****************************************/
+
+/**
+ * @brief Tests that adding edges between a graph's nodes
+ *        correctly updates its edges collection.
+ */
+void testGraphAddEdge() {
+    cout << "graph.addEdge:" << endl;
+    Graph *g = new Graph(3);
+    g->addEdge(0, 1);
+    g->addEdge(1, 2);
+    g->addEdge(2, 0);
+    assertEquals(g->getEdges().size(), 3);
+    cout << endl;
+}
+
+/**
+ * @brief Tests that Graph::hasEdge(int,int) correctly
+ *        indicates whether an edge exists between two nodes.
+ */
+void testGraphHasEdge() {
+    cout << "graph.hasEdge:" << endl;
+    Graph *g = new Graph(2);
+    g->addEdge(0, 1);
+    assertTrue(g->hasEdge(0, 1));
+    assertTrue(!g->hasEdge(0, 2));
+    cout << endl;
+}
+
+/**
+ * @brief Tests that removing an edge from a graph
+ *        correctly updates its state.
+ */
+void testGraphRemoveEdge() {
+    cout << "graph.removeEdge:" << endl;
+    Graph *g = new Graph(2);
+    g->addEdge(0, 1);
+    g->removeEdge(0, 1);
+    assertTrue(!g->hasEdge(0, 1));
+    cout << endl;
+}
+
+/****************************************/
+/************** Tree tests **************/
+/****************************************/
 
 /**
  * @brief Tests that Tree::getCover() returns
@@ -121,16 +182,4 @@ void testTreeCover() {
         delete graph;
     }
     cout << endl;
-}
-
-void test3() {
-    Graph *g = new Graph(3);
-    g->addEdge(0, 1);
-    g->addEdge(1, 2);
-    g->addEdge(2, 0);
-    cout << *g << endl;
-    g->removeEdge(2, 0);
-    cout << *g << endl;
-    g->removeEdge(2, 0);
-    cout << *g << endl;
 }
