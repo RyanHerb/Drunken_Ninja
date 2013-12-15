@@ -93,7 +93,6 @@ void test4() {
     cout << "Minimal cover :" << nodes << endl;
 }
 
-
 int main(int argc, char *argv[]) {
 
     srand((unsigned)time(0));
@@ -119,3 +118,4 @@ if (graph) {
 }*/
     cout << "end of tests" << endl;
 }
+
