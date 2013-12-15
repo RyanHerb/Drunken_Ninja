@@ -4,10 +4,10 @@
 #include "graph.hpp"
 #include "tree.hpp"
 #include "graphutils.hpp"
+#include "minisatconverter.hpp"
+#include "config.h"
 
 using namespace std;
-
-const string DEFAULT_INPUT = "../Drunken_Ninja/data/tree1.txt";
 
 int main(int argc, char *argv[]) {
 
@@ -32,6 +32,24 @@ int main(int argc, char *argv[]) {
         cout << "Minimal cover: " << nodes << endl;
         cout <<"size : " << nodes.size()<<endl;
         delete graph;
+    }
+
+    Graph *g = GraphUtils::load(filename);
+    if(graph) {
+        cout << "Graph loaded:" << endl;
+        cout << "Applying ministat convertion:" << endl;
+        coverToMinisat(g, "g.cnf");
+        string cmd = "minisat " + string(DEFAULT_DIRECTORY);
+        cmd += "g.cnf "; cmd += string(DEFAULT_DIRECTORY); cmd += "g_res";
+        system(cmd.c_str());
+        vector<Node*> cover = minisatToCover("g_res");
+
+        for(Node* n : cover) {
+            cout << n->getId() << " ";
+            cout << endl;
+        }
+        delete g;
+
     }
 }
 
