@@ -2,6 +2,7 @@
 #include "node.hpp"
 #include <algorithm>
 
+
 using namespace std;
 
 Graph::Graph(){}
@@ -166,7 +167,11 @@ vector<Node*> Graph::getCoverGlouton() {
     vector< list<int> > nodesByDegree; //pour trier les noeuds en fonction de leur degré
     for(int i=0 ; i<nbNodes() ; i++) {
         int degree = nodes[i]->degree();
-        degrees[i] = degree;
+        degrees.push_back(degree);
+        while (nodesByDegree.size()<=degree){
+            list<int> init;
+            nodesByDegree.push_back(init);
+        }
         nodesByDegree[degree].push_back(i);
     }
 
@@ -179,16 +184,12 @@ vector<Node*> Graph::getCoverGlouton() {
 
         for(Node *n : localGraph->getNodes()[node]->getNeighbours()){
             int id = n->getId();
-            list<int>::iterator it = nodesByDegree[degrees[id]].begin();
-            while(it != nodesByDegree[degrees[id]].end() && *it != id)
-                it++;
-            nodesByDegree[degrees[id]].erase(it);
+            nodesByDegree[degrees[id]].remove(id);
             --degrees[id];
             nodesByDegree[degrees[id]].push_front(id);
         }
         localGraph->removeNode(node);
     }
-
     delete localGraph;
     vector<Node*> result;
     for(int i=0 ; i<cover.size() ; i++)
