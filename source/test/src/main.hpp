@@ -9,6 +9,6 @@
 
 void assertEquals(int result, int expected);
 void testNodeAddNeighbour();
-
+void testTreeGene();
 
 #endif // MAIN_H

@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
 
     srand((unsigned)time(0));
     cout << "Executing unit tests" << endl;
-    testNodeAddNeighbour();
+    testTreeGene();
 
     cout << "Finished executing tests" << endl;
 
@@ -33,6 +33,11 @@ void assertEquals(int result, int expected) {
     } else {
         cout << "OK" << endl;
     }
+}
+
+void testTreeGene(){
+    Tree t(6); // Random tree with 6 vertices;
+    cout << t;
 }
 
 void testNodeAddNeighbour() {

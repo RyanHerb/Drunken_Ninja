@@ -7,8 +7,7 @@ Tree::Tree(int n):Graph(1) {
     }
 
     if (n > 2){
-        int degrees[n];
-        fill_n(degrees, n, 0);
+        vector<int> degrees(n,0);
         list<int> randomWord;
         for (int i=0 ; i<n-2 ; i++) {
             int node = rand()%n;
