@@ -74,16 +74,18 @@ bool Graph::hasEdge(int a, int b) {
     Node *n1 = this->nodes[a];
     Node *n2 = this->nodes[b];
 
-    Node *from = n1;
-    Node *to = n2;
-    if (n1->getNeighbours().size() > n2->getNeighbours().size()) {
-        from = n2;
-        to = n1;
-    }
+    if (n1 && n2) {
+        Node *from = n1;
+        Node *to = n2;
+        if (n1->getNeighbours().size() > n2->getNeighbours().size()) {
+            from = n2;
+            to = n1;
+        }
 
-    for (Node *neighbour : from->getNeighbours()) {
-        if (neighbour->getId() == to->getId())
-            return true;
+        for (Node *neighbour : from->getNeighbours()) {
+            if (neighbour->getId() == to->getId())
+                return true;
+        }
     }
     return false;
 }
@@ -91,8 +93,8 @@ bool Graph::hasEdge(int a, int b) {
 void Graph::removeEdge(int a, int b) {
     Node *n1 = this->nodes[a];
     Node *n2 = this->nodes[b];
-    Edge *e = new Edge(n1,n2);
-    unordered_map<int,Edge*>::iterator it= edges.find(e->hash());
+    Edge *e = new Edge(n1, n2);
+    unordered_map<int,Edge*>::iterator it = edges.find(e->hash());
     if (it != edges.cend()) {
         n1->removeNeighbour(this->nodes[b]);
         n2->removeNeighbour(this->nodes[a]);
@@ -108,14 +110,14 @@ void Graph::removeEdges(int a) {
 }
 
 Node* Graph::getRandomNode() {
-    int select = rand()%nodes.size();
+    int select = rand() % nodes.size();
     map<int,Node*>::iterator it = nodes.begin();
     advance(it, select);
     return it->second;
 }
 
 Edge* Graph::getRandomEdge() {
-    int select = rand()%nbEdges();
+    int select = rand() % nbEdges();
     unordered_map<int,Edge*>::iterator it = edges.begin();
     advance(it, select);
     return it->second;
@@ -158,13 +160,12 @@ Node* Graph::getHigherDegreeNode() {
     return selectedNode;
 }
 
-
 vector<Node*> Graph::getCoverGlouton() {
-    Graph *localGraph= new Graph(this);
+    Graph *localGraph = new Graph(this);
     vector<int> cover;
     vector<int> degrees; //pour un acces direct au degré de chaque noeud;
     vector< list<int> > nodesByDegree; //pour trier les noeuds en fonction de leur degré
-    for(int i=0 ; i<nbNodes() ; i++) {
+    for(int i = 0; i < nbNodes(); i++) {
         int degree = nodes[i]->degree();
         degrees.push_back(degree);
         while (nodesByDegree.size()<=degree){
@@ -174,17 +175,17 @@ vector<Node*> Graph::getCoverGlouton() {
         nodesByDegree[degree].push_back(i);
     }
 
-    while(localGraph->nbEdges()>0){
-        while(nodesByDegree[nodesByDegree.size()-1].size() == 0){
+    while (localGraph->nbEdges() > 0) {
+        while(nodesByDegree[nodesByDegree.size() - 1].size() == 0) {
             nodesByDegree.pop_back();
         }
-        int node = nodesByDegree[nodesByDegree.size()-1].front();
-        nodesByDegree[nodesByDegree.size()-1].pop_front();
-        while(nodesByDegree[nodesByDegree.size()-1].size() == 0){
+        int node = nodesByDegree[nodesByDegree.size() - 1].front();
+        nodesByDegree[nodesByDegree.size() - 1].pop_front();
+        while (nodesByDegree[nodesByDegree.size() - 1].size() == 0) {
             nodesByDegree.pop_back();
         }
         cover.push_back(node);
-        for(Node *n : localGraph->getNode(node)->getNeighbours()){
+        for (Node *n : localGraph->getNode(node)->getNeighbours()) {
             int id = n->getId();
             nodesByDegree[degrees[id]].remove(id);
             --degrees[id];
@@ -194,12 +195,12 @@ vector<Node*> Graph::getCoverGlouton() {
     }
     delete localGraph;
     vector<Node*> result;
-    for(int i=0 ; i<cover.size() ; i++)
+    for(int i = 0; i < cover.size(); i++)
         result.push_back(nodes[cover[i]]);
     return result;
 }
 
-Node * Graph::getNode(int id){
+Node * Graph::getNode(int id) {
     return nodes[id];
 }
 
@@ -257,22 +258,17 @@ int Graph::Kernelisation(int K, vector<int> *cover) {
     return Kprime;
 }
 
-
-
-
-
-vector<Node*> Graph::getKCover(int K){
+vector<Node*> Graph::getKCover(int k) {
     Graph *localGraph = new Graph(this);
     vector<int> cover;
     vector<Node*>result;
 
-    int Kprime = localGraph->Kernelisation(K, &cover);
-    if(localGraph->nbEdges() > Kprime*localGraph->nbNodes()){
-        cout << "nbEdges : " << localGraph->nbEdges() << endl << "Kprime*K : " << Kprime*K <<endl;
+    int Kprime = localGraph->Kernelisation(k, &cover);
+    if (localGraph->nbEdges() > Kprime*localGraph->nbNodes()){
+        cout << "nbEdges : " << localGraph->nbEdges() << endl << "Kprime*K : " << Kprime*k << endl;
         delete localGraph;
         return result;
-    }
-    else{
+    } else {
         cover = getKCoverRec(localGraph, Kprime, cover);
         vector<int>::const_iterator currentNode (cover.begin()), lend(cover.end());
         for (; currentNode != lend; ++currentNode) {
@@ -282,14 +278,13 @@ vector<Node*> Graph::getKCover(int K){
     }
 }
 
-int Graph::nbEdges(){
+int Graph::nbEdges() {
     return edges.size();
 }
 
-int Graph::nbNodes(){
+int Graph::nbNodes() {
     return nodes.size();
 }
-
 
 vector<Edge*> Graph::getEdges() const {
     unordered_map<int, Edge*>::const_iterator currentEdge (edges.begin()), lend(edges.end());
