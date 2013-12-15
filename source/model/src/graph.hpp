@@ -60,7 +60,7 @@ public:
     int nbEdges();
     int nbNodes();
 
-    int Kernelisation(int K, vector<int> * cover);
+    int kernelize(int K, vector<int> * cover);
     Node* getHighestDegreeNode();
 };
 

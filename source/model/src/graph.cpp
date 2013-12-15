@@ -199,7 +199,7 @@ vector<Node*> Graph::getCoverGlouton() {
     return result;
 }
 
-Node * Graph::getNode(int id) {
+Node* Graph::getNode(int id) {
     return nodes[id];
 }
 
@@ -244,13 +244,13 @@ vector<int> getKCoverRec(Graph *localGraph, int K, vector<int>cover) {
     }
 }
 
-int Graph::Kernelisation(int K, vector<int> *cover) {
-    cout << "Kernelisation(" << K << ") : K' = ";
-    int Kprime = K;
-    Node * higherDegreeNode;
-    while((Kprime > 0) && ((higherDegreeNode = getHighestDegreeNode())->degree() > Kprime)){
-        cover->push_back(higherDegreeNode->getId());
-        this->removeNode(higherDegreeNode->getId());
+int Graph::kernelize(int k, vector<int> *cover) {
+    cout << "kernelize(" << k << ") : k' = ";
+    int Kprime = k;
+    Node *highestDegreeNode;
+    while ((Kprime > 0) && ((highestDegreeNode = getHighestDegreeNode())->degree() > Kprime)) {
+        cover->push_back(highestDegreeNode->getId());
+        this->removeNode(highestDegreeNode->getId());
         --Kprime;
     }
     cout << Kprime << endl;
@@ -262,16 +262,15 @@ vector<Node*> Graph::getKCover(int k) {
     vector<int> cover;
     vector<Node*>result;
 
-    int Kprime = localGraph->Kernelisation(k, &cover);
+    int Kprime = localGraph->kernelize(k, &cover);
     if (localGraph->nbEdges() > Kprime*localGraph->nbNodes()){
         cout << "nbEdges : " << localGraph->nbEdges() << endl << "Kprime*K : " << Kprime*k << endl;
         delete localGraph;
         return result;
     } else {
         cover = getKCoverRec(localGraph, Kprime, cover);
-        vector<int>::const_iterator currentNode (cover.begin()), lend(cover.end());
-        for (; currentNode != lend; ++currentNode) {
-            result.push_back(nodes[*currentNode]);
+        for (int nodeId : cover) {
+            result.push_back(nodes[nodeId]);
         }
         return result;
     }
@@ -286,10 +285,9 @@ int Graph::nbNodes() {
 }
 
 vector<Edge*> Graph::getEdges() const {
-    unordered_map<int, Edge*>::const_iterator currentEdge (edges.begin()), lend(edges.end());
     vector<Edge*> vec;
-    for (; currentEdge != lend; ++currentEdge) {
-        vec.push_back((*currentEdge).second);
+    for (pair<int,Edge*> pair : edges) {
+        vec.push_back(pair.second);
     }
     return vec;
 }
