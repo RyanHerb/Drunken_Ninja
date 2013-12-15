@@ -2,7 +2,7 @@
 
 // Generates a random tree with n vertices;
 Tree::Tree(int n):Graph(1) {
-    for(int i=0 ; i<n ; i++){
+    for(int i=1 ; i<n ; i++){
         addNode();
     }
 
@@ -10,20 +10,19 @@ Tree::Tree(int n):Graph(1) {
         int degrees[n];
         fill_n(degrees, n, 0);
         list<int> randomWord;
-
         for (int i=0 ; i<n-2 ; i++) {
             int node = rand()%n;
             randomWord.push_back(node);
             ++degrees[node];
         }
-
+        cout <<endl;
         list<int>leafs;
         for (int i=0 ; i<n ; i++) {
             if (degrees[i]==0) {
                 leafs.push_back(i);
             }
         }
-        while(!leafs.empty()){
+        while(!randomWord.empty()){
             int father = randomWord.front();
             randomWord.pop_front();
             int son = leafs.front();
@@ -37,6 +36,12 @@ Tree::Tree(int n):Graph(1) {
                 }
                 leafs.insert(it,father);
             }
+        }
+        if(leafs.size() == 2){
+            int father = leafs.front();
+            leafs.pop_front();
+            int son = leafs.front();
+            addEdge(father, son);
         }
     }
     else if (n==2){

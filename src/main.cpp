@@ -12,6 +12,7 @@ const string DEFAULT_INPUT = "../Drunken_Ninja/data/tree1.txt";
 
 
 void testTreeGeneration(){
+
     Tree t(6);
     cout << t << endl;
 }
