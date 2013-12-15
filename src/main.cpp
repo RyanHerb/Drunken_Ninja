@@ -111,3 +111,7 @@ void test4() {
     cout << "Minimal cover :" << nodes << endl;
 }
 
+void testBidon(){
+
+}
+
