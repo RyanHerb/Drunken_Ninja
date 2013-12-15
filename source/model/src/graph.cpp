@@ -132,7 +132,6 @@ void Graph::removeNode(Node *n) {
     removeNode(n->getId());
 }
 
-
 vector<Node*> Graph::getCover() {
     Graph *localGraph(this);
     vector<Node*> cover;
@@ -147,13 +146,13 @@ vector<Node*> Graph::getCover() {
     return cover;
 }
 
-Node* Graph::getHigherDegreeNode() {
+Node* Graph::getHighestDegreeNode() {
     Node *selectedNode;
-    int higherDegree = -1;
+    int highestDegree = -1;
     for (pair<int,Node*> pair : nodes) {
         Node *node = pair.second;
-        if (higherDegree < node->degree()) {
-            higherDegree = node->degree();
+        if (highestDegree < node->degree()) {
+            highestDegree = node->degree();
             selectedNode = node;
         }
     }
@@ -218,10 +217,10 @@ vector<int> getKCoverRec(Graph *localGraph, int K, vector<int>cover) {
             delete localGraph;
             cover.clear();
             return cover;
-        } else{
+        } else {
             Edge *e = localGraph->getRandomEdge();
-            Graph* localGraph1 = new Graph(localGraph);
-            Graph* localGraph2 = new Graph(localGraph);
+            Graph *localGraph1 = new Graph(localGraph);
+            Graph *localGraph2 = new Graph(localGraph);
             int node1 = e->first()->getId();
             int node2 = e->second()->getId();
             delete localGraph;
@@ -249,7 +248,7 @@ int Graph::Kernelisation(int K, vector<int> *cover) {
     cout << "Kernelisation(" << K << ") : K' = ";
     int Kprime = K;
     Node * higherDegreeNode;
-    while((Kprime > 0) && ((higherDegreeNode = getHigherDegreeNode())->degree() > Kprime)){
+    while((Kprime > 0) && ((higherDegreeNode = getHighestDegreeNode())->degree() > Kprime)){
         cover->push_back(higherDegreeNode->getId());
         this->removeNode(higherDegreeNode->getId());
         --Kprime;

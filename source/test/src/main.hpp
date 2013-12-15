@@ -20,6 +20,7 @@ void testEdgeIdentity();
 void testGraphAddEdge();
 void testGraphHasEdge();
 void testGraphRemoveEdge();
+void testGraphGetHighestDegreeNode();
 
 // Tree unit tests
 void testTreeCover();

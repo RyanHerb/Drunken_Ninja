@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
     testGraphAddEdge();
     testGraphHasEdge();
     testGraphRemoveEdge();
+    testGraphGetHighestDegreeNode();
 
     // Tree tests
     testTreeCover();
@@ -154,6 +155,23 @@ void testGraphRemoveEdge() {
     g->addEdge(0, 1);
     g->removeEdge(0, 1);
     assertTrue(!g->hasEdge(0, 1));
+    cout << endl;
+}
+
+/**
+ * @brief Tests that Graph::getHighestDegreeNode() returns
+ *        the node with the highest degree in the calling graph.
+ */
+void testGraphGetHighestDegreeNode() {
+    cout << "graph.getHighestDegreeNode:" << endl;
+    Graph *g = new Graph(4);
+    g->addEdge(0, 1);
+    g->addEdge(1, 2);
+    g->addEdge(2, 0);
+    g->addEdge(0, 3);
+    Node *node = g->getHighestDegreeNode();
+    assertEquals(node->getId(), 0);
+    assertEquals(node->degree(), 3);
     cout << endl;
 }
 

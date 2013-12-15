@@ -61,7 +61,7 @@ public:
     int nbNodes();
 
     int Kernelisation(int K, vector<int> * cover);
-    Node* getHigherDegreeNode();
+    Node* getHighestDegreeNode();
 };
 
 // To print a Graph

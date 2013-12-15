@@ -24,7 +24,7 @@ vector<int> getCoverFPT2Rec(Graph *localGraph,int K, vector<int>cover ){
             return cover;
         }
         else{
-            Node *node = localGraph->getHigherDegreeNode();
+            Node *node = localGraph->getHighestDegreeNode();
             Graph* localGraph1 = new Graph(localGraph);
             Graph* localGraph2 = new Graph(localGraph);
             vector<int> neighboursId;
