@@ -9,30 +9,11 @@ using namespace std;
 
 const string DEFAULT_INPUT = "../Drunken_Ninja/data/tree1.txt";
 
-int main(int argc, char *argv[]) {
 
 
-    srand((unsigned)time(0));
-
-    string filename = DEFAULT_INPUT;
-    if (argc > 1) {
-        if (string (argv[1]).compare("-h") == 0) {
-            cout << "Usage: " << argv[0] << " [filename]" << endl;
-            cout << "use -h for help" << endl;
-            return 0;
-        } else {
-            filename = argv[1];
-        }
-    }
-
-    Graph *graph = GraphUtils::load(filename);
-    if (graph) {
-        cout << "Loaded: " << endl << *graph << endl;
-        vector<Node*> nodes = (graph)->getCoverFPT2(2);
-        cout << "Minimal cover: " << nodes << endl;
-        cout <<"size : " << nodes.size()<<endl;
-        delete graph;
-    }
+void testTreeGeneration(){
+    Tree t(6);
+    cout << t << endl;
 }
 
 void testRemi1(){
@@ -106,12 +87,34 @@ void test3() {
 void test4() {
     srand((unsigned)time(0));
     Tree t(6); // Random tree with 6 vertices;
-    cout << t;
+    cout << t << endl;
     vector<Node*> nodes = t.getCover();
     cout << "Minimal cover :" << nodes << endl;
 }
 
-void testBidon(){
+int main(int argc, char *argv[]) {
 
+    srand((unsigned)time(0));
+    testTreeGeneration();
+    /* string filename = DEFAULT_INPUT;
+if (argc > 1) {
+    if (string (argv[1]).compare("-h") == 0) {
+        cout << "Usage: " << argv[0] << " [filename]" << endl;
+        cout << "use -h for help" << endl;
+        return 0;
+    } else {
+        filename = argv[1];
+    }
+}
+
+Graph *graph = GraphUtils::load(filename);
+if (graph) {
+    cout << "Loaded: " << endl << *graph << endl;
+    vector<Node*> nodes = (graph)->getCoverFPT2(2);
+    cout << "Minimal cover: " << nodes << endl;
+    cout <<"size : " << nodes.size()<<endl;
+    delete graph;
+}*/
+    cout << "end of tests" << endl;
 }
 
