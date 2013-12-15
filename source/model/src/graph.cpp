@@ -160,14 +160,40 @@ Node* Graph::getHigherDegreeNode(){
 
 
 vector<Node*> Graph::getCoverGlouton() {
-    Graph *localGraph(this);
-    vector<Node*> cover;
-    while (localGraph->edges.size() > 0) {
-        Node *current = localGraph->getHigherDegreeNode();
-        cover.push_back(current);
-        localGraph->removeNode(current);
+    Graph *localGraph= new Graph(this);
+    vector<int> cover;
+    vector<int> degrees; //pour un acces direct au degré de chaque noeud;
+    vector< list<int> > nodesByDegree; //pour trier les noeuds en fonction de leur degré
+    for(int i=0 ; i<nbNodes() ; i++) {
+        int degree = nodes[i]->degree();
+        degrees[i] = degree;
+        nodesByDegree[degree].push_back(i);
     }
-    return cover;
+
+    while(localGraph->nbEdges()>0){
+        int node = nodesByDegree[nodesByDegree.size()-1].front();
+        nodesByDegree[nodesByDegree.size()-1].pop_front();
+        if(nodesByDegree[nodesByDegree.size()-1].size() == 0)
+            nodesByDegree.pop_back();
+        cover.push_back(node);
+
+        for(Node *n : localGraph->getNodes()[node]->getNeighbours()){
+            int id = n->getId();
+            list<int>::iterator it = nodesByDegree[degrees[id]].begin();
+            while(it != nodesByDegree[degrees[id]].end() && *it != id)
+                it++;
+            nodesByDegree[degrees[id]].erase(it);
+            --degrees[id];
+            nodesByDegree[degrees[id]].push_front(id);
+        }
+        localGraph->removeNode(node);
+    }
+
+    delete localGraph;
+    vector<Node*> result;
+    for(int i=0 ; i<cover.size() ; i++)
+        result.push_back(nodes[cover[i]]);
+    return result;
 }
 
 
