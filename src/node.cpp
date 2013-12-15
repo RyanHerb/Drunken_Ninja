@@ -4,9 +4,9 @@
 
 Node::Node() {}
 
-Node::Node(int id): id(id), neighbors(vector<Node*>()){}
+Node::Node(int id): id(id), neighbours(vector<Node*>()){}
 
-Node::Node(int id, vector<Node*> neighbours) : id(id), neighbors(neighbours){}
+Node::Node(int id, vector<Node*> neighbours) : id(id), neighbours(neighbours){}
 
 
 int Node::getId() const {
@@ -14,26 +14,26 @@ int Node::getId() const {
 }
 
 vector<Node*> Node::getNeighbours() const {
-    return neighbors;
+    return neighbours;
 }
 
 Node* Node::getNeighbour(int n) {
-    if (n < neighbors.size()) {
-        return neighbors.at(n);
+    if (n < neighbours.size()) {
+        return neighbours.at(n);
     }
     return NULL;
 }
 
 void Node::addNeighbour(Node *n) {
-    neighbors.push_back(n);
+    neighbours.push_back(n);
 }
 
 void Node::removeNeighbour(Node *neighbor) {
-    neighbors.erase(std::remove(neighbors.begin(), neighbors.end(), neighbor), neighbors.end());
+    neighbours.erase(std::remove(neighbours.begin(), neighbours.end(), neighbor), neighbours.end());
 }
 
 int Node::degree() const {
-    return neighbors.size();
+    return neighbours.size();
 }
 
 /*bool Node::equals(Node n) {
