@@ -4,10 +4,9 @@
 
 using namespace std;
 
-//const string DEFAULT_INPUT = "../Drunken_Ninja/data/tree1.txt";
-
 int main(int argc, char *argv[]) {
     srand((unsigned)time(0));
+    rlutil::setColor(7);
     cout << "Executing unit tests" << endl << endl;
 
     testNodeAddNeighbour();
@@ -16,17 +15,6 @@ int main(int argc, char *argv[]) {
     testNodeDegree();
 
     cout << endl << "Finished executing tests" << endl;
-
-    /*string filename = DEFAULT_INPUT;
-
-    Graph *graph = GraphUtils::load(filename);
-    if (graph) {
-        cout << "Loaded: " << endl << *graph << endl;
-        vector<Node*> nodes = (graph)->getCoverFPT2(2);
-        cout << "Minimal cover: " << nodes << endl;
-        cout <<"size : " << nodes.size()<<endl;
-        delete graph;
-    }*/
 }
 
 void testNodeAddNeighbour() {
@@ -60,7 +48,7 @@ void testNodeRemoveNeighbour() {
     parent->addNeighbour(child1);
     parent->addNeighbour(child2);
     parent->removeNeighbour(child1);
-    assertEquals(parent->degree(), 1);
+    assertEquals(parent->degree(), 10);
     cout << endl;
 }
 
@@ -120,6 +108,14 @@ void test3() {
 }
 
 void test4() {
+    /*Graph *graph = GraphUtils::load(filename);
+    if (graph) {
+        cout << "Loaded: " << endl << *graph << endl;
+        vector<Node*> nodes = (graph)->getCoverFPT2(2);
+        cout << "Minimal cover: " << nodes << endl;
+        cout <<"size : " << nodes.size()<<endl;
+        delete graph;
+    }*/
     Tree t(6); // Random tree with 6 vertices;
     cout << t;
     vector<Node*> nodes = t.getCover();

@@ -10,4 +10,4 @@ debug:DESTDIR = debug
 include(../model/model.pri)
 INCLUDEPATH += src
 SOURCES += src/main.cpp
-HEADERS += src/main.hpp
+HEADERS += src/main.hpp src/rlutil.h
