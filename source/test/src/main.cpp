@@ -48,7 +48,7 @@ void testNodeRemoveNeighbour() {
     parent->addNeighbour(child1);
     parent->addNeighbour(child2);
     parent->removeNeighbour(child1);
-    assertEquals(parent->degree(), 10);
+    assertEquals(parent->degree(), 1);
     cout << endl;
 }
 
