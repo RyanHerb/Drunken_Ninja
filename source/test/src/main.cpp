@@ -120,6 +120,7 @@ void testTreeCover() {
         assertTrue(nodes.at(1)->getId() == 4);
         delete graph;
     }
+    cout << endl;
 }
 
 void test3() {
