@@ -2,6 +2,8 @@
 
 Tree::Tree(){}
 
+Tree::Tree(IGraph *g): Graph(g){}
+
 // Generates a random tree with n vertices
 Tree::Tree(int n):Graph(1) {
     for(int i=1 ; i<n ; i++){
@@ -47,10 +49,6 @@ Tree::Tree(int n):Graph(1) {
     else if (n==2){
         addEdge(0,1);
     }
-}
-
-Tree::Tree(IGraph *g): Graph(g){
-
 }
 
 vector<Node*> Tree::getLeaves() {
