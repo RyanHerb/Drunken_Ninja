@@ -343,7 +343,7 @@ vector<int> Graph::getClique(int size) {
 vector<int> Graph::getIsomorphicSubgraph(Graph subgraph) {
     ofstream myFile;
     //stringstream total, injective;
-    myFile.open(DEFAULT_DIRECTORY + "g.cnf");
+    myFile.open(DEFAULT_INPUT_DIRECTORY + "g.cnf");
     if(myFile.is_open()) {
         for(Node* k : subgraph.getNodes()) {
             for(Node* i : this->getNodes()) {
@@ -363,7 +363,7 @@ vector<int> Graph::getIsomorphicSubgraph(Graph subgraph) {
 
 vector<Node*> Graph::minisatToCover(string inputFile) {
     ifstream input;
-    input.open(DEFAULT_DIRECTORY + inputFile);
+    input.open(DEFAULT_INPUT_DIRECTORY + inputFile);
     vector<Node*> nodes;
 
     if(input.is_open()) {

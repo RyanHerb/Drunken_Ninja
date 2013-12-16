@@ -30,12 +30,6 @@ int main(int argc, char *argv[]) {
     // Tree tests
     testTreeCover();
 
-    IGraph *g = new Graph(2);
-    cout << "Graph type: " << g->getType() << endl;
-
-    IGraph *t = new Tree(3);
-    cout << "Tree type: " << t->getType() << endl;
-
     cout << endl << "Finished executing tests" << endl;
 }
 
@@ -197,6 +191,7 @@ void testBipartiteGraphInitialisePartitions() {
     bg->initialisePartitions();
     assertEquals(bg->getLeftPartition()[0]->getId(), 0);
     assertEquals(bg->getRightPartition().size(), 3);
+    cout << endl;
 }
 
 /****************************************/
@@ -217,11 +212,8 @@ void testTreeCover() {
 
     Graph *graph = GraphUtils::load(input);
     if (graph) {
-        // FIXME
         Tree *t = new Tree(graph);
-        cout << "Type: " << t->getType() << endl;
-        cout << "Leaves: " << t->getLeaves() << endl;
-        vector<Node*> nodes = ((Tree*)graph)->getCover();
+        vector<Node*> nodes = t->getCover();
         assertEquals(nodes.size(), 2);
         assertTrue(nodes.at(0)->getId() == 1);
         assertTrue(nodes.at(1)->getId() == 4);

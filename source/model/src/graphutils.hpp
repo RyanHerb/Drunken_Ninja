@@ -10,10 +10,10 @@ class GraphUtils {
 
 public:
     static Graph* load(string filename);
-    static void write(Graph *graph);
+    static void write(IGraph *graph, string type);
 
 private:
-    static string generateFileName();
+    static string generateFileName(string type);
     static vector<string>& split(string &s, char delim, vector<string> &elems);
     static vector<string> split(string &s, char delim);
 };
