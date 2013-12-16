@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Graph::Graph(){}
+Graph::Graph():counter(0){}
 
 Graph::Graph(Graph *g) : counter(0) {
     vector<Node *> srcNodes = g->getNodes();
@@ -68,12 +68,24 @@ Node* Graph::addNode(int id) {
 }
 
 void Graph::addEdge(int a, int b) {
-    Node *n1 = this->nodes[a];
-    Node *n2 = this->nodes[b];
-    n1->addNeighbour(this->nodes[b]);
-    n2->addNeighbour(this->nodes[a]);
-    Edge* e= new Edge(n1,n2);
-    edges.insert(make_pair(e->hash(),e));
+    map<int, Node*>::iterator it = nodes.find(a);
+    if (it != nodes.end()){
+        it = nodes.find(b);
+        if (it != nodes.end()){
+            Node *n1 = this->nodes[a];
+            Node *n2 = this->nodes[b];
+            n1->addNeighbour(this->nodes[b]);
+            n2->addNeighbour(this->nodes[a]);
+            Edge* e= new Edge(n1,n2);
+            edges.insert(make_pair(e->hash(),e));
+        }
+        else{
+            cout<<b<<" doesnt exist"<<endl;
+        }
+    }
+    else{
+        cout<<a<<" doesnt exist"<<endl;
+    }
 }
 
 bool Graph::hasEdge(int a, int b) {
