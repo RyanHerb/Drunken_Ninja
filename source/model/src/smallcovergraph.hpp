@@ -12,6 +12,7 @@ public:
     SmallCoverGraph(SmallCoverGraph *g);
     vector<Node*>getCover(int K);
     vector<Node*>getSolution();
+    string getType();
 };
 
 #endif // SMALLCOVERGRAPH_HPP

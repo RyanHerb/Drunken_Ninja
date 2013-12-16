@@ -54,7 +54,7 @@ Node* Graph::addNode() {
     return n;
 }
 
-Node * Graph::addNode(int id) {
+Node* Graph::addNode(int id) {
     Node *n = new Node(id);
     this->nodes.insert(make_pair(id, n));
     ++counter;
@@ -337,4 +337,8 @@ vector<Node*> Graph::minisatToCover(string inputFile) {
     }
 
     return nodes;
+}
+
+string Graph::getType() {
+    return "graph";
 }

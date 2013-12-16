@@ -17,4 +17,5 @@ HEADERS += \
     $$PWD/src/smallcovergraph.hpp \
     $$PWD/src/graphutils.hpp \
     $$PWD/src/edge.hpp \
-    $$PWD/src/bipartitegraph.hpp
+    $$PWD/src/bipartitegraph.hpp \
+    ../model/src/igraph.hpp

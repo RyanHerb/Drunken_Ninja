@@ -82,3 +82,7 @@ vector<Node*> Tree::getCover() {
     }
     return result;
 }
+
+string Tree::getType() {
+    return "tree";
+}
