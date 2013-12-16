@@ -193,7 +193,7 @@ void testBipartiteGraphInitialisePartitions() {
     Graph * g = new Graph(4);
     g->addEdge(0, 1);
     g->addEdge(0, 2);
-    BipartiteGraph * bg = new BipartiteGraph(*g);
+    BipartiteGraph * bg = new BipartiteGraph(g);
     bg->initialisePartitions();
     assertEquals(bg->getLeftPartition()[0]->getId(), 0);
     assertEquals(bg->getRightPartition().size(), 3);

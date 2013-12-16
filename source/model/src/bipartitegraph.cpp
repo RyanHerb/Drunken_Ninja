@@ -21,6 +21,9 @@ BipartiteGraph::BipartiteGraph(int n, int p) {
     }
 }
 
+BipartiteGraph::BipartiteGraph(Graph * g) : Graph(g){
+}
+
 void BipartiteGraph::BFS(Node * root){
     queue<Node*> calls[2];
     vector<Node*> tmpPartitions[2];
