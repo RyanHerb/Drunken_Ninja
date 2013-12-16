@@ -47,6 +47,9 @@ Tree::Tree(int n):Graph(1) {
     }
 }
 
+Tree::Tree(Graph *g): Graph(g){
+
+}
 
 Tree::Tree(Tree * t):Graph(t) {
 

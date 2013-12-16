@@ -218,7 +218,7 @@ void testTreeCover() {
     Graph *graph = GraphUtils::load(input);
     if (graph) {
         // FIXME
-        Tree *t = ((Tree*)graph);
+        Tree *t = new Tree(graph);
         cout << "Type: " << t->getType() << endl;
         cout << "Leaves: " << t->getLeaves() << endl;
         vector<Node*> nodes = ((Tree*)graph)->getCover();
@@ -226,6 +226,7 @@ void testTreeCover() {
         assertTrue(nodes.at(0)->getId() == 1);
         assertTrue(nodes.at(1)->getId() == 4);
         delete graph;
+        delete t;
     }
     cout << endl;
 }
