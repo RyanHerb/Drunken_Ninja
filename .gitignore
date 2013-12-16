@@ -3,6 +3,7 @@
 *.lo
 *.o
 build-*
+out/
 
 # Compiled Dynamic libraries
 *.so

@@ -1,6 +1,6 @@
 #include "smallcovergraph.hpp"
 
-SmallCoverGraph::SmallCoverGraph(SmallCoverGraph *g) : Graph(g) {}
+SmallCoverGraph::SmallCoverGraph(IGraph *g) : Graph(g) {}
 
 SmallCoverGraph::SmallCoverGraph(int n, int p, int coverSize) {
     for (int i = 0; i < n; i++) {

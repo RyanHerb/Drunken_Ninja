@@ -15,15 +15,15 @@ private:
 
     void BFSforInitialisation(Node * root, Graph * dup);
     vector<Edge *> DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<bool> * visited, vector<bool> * marked);
-    vector<Edge *> DFSforAugmentingPath(Node * root, vector<Edge *> *matching, vector<bool> * marked);
+    vector<Edge *> getAugmentedMatching(vector<Edge *> *matching, vector<Edge *> *path);
+
 public:
     BipartiteGraph(int n, int p);
-    BipartiteGraph(Graph * g);
+    BipartiteGraph(IGraph * g);
     vector<Node*>getSolution();
     vector<Node*>getLeftPartition();
     vector<Node*>getRightPartition();
     void initialisePartitions();
-    vector<Edge*> getAugmentedMatching(vector<Edge*> * matching);
     vector<Edge *> getMaximumMatching();
     vector<Node*> getCover();
     string getType();

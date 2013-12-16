@@ -1,13 +1,13 @@
+#include <algorithm>
 #include "graph.hpp"
 #include "node.hpp"
-#include <algorithm>
-
+#include "tree.hpp"
 
 using namespace std;
 
-Graph::Graph(){}
+Graph::Graph():counter(0){}
 
-Graph::Graph(Graph *g) : counter(0) {
+Graph::Graph(IGraph *g) : counter(0) {
     vector<Node *> srcNodes = g->getNodes();
     for (int i = 0; i < srcNodes.size(); ++i) {
         addNode(srcNodes[i]->getId());
@@ -55,6 +55,10 @@ Node* Graph::addNode() {
 }
 
 Node* Graph::addNode(int id) {
+    map<int, Node*>::iterator it = nodes.find(id);
+    if (it != nodes.end()) {
+        return it->second;
+    }
     Node *n = new Node(id);
     this->nodes.insert(make_pair(id, n));
     ++counter;
@@ -62,12 +66,22 @@ Node* Graph::addNode(int id) {
 }
 
 void Graph::addEdge(int a, int b) {
-    Node *n1 = this->nodes[a];
-    Node *n2 = this->nodes[b];
-    n1->addNeighbour(this->nodes[b]);
-    n2->addNeighbour(this->nodes[a]);
-    Edge* e= new Edge(n1,n2);
-    edges.insert(make_pair(e->hash(),e));
+    map<int, Node*>::iterator it = nodes.find(a);
+    if (it != nodes.end()) {
+        it = nodes.find(b);
+        if (it != nodes.end()) {
+            Node *n1 = this->nodes[a];
+            Node *n2 = this->nodes[b];
+            n1->addNeighbour(this->nodes[b]);
+            n2->addNeighbour(this->nodes[a]);
+            Edge* e= new Edge(n1,n2);
+            edges.insert(make_pair(e->hash(),e));
+        } else {
+            cerr << "Node " << b << " does not exist" << endl;
+        }
+    } else {
+        cout << "Node " << a << " does not exist" << endl;
+    }
 }
 
 bool Graph::hasEdge(int a, int b) {
@@ -103,9 +117,12 @@ void Graph::removeEdge(int a, int b) {
 }
 
 void Graph::removeEdges(int a) {
-    Node *n = nodes[a];
-    for (Node *node : n->getNeighbours()) {
-        removeEdge(a, node->getId());
+    map<int, Node*>::iterator it = nodes.find(a);
+    if (it != nodes.end()){
+        Node *n = nodes[a];
+        for (Node *node : n->getNeighbours()) {
+            removeEdge(a, node->getId());
+        }
     }
 }
 
@@ -125,6 +142,11 @@ Edge* Graph::getRandomEdge() {
     unordered_map<int,Edge*>::iterator it = edges.begin();
     advance(it, select);
     return it->second;
+}
+
+Edge* Graph::getEdge(int a, int b) {
+    Edge tmp(nodes[a], nodes[b]);
+    return edges[tmp.hash()];
 }
 
 void Graph::removeNode(int id) {
@@ -343,7 +365,7 @@ vector<int> Graph::getClique(int size) {
 vector<int> Graph::getIsomorphicSubgraph(Graph subgraph) {
     ofstream myFile;
     //stringstream total, injective;
-    myFile.open(DEFAULT_DIRECTORY + "g.cnf");
+    myFile.open(DEFAULT_INPUT_DIRECTORY + "g.cnf");
     if(myFile.is_open()) {
         for(Node* k : subgraph.getNodes()) {
             for(Node* i : this->getNodes()) {
@@ -363,7 +385,7 @@ vector<int> Graph::getIsomorphicSubgraph(Graph subgraph) {
 
 vector<Node*> Graph::minisatToCover(string inputFile) {
     ifstream input;
-    input.open(DEFAULT_DIRECTORY + inputFile);
+    input.open(DEFAULT_INPUT_DIRECTORY + inputFile);
     vector<Node*> nodes;
 
     if(input.is_open()) {
@@ -417,6 +439,44 @@ IGraph* Graph::edgeComplementGraph2() {
 
 string Graph::getType() {
     return "graph";
+}
+Tree* Graph::DepthFirstSearch(){
+    Graph * localGraph = new Graph(this);
+    Tree * result = new Tree();
+    list<Node*> stack;
+    vector<bool> done;
+    for (Node* n : getNodes()){
+        while(done.size() <= n->getId()){
+            done.push_back(false);
+        }
+    }
+    Node * current = localGraph->getHighestDegreeNode();
+    stack.push_front(current);
+    result->addNode(current->getId());
+    while(stack.size() > 0){
+        current = stack.front();
+        int id = current->getId();
+        stack.pop_front();
+        if(!done[id]){
+            done[id] = true;
+            for(Node* neighbour : current->getNeighbours()){
+                int nId =neighbour->getId();
+                if(!done[nId]){
+                    result->removeEdges(nId);
+                    result->addNode(nId);
+                    result->addEdge(nId, id);
+                    stack.push_front(neighbour);
+                }
+            }
+        }
+    }
+    return result;
+}
+
+
+vector<Node*> Graph::getCoverDFS(){
+    Tree * t = DepthFirstSearch();
+    return t->getCover();
 }
 
 // TODO uncomment when getClique is implemented

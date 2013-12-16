@@ -23,7 +23,7 @@ protected:
 
 public:
     Graph();
-    Graph(Graph*g);
+    Graph(IGraph *g);
     // Generates a graph with n vertices, labeled from 0 to n-1, but no edges;
     Graph(int n);
 
@@ -45,7 +45,7 @@ public:
     vector<Node*> getNodes() const;
     Node* getRandomNode();
     Edge* getRandomEdge();
-
+    Edge* getEdge(int a, int b);
     vector<Node*> getCoverGlouton();
     vector<Edge*> getEdges() const;
     vector<Node*> getCover();
@@ -64,7 +64,8 @@ public:
     //void coverToMinisat(string);
     vector<Node*> minisatToCover(string);
     string getType();
-
+    vector<Node*> getCoverDFS();
+    Tree* DepthFirstSearch();
     vector<Node*> getKCoverWithMinisat(int);
     vector<int> getClique(int);
     vector<int> getIsomorphicSubgraph(Graph);

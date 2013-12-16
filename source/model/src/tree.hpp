@@ -11,11 +11,11 @@ private:
     Node *root;
 
 public:
+    Tree();
     Tree(int n); // Generates a random tree with n vertices, labeled from 0 to n-1;
-    Tree(Graph *g);
-    Tree(Tree * t);
-    vector<Node*> getLeaves();
+    Tree(IGraph *g);
     vector<Node*> getCover();
+    vector<Node*> getLeaves();
     string getType();
 };
 

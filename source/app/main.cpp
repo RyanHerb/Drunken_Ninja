@@ -7,38 +7,63 @@
 #include "../model/src/graphutils.hpp"
 #include "../model/src/bipartitegraph.hpp"
 #include "../model/src/smallcovergraph.hpp"
-
-#include "config.h" //includes useful variables, such as DEFAULT_DIRECTORY
+#include "config.h"
 
 using namespace std;
+
+void test();
+void handleGraphGeneration(char *argv[]);
+void handleAlgorithmSelection(char *argv[]);
 
 int main(int argc, char *argv[]) {
     srand((unsigned)time(0));
 
-    string filename = DEFAULT_INPUT;
-    string type = "graph";
     if (argc > 1) {
         if (string (argv[1]).compare("-h") == 0) {
             cout << "Usage: " << argv[0] << " [filename] [options]" << endl << endl;
             cout << "Options:" << endl;
             cout << "-t <arg> \tType of the input graph. Can be any of the following types:" << endl;
-            cout << "         \t[graph | tree | smallcovergraph | bipartitegraph]." << endl;
+            cout << "         \t[graph | tree | bipartitegraph | smallcovergraph]." << endl;
             return 0;
+        } else if (string (argv[1]).compare("--generate") == 0) {
+            handleGraphGeneration(argv);
         } else {
-            filename = argv[1];
-        }
-        if (argc == 4) {
-            if (string (argv[2]).compare("-t") == 0) {
-                type = argv[3];
-            }
+            handleAlgorithmSelection(argv);
         }
     }
+    //test();
+    return 0;
+}
 
-    Graph *graph = GraphUtils::load(filename);
+void handleGraphGeneration(char *argv[]) {
+    string type = argv[2];
+    IGraph *graph = NULL;
+    if (type.compare("tree") == 0) {
+        graph = new Tree(atoi(argv[3]));
+    } else if (type.compare("graph") == 0) {
+        graph = new Graph(atoi(argv[3]), atoi(argv[4]));
+    } else if (type.compare("bipartitegraph") == 0) {
+        graph = new BipartiteGraph(atoi(argv[3]), atoi(argv[4]));
+    } else if (type.compare("smallcover") == 0) {
+        graph = new SmallCoverGraph(atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+    }
+
     if (graph) {
-        vector<Node*> cover;
-        if (type.compare("tree") == 0) cover = ((Tree*)graph)->getCover();
-        else cover = graph->getCover();
+        GraphUtils::write(graph, type);
+        cout << "Successfully generated " << type << endl;
+    } else {
+        cerr << "Error: incorrect parameters. Use the -h option for more information." << endl;
+    }
+}
+
+void handleAlgorithmSelection(char *argv[]) {
+    // TODO
+}
+
+void test() {
+    Graph *graph = GraphUtils::load(DEFAULT_INPUT);
+    if (graph) {
+        vector<Node*> cover = graph->getCover();
         cout << "Cover size : " << cover.size()<<endl;
         cout << "Calculated cover: " << cover << endl;
         delete graph;
@@ -64,51 +89,4 @@ int main(int argc, char *argv[]) {
         delete g;
 
     }*/
-
-    Graph *g = new Graph(4, 100);
-    for(Node* n : g->getNodes()) {
-        cout << n->getId() << ":";
-        for(Node* neighbour : n->getNeighbours()) {
-            cout << " " << neighbour->getId();
-        }
-        cout << endl;
-    }
-}
-
-
-
-void testRemi1(){
-    Node* A = new Node(1);
-    Node* B = new Node(2);
-    Node* C = new Node(3);
-
-    Edge * e1 = new Edge(A,B);
-    Edge * e2 = new Edge(B,A);
-
-    if (*e1 == *e2)
-        cout << "c'est bon"<<endl;
-    else
-        cout << "c'est pas bon"<<endl;
-}
-
-void testRemi2(){
-    Graph*g = new Graph(3);
-    g->addEdge(1,2);
-    g->addEdge(0,1);
-    g->addEdge(2,0);
-
-    for (int i = 0; i < 10 ; i++){
-        Edge* e= g->getRandomEdge();
-        cout << *e << endl;
-    }
-}
-
-
-void test() {
-    list<Node*> nodeList;
-    for (int i = 0; i < 10; ++i) {
-        Node *n = new Node(i);
-        cout << n->getId() << endl;
-        nodeList.push_back(n);
-    }
 }
