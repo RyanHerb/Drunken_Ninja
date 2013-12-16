@@ -64,7 +64,8 @@ public:
     //void coverToMinisat(string);
     vector<Node*> minisatToCover(string);
     string getType();
-
+    vector<Node*> getCoverDFS();
+    Tree* DepthFirstSearch();
     vector<Node*> getKCoverWithMinisat(int);
     vector<int> getClique(int);
     vector<int> getIsomorphicSubgraph(Graph);

@@ -89,13 +89,4 @@ void test() {
         delete g;
 
     }*/
-
-    Graph *g = new Graph(4, 100);
-    for(Node* n : g->getNodes()) {
-        cout << n->getId() << ":";
-        for(Node* neighbour : n->getNeighbours()) {
-            cout << " " << neighbour->getId();
-        }
-        cout << endl;
-    }
 }
