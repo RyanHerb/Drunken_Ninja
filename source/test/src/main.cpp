@@ -27,6 +27,12 @@ int main(int argc, char *argv[]) {
     // Tree tests
     testTreeCover();
 
+    IGraph *g = new Graph(2);
+    cout << "Graph type: " << g->getType() << endl;
+
+    IGraph *t = new Tree(3);
+    cout << "Tree type: " << t->getType() << endl;
+
     cout << endl << "Finished executing tests" << endl;
 }
 
@@ -193,7 +199,9 @@ void testTreeCover() {
 
     Graph *graph = GraphUtils::load(input);
     if (graph) {
-        vector<Node*> nodes = ((Tree*)graph)->getCover();
+        // FIXME
+        Tree *tree = static_cast<Tree*>(graph);
+        vector<Node*> nodes = tree->getCover();
         assertEquals(nodes.size(), 2);
         assertTrue(nodes.at(0)->getId() == 1);
         assertTrue(nodes.at(1)->getId() == 4);

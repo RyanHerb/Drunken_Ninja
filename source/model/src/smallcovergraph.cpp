@@ -74,3 +74,7 @@ vector<Node *> SmallCoverGraph::getCover(int k) {
         return result;
     }
 }
+
+string SmallCoverGraph::getType() {
+    return "smallcovergraph";
+}

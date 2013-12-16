@@ -24,3 +24,7 @@ BipartiteGraph::BipartiteGraph(int n, int p) {
 vector<Node*> BipartiteGraph::getSolution(){
     return solution;
 }
+
+string BipartiteGraph::getType() {
+    return "bipartitegraph";
+}

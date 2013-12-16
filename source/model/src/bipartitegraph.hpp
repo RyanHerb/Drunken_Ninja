@@ -10,7 +10,8 @@ private:
     vector<Node*> solution;
 public:
     BipartiteGraph(int n, int p);
-    vector<Node*>getSolution();
+    vector<Node*> getSolution();
+    string getType();
 };
 
 #endif // BIPARTITEGRAPH_HPP
