@@ -18,8 +18,21 @@ int main(int argc, char *argv[]) {
     // Edge tests
     testEdgeIdentity();
 
+    // Graph tests
+    testGraphAddEdge();
+    testGraphHasEdge();
+    testGraphRemoveEdge();
+    testGraphGetHighestDegreeNode();
+
+    // Tree tests
+    testTreeCover();
+
     cout << endl << "Finished executing tests" << endl;
 }
+
+/****************************************/
+/************** Node tests **************/
+/****************************************/
 
 /**
  * @brief Tests that adding a neighbour to a node
@@ -81,9 +94,13 @@ void testNodeDegree() {
     cout << endl;
 }
 
+/****************************************/
+/************** Edge tests **************/
+/****************************************/
+
 /**
  * @brief Tests the identity of an edge when referenced
- *        by any permutation of two nodes.
+ *        by both permutations of its underlying nodes.
  */
 void testEdgeIdentity() {
     cout << "edge.identity:" << endl;
@@ -94,44 +111,93 @@ void testEdgeIdentity() {
     Edge *e2 = new Edge(b, a);
 
     assertTrue(*e1 == *e2);
+    cout << endl;
 }
 
-void testRemi2(){
-    Graph *g = new Graph(3);
-    g->addEdge(1,2);
-    g->addEdge(0,1);
-    g->addEdge(2,0);
+/****************************************/
+/************* Graph tests **************/
+/****************************************/
 
-    for (int i = 0; i < 10 ; i++){
-        Edge* e= g->getRandomEdge();
-        cout << *e << endl;
-    }
-}
-
-void test3() {
+/**
+ * @brief Tests that adding edges between a graph's nodes
+ *        correctly updates its edges collection.
+ */
+void testGraphAddEdge() {
+    cout << "graph.addEdge:" << endl;
     Graph *g = new Graph(3);
-    g->addEdge(1, 2);
     g->addEdge(0, 1);
+    g->addEdge(1, 2);
     g->addEdge(2, 0);
-    cout << *g << endl;
-    g->removeEdge(2, 0);
-    cout << *g << endl;
-    g->removeEdge(2, 0);
-    cout << *g << endl;
+    assertEquals(g->getEdges().size(), 3);
+    cout << endl;
 }
 
-void test4() {
-    /*Graph *graph = GraphUtils::load(filename);
+/**
+ * @brief Tests that Graph::hasEdge(int,int) correctly
+ *        indicates whether an edge exists between two nodes.
+ */
+void testGraphHasEdge() {
+    cout << "graph.hasEdge:" << endl;
+    Graph *g = new Graph(2);
+    g->addEdge(0, 1);
+    assertTrue(g->hasEdge(0, 1));
+    assertTrue(!g->hasEdge(0, 2));
+    cout << endl;
+}
+
+/**
+ * @brief Tests that removing an edge from a graph
+ *        correctly updates its state.
+ */
+void testGraphRemoveEdge() {
+    cout << "graph.removeEdge:" << endl;
+    Graph *g = new Graph(2);
+    g->addEdge(0, 1);
+    g->removeEdge(0, 1);
+    assertTrue(!g->hasEdge(0, 1));
+    cout << endl;
+}
+
+/**
+ * @brief Tests that Graph::getHighestDegreeNode() returns
+ *        the node with the highest degree in the calling graph.
+ */
+void testGraphGetHighestDegreeNode() {
+    cout << "graph.getHighestDegreeNode:" << endl;
+    Graph *g = new Graph(4);
+    g->addEdge(0, 1);
+    g->addEdge(1, 2);
+    g->addEdge(2, 0);
+    g->addEdge(0, 3);
+    Node *node = g->getHighestDegreeNode();
+    assertEquals(node->getId(), 0);
+    assertEquals(node->degree(), 3);
+    cout << endl;
+}
+
+/****************************************/
+/************** Tree tests **************/
+/****************************************/
+
+/**
+ * @brief Tests that Tree::getCover() returns
+ *        a minimal cover.
+ */
+void testTreeCover() {
+    cout << "tree.getCover:" << endl;
+#ifdef _WIN32
+    string input = "../data/tree1.txt";
+#else
+    string input = "../../data/tree1.txt";
+#endif // _WIN32
+
+    Graph *graph = GraphUtils::load(input);
     if (graph) {
-        cout << "Loaded: " << endl << *graph << endl;
-        vector<Node*> nodes = (graph)->getCoverFPT2(2);
-        cout << "Minimal cover: " << nodes << endl;
-        cout <<"size : " << nodes.size()<<endl;
+        vector<Node*> nodes = ((Tree*)graph)->getCover();
+        assertEquals(nodes.size(), 2);
+        assertTrue(nodes.at(0)->getId() == 1);
+        assertTrue(nodes.at(1)->getId() == 4);
         delete graph;
-    }*/
-    Tree t(6); // Random tree with 6 vertices;
-    cout << t;
-    vector<Node*> nodes = t.getCover();
-    cout << "Minimal cover :" << nodes << endl;
+    }
+    cout << endl;
 }
-

@@ -60,8 +60,8 @@ public:
     int nbEdges();
     int nbNodes();
 
-    int Kernelisation(int K, vector<int> * cover);
-    Node* getHigherDegreeNode();
+    int kernelize(int K, vector<int> * cover);
+    Node* getHighestDegreeNode();
 };
 
 // To print a Graph

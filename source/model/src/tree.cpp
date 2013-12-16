@@ -14,7 +14,6 @@ Tree::Tree(int n):Graph(1) {
             randomWord.push_back(node);
             ++degrees[node];
         }
-        cout <<endl;
         list<int>leafs;
         for (int i=0 ; i<n ; i++) {
             if (degrees[i]==0) {
@@ -65,17 +64,21 @@ vector<Node*> Tree::getLeaves() {
 vector<Node*> Tree::getCover() {
 
     Tree dup(this);
-    vector<Node*> cover;
+    vector<int> cover;
     vector<Node*> leaves = dup.getLeaves();
     while (leaves.size() != 0) {
         for (Node *leaf : leaves) {
             Node *leafParent = leaf->getNeighbour(0);
             if (leafParent) {
-                cover.push_back(leafParent);
+                cover.push_back(leafParent->getId());
                 dup.removeEdges(leafParent->getId());
             }
         }
         leaves = dup.getLeaves();
     }
-    return cover;
+    vector<Node*> result;
+    for (int id : cover) {
+        result.push_back(this->getNode(id));
+    }
+    return result;
 }
