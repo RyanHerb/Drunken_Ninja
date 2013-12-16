@@ -33,7 +33,7 @@ public:
     virtual Node* getRandomNode() = 0;
     virtual Edge* getRandomEdge() = 0;
     virtual Edge* getEdge(int a, int b) = 0;
-    virtual vector<Node*> getCoverGlouton() = 0;
+    virtual vector<Node*> getCoverGreedy() = 0;
 
     virtual vector<Edge*> getEdges() const = 0;
     // Default cover

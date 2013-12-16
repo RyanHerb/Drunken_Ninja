@@ -69,7 +69,7 @@ void handleAlgorithmSelection(char *argv[]) {
         if (string (argv[4]).compare("--getcover") == 0) {
             cover = graph->getCover();
         } else if (string (argv[4]).compare("--getcover-greedy") == 0) {
-            cover = graph->getCoverGlouton();
+            cover = graph->getCoverGreedy();
         } else if (string (argv[4]).compare("--getcover-dfs") == 0) {
             cover = graph->getCoverDFS();
         }

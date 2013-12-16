@@ -46,7 +46,7 @@ public:
     Node* getRandomNode();
     Edge* getRandomEdge();
     Edge* getEdge(int a, int b);
-    vector<Node*> getCoverGlouton();
+    vector<Node*> getCoverGreedy();
     vector<Edge*> getEdges() const;
     vector<Node*> getCover();
     int nbEdges();

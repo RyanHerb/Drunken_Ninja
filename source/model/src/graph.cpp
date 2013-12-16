@@ -185,7 +185,7 @@ Node* Graph::getHighestDegreeNode() {
     return selectedNode;
 }
 
-vector<Node*> Graph::getCoverGlouton() {
+vector<Node*> Graph::getCoverGreedy() {
     Graph *localGraph = new Graph(this);
     vector<int> cover;
     vector<int> degrees; //pour un acces direct au degré de chaque noeud;
