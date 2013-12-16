@@ -1,16 +1,6 @@
 #include <iostream>
 #include <time.h>
-<<<<<<< HEAD:src/main.cpp
-#include "node.hpp"
-#include "graph.hpp"
-#include "tree.hpp"
-#include "graphutils.hpp"
-#include "minisatconverter.hpp"
-#include "config.h"
 
-using namespace std;
-
-=======
 #include "../model/src/node.hpp"
 #include "../model/src/graph.hpp"
 #include "../model/src/tree.hpp"
@@ -26,7 +16,6 @@ const string DEFAULT_INPUT = "../data/graph1.txt";
 const string DEFAULT_INPUT = "../../data/graph1.txt";
 #endif //_WIN32
 
->>>>>>> 22004bbf77731195ff6c5c1daeec817c3aaf5619:source/app/main.cpp
 int main(int argc, char *argv[]) {
     srand((unsigned)time(0));
 
