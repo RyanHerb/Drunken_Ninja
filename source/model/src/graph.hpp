@@ -62,6 +62,9 @@ public:
 
     int kernelize(int K, vector<int> * cover);
     Node* getHighestDegreeNode();
+
+    void coverToMinisat(Graph*, std::string);
+    vector<Node*> minisatToCover(std::string);
 };
 
 // To print a Graph
