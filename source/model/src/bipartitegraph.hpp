@@ -10,14 +10,22 @@ private:
     //contient une couverture qui peut ne pas etre optimale
     vector<Node*> leftPartition;
     vector<Node*> rightPartition;
-    void BFS(Node * root, Graph * dup);
+    //pour un acces à la partition d'un Node en O(1)
+    vector<int> partition;
+
+    void BFSforInitialisation(Node * root, Graph * dup);
+    vector<Edge *> DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<bool> * visited, vector<bool> * marked);
+    vector<Edge *> DFSforAugmentingPath(Node * root, vector<Edge *> *matching, vector<bool> * marked);
 public:
     BipartiteGraph(int n, int p);
     BipartiteGraph(Graph * g);
     vector<Node*>getSolution();
     vector<Node*>getLeftPartition();
     vector<Node*>getRightPartition();
-    bool initialisePartitions();
+    void initialisePartitions();
+    vector<Edge*> getAugmentedMatching(vector<Edge*> * matching);
+    vector<Edge *> getMaximumMatching();
+    vector<Node*> getCover();
     string getType();
 };
 

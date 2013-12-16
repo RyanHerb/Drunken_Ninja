@@ -14,8 +14,8 @@ public:
     Tree(int n); // Generates a random tree with n vertices, labeled from 0 to n-1;
     Tree(Graph *g);
     Tree(Tree * t);
-    vector<Node*> getCover();
     vector<Node*> getLeaves();
+    vector<Node*> getCover();
     string getType();
 };
 
