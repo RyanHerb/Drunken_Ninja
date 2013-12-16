@@ -57,7 +57,39 @@ void handleGraphGeneration(char *argv[]) {
 }
 
 void handleAlgorithmSelection(char *argv[]) {
-    // TODO
+    string input = argv[1];
+    string type = argv[3];
+    IGraph *g = GraphUtils::load(input);
+
+    if (type.compare("graph") == 0) {
+        // Graph algorithms
+        Graph *graph = new Graph(g);
+        vector<Node*> cover;
+
+        if (string (argv[4]).compare("--getcover") == 0) {
+            cover = graph->getCover();
+        } else if (string (argv[4]).compare("--getcover-k") == 0) {
+            cover = graph->getKCover(atoi(argv[5]));
+        } else if (string (argv[4]).compare("--getcover-greedy") == 0) {
+            cover = graph->getCoverGlouton();
+        } else if (string (argv[4]).compare("--getcover-dfs") == 0) {
+            cover = graph->getCoverDFS();
+        }
+
+        if (cover.size() > 0) {
+            cout << "Cover size: " << cover.size() << endl;
+            cout << "Cover: " << cover << endl;
+        } else {
+            cout << "Could not find a cover with the specified configuration." << endl;
+        }
+
+    } else if (type.compare("tree") == 0) {
+
+    } else if (type.compare("bipartitegraph") == 0) {
+
+    } else if (type.compare("smallcovergraph") == 0) {
+
+    }
 }
 
 void test() {
