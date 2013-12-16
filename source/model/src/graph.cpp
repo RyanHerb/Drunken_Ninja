@@ -292,16 +292,16 @@ vector<Edge*> Graph::getEdges() const {
     return vec;
 }
 
-void Graph::coverToMinisat(Graph *g, string outputfile) {
+void Graph::coverToMinisat(string outputfile) {
     ofstream myFile;
     myFile.open(DEFAULT_DIRECTORY + outputfile);
 
     if(myFile.is_open()) {
-        int graphSize = g->getNodes().size();
+        int graphSize = this->getNodes().size();
         myFile << "p cnf " << graphSize << " " << graphSize << endl;
 
         int literals = 0;
-        for(Node* node : g->getNodes()) {
+        for(Node* node : this->getNodes()) {
             for(Node* neighbour : node->getNeighbours()) {
                 myFile << node->getId()+1 << " " << neighbour->getId()+1 << " 0" << endl;
                 ++literals;

@@ -8,13 +8,9 @@
 #include "../model/src/bipartitegraph.hpp"
 #include "../model/src/smallcovergraph.hpp"
 
-using namespace std;
+#include "config.h" //includes useful variables, such as DEFAULT_DIRECTORY
 
-#ifdef _WIN32
-const string DEFAULT_INPUT = "../data/graph1.txt";
-#else
-const string DEFAULT_INPUT = "../../data/graph1.txt";
-#endif //_WIN32
+using namespace std;
 
 int main(int argc, char *argv[]) {
     srand((unsigned)time(0));
@@ -52,14 +48,14 @@ int main(int argc, char *argv[]) {
     }
 
     Graph *g = GraphUtils::load(filename);
-    if(graph) {
+    if(g) {
         cout << "Graph loaded:" << endl;
         cout << "Applying ministat convertion:" << endl;
-        coverToMinisat(g, "g.cnf");
+        g->coverToMinisat("g.cnf");
         string cmd = "minisat " + string(DEFAULT_DIRECTORY);
         cmd += "g.cnf "; cmd += string(DEFAULT_DIRECTORY); cmd += "g_res";
         system(cmd.c_str());
-        vector<Node*> cover = minisatToCover("g_res");
+        vector<Node*> cover = g->minisatToCover("g_res");
 
         for(Node* n : cover) {
             cout << n->getId() << " ";

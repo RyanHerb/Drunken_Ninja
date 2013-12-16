@@ -3,9 +3,14 @@
 
 #include "edge.hpp"
 #include "node.hpp"
+
+#include "../app/config.h" //contains useful variables
+
 #include <map>
 #include <unordered_map>
 #include <vector>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -63,7 +68,7 @@ public:
     int kernelize(int K, vector<int> * cover);
     Node* getHighestDegreeNode();
 
-    void coverToMinisat(Graph*, std::string);
+    void coverToMinisat(std::string);
     vector<Node*> minisatToCover(std::string);
 };
 
