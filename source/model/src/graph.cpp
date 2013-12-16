@@ -380,7 +380,7 @@ vector<Node*> Graph::minisatToCover(string inputFile) {
     return nodes;
 }
 
-Graph* Graph::edgeComplementGraph(){
+IGraph* Graph::edgeComplementGraph() {
     Graph *comp = new Graph(nbNodes(),100);
     for(Edge* e : this->getEdges()){
         comp->removeEdge(e->first()->getId(),e->second()->getId());
@@ -388,7 +388,7 @@ Graph* Graph::edgeComplementGraph(){
     return comp;
 }
 
-Graph* Graph::edgeComplementGraph2(){
+IGraph* Graph::edgeComplementGraph2() {
     Graph * comp = new Graph(this);
     Graph * local = new Graph(this);
     for(Node * compNode : comp->getNodes()){
@@ -408,6 +408,12 @@ Graph* Graph::edgeComplementGraph2(){
     }
     return comp;
 }
+
 string Graph::getType() {
     return "graph";
 }
+
+// TODO uncomment when getClique is implemented
+/*vector<int> Graph::getIndependentSet(int size){
+    return edgeComplementGraph()->getClique(size);
+}*/

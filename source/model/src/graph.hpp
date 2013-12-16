@@ -56,13 +56,12 @@ public:
     int kernelize(int K, vector<int> * cover);
     Node* getHighestDegreeNode();
 
+    // FIXME Ne marche pas avec un graphe dont on a supprimé des sommets
+    IGraph* edgeComplementGraph();
+    // Moins rapide mais marche quel que soit le graphe
+    IGraph* edgeComplementGraph2();
 
-    //ne marche pas avec un graphe dont on a supprimé des sommets
-    Graph* edgeComplementGraph();
-    //moins rapide mais marche quel que soit le graphe
-    Graph* edgeComplementGraph2();
-
-    void coverToMinisat(string);
+    //void coverToMinisat(string);
     vector<Node*> minisatToCover(string);
     string getType();
 
