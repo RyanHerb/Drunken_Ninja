@@ -338,3 +338,32 @@ vector<Node*> Graph::minisatToCover(string inputFile) {
 
     return nodes;
 }
+
+Graph* Graph::edgeComplementGraph(){
+    Graph *comp = new Graph(nbNodes(),100);
+    for(Edge* e : this->getEdges()){
+        comp->removeEdge(e->first()->getId(),e->second()->getId());
+    }
+    return comp;
+}
+
+Graph* Graph::edgeComplementGraph2(){
+    Graph * comp = new Graph(this);
+    Graph * local = new Graph(this);
+    for(Node * compNode : comp->getNodes()){
+        for(Node * compNodeNeighbour : comp->getNodes()){
+            if(!(compNodeNeighbour==compNode)){
+                int id1 = compNode->getId();
+                int id2 = compNodeNeighbour->getId();
+                if(local->hasEdge(id1,id2)){
+                    local->removeEdge(id1,id2);
+                    comp->removeEdge(id1,id2);
+                }
+                else if(!comp->hasEdge(id1,id2)){
+                    comp->addEdge(id1,id2);
+                }
+            }
+        }
+    }
+    return comp;
+}

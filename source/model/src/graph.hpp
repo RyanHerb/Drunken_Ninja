@@ -70,6 +70,11 @@ public:
 
     void coverToMinisat(std::string);
     vector<Node*> minisatToCover(std::string);
+
+    //ne marche pas avec un graphe dont on a supprimé des sommets
+    Graph* edgeComplementGraph();
+    //moins rapide mais marche quel que soit le graphe
+    Graph* edgeComplementGraph2();
 };
 
 // To print a Graph
