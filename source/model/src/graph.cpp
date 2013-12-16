@@ -292,7 +292,7 @@ vector<Edge*> Graph::getEdges() const {
     return vec;
 }
 
-/*void Graph::coverToMinisat(string outputfile) {
+void Graph::coverToMinisat(string outputfile) {
     ofstream myFile;
     myFile.open(DEFAULT_DIRECTORY + outputfile);
 
@@ -335,8 +335,25 @@ vector<int> Graph::getClique(int size) {
 }
 
 vector<int> Graph::getIsomorphicSubgraph(Graph subgraph) {
-
-}*/
+    ofstream myFile;
+    //stringstream total, injective;
+    myFile.open(DEFAULT_DIRECTORY + "g.cnf");
+    if(myFile.is_open()) {
+        for(Node* k : subgraph.getNodes()) {
+            for(Node* i : this->getNodes()) {
+                for(Node* j : this->getNodes()) {
+                    myFile << "-u" << k->getId()+1 << "v" << i->getId()+1 << " -u" << k->getId()+1 << "v" << j->getId()+1 << " 0" << endl;
+                }
+                //total << k->getId()+1 << i->getId()+1 << " ";
+            }
+            //total << "0" << endl;
+            //myFile << total.flush();
+        }
+    } else {
+        cout << "Unable to open file!" << endl;
+        exit(1);
+    }
+}
 
 vector<Node*> Graph::minisatToCover(string inputFile) {
     ifstream input;
