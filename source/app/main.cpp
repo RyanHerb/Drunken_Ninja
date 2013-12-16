@@ -42,12 +42,12 @@ int main(int argc, char *argv[]) {
         cout << "Cover size : " << cover.size()<<endl;
         cout << "Calculated cover: " << cover << endl;
         delete graph;
-        return 0;
+        //return 0;
     } else {
         cout << "Error loading file. Check your specified path." << endl;
     }
 
-    Graph *g = GraphUtils::load(filename);
+    /*Graph *g = GraphUtils::load(filename);
     if(g) {
         cout << "Graph loaded:" << endl;
         cout << "Applying ministat convertion:" << endl;
@@ -59,10 +59,19 @@ int main(int argc, char *argv[]) {
 
         for(Node* n : cover) {
             cout << n->getId() << " ";
-            cout << endl;
         }
+        cout << endl;
         delete g;
 
+    }*/
+
+    Graph *g = new Graph(4, 100);
+    for(Node* n : g->getNodes()) {
+        cout << n->getId() << ":";
+        for(Node* neighbour : n->getNeighbours()) {
+            cout << " " << neighbour->getId();
+        }
+        cout << endl;
     }
 }
 

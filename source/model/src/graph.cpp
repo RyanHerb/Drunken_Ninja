@@ -292,7 +292,7 @@ vector<Edge*> Graph::getEdges() const {
     return vec;
 }
 
-void Graph::coverToMinisat(string outputfile) {
+/*void Graph::coverToMinisat(string outputfile) {
     ofstream myFile;
     myFile.open(DEFAULT_DIRECTORY + outputfile);
 
@@ -309,10 +309,34 @@ void Graph::coverToMinisat(string outputfile) {
         }
 
     } else {
-        cout << "Unable to open file" << endl;
+        cout << "Unable to open file " << outputfile << endl;
         exit(1);
     }
 }
+
+vector<Node*> Graph::getKCoverWithMinisat(int k) {
+    bool contains = false;
+    vector<Node*> cover;
+    vector<int> nodeIds = this->getIndependantSet(this->getNodes().size() - k);
+    for(Node* node : this->getNodes()) {
+        for(int i : nodeIds) {
+            if(node->getId() == i)
+                contains = true;
+        }
+        if(!contains)
+            cover.push_back(node);
+    }
+    return cover;
+}
+
+vector<int> Graph::getClique(int size) {
+    Graph clique = new Graph(size, 100);
+    return this->getIsomorphicSubgraph(clique);
+}
+
+vector<int> Graph::getIsomorphicSubgraph(Graph subgraph) {
+
+}*/
 
 vector<Node*> Graph::minisatToCover(string inputFile) {
     ifstream input;
