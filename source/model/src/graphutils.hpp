@@ -10,8 +10,10 @@ class GraphUtils {
 
 public:
     static Graph* load(string filename);
+    static void write(Graph *graph);
 
 private:
+    static string generateFileName();
     static vector<string>& split(string &s, char delim, vector<string> &elems);
     static vector<string> split(string &s, char delim);
 };

@@ -47,7 +47,8 @@ int main(int argc, char *argv[]) {
         cout << "Error loading file. Check your specified path." << endl;
     }
 
-    Graph *g = GraphUtils::load(filename);
+
+    /*Graph *g = GraphUtils::load(filename);
     if(g) {
         cout << "Graph loaded:" << endl;
         cout << "Applying ministat convertion:" << endl;
@@ -63,43 +64,5 @@ int main(int argc, char *argv[]) {
         }
         delete g;
 
-    }
-}
-
-
-
-void testRemi1(){
-    Node* A = new Node(1);
-    Node* B = new Node(2);
-    Node* C = new Node(3);
-
-    Edge * e1 = new Edge(A,B);
-    Edge * e2 = new Edge(B,A);
-
-    if (*e1 == *e2)
-        cout << "c'est bon"<<endl;
-    else
-        cout << "c'est pas bon"<<endl;
-}
-
-void testRemi2(){
-    Graph*g = new Graph(3);
-    g->addEdge(1,2);
-    g->addEdge(0,1);
-    g->addEdge(2,0);
-
-    for (int i = 0; i < 10 ; i++){
-        Edge* e= g->getRandomEdge();
-        cout << *e << endl;
-    }
-}
-
-
-void test() {
-    list<Node*> nodeList;
-    for (int i = 0; i < 10; ++i) {
-        Node *n = new Node(i);
-        cout << n->getId() << endl;
-        nodeList.push_back(n);
-    }
+    }*/
 }

@@ -9,3 +9,4 @@ debug:DESTDIR = debug
 
 include(../model/model.pri)
 SOURCES += main.cpp
+HEADERS += config.h
