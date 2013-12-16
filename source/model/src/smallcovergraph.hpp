@@ -10,7 +10,8 @@ private:
 public:
     SmallCoverGraph(int n, int p, int coverSize);
     SmallCoverGraph(IGraph *g);
-    vector<Node*>getCover(int K);
+    vector<Node*>getKCover(int K);
+    vector<Node*>getCoverFPT(int K);
     vector<Node*>getSolution();
     string getType();
 };

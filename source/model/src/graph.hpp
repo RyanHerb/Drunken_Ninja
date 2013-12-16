@@ -49,7 +49,6 @@ public:
     vector<Node*> getCoverGlouton();
     vector<Edge*> getEdges() const;
     vector<Node*> getCover();
-    vector<Node*> getKCover(int K);
     int nbEdges();
     int nbNodes();
 
