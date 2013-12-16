@@ -33,8 +33,7 @@ void coverToMinisat(Graph *g, string outputfile) {
 vector<Node*> minisatToCover(string inputFile) {
     ifstream input;
     input.open(DEFAULT_DIRECTORY + inputFile);
-    vector<Node*> negativeNodes;
-    vector<Node*> positiveNodes;
+    vector<Node*> nodes;
 
     if(input.is_open()) {
         string line("");
@@ -45,10 +44,7 @@ vector<Node*> minisatToCover(string inputFile) {
         while(ss >> buffer) {
             int id = stoi(buffer);
             if(id > 0) {
-                positiveNodes.push_back(new Node(id-1));
-            } else if(id < 0){
-                id = abs(id);
-                negativeNodes.push_back(new Node(id-1));
+                nodes.push_back(new Node(id-1));
             }
         }
     } else {
