@@ -24,7 +24,7 @@ BipartiteGraph::BipartiteGraph(int n, int p) {
 BipartiteGraph::BipartiteGraph(Graph * g) : Graph(g){
 }
 
-void BipartiteGraph::BFS(Node * root){
+void BipartiteGraph::BFS(Node * root, Graph *dup){
     queue<Node*> calls[2];
     vector<Node*> tmpPartitions[2];
     vector<bool> visited(nbNodes(), false);
@@ -42,6 +42,7 @@ void BipartiteGraph::BFS(Node * root){
                     visited[v->getId()] = true;
                 }
             }
+            dup->removeNode(current->getId());
         }
         i = 1 - i;
     }
@@ -65,7 +66,7 @@ bool BipartiteGraph::initialisePartitions(){
 
     Edge * edge;
     while((edge = dup.getRandomEdge()) != 0){
-        BFS(edge->first());
+        BFS(edge->first(), &dup);
     }
 
     Node * node;

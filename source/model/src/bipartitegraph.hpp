@@ -10,7 +10,7 @@ private:
     //contient une couverture qui peut ne pas etre optimale
     vector<Node*> leftPartition;
     vector<Node*> rightPartition;
-    void BFS(Node * root);
+    void BFS(Node * root, Graph * dup);
 public:
     BipartiteGraph(int n, int p);
     BipartiteGraph(Graph * g);
