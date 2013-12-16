@@ -30,7 +30,7 @@ public:
 
     Node* addNode();
     Node* addNode(int id);
-
+    Node* getNode(int id);
     void removeNode(Node *n);
     void removeNode(int id);
 
@@ -57,7 +57,6 @@ public:
     // Default cover
     vector<Node*> getCover();
     vector<Node*> getKCover(int K);
-    vector<Node *> getCoverFPT2(int K);
     int nbEdges();
     int nbNodes();
 

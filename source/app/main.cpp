@@ -1,5 +1,6 @@
 #include <iostream>
 #include <time.h>
+<<<<<<< HEAD:src/main.cpp
 #include "node.hpp"
 #include "graph.hpp"
 #include "tree.hpp"
@@ -9,6 +10,18 @@
 
 using namespace std;
 
+=======
+#include "../model/src/node.hpp"
+#include "../model/src/graph.hpp"
+#include "../model/src/tree.hpp"
+#include "../model/src/graphutils.hpp"
+#include "../model/src/smallcovergraph.hpp"
+
+using namespace std;
+
+const string DEFAULT_INPUT = "../../data/graph12.txt";
+
+>>>>>>> 22004bbf77731195ff6c5c1daeec817c3aaf5619:source/app/main.cpp
 int main(int argc, char *argv[]) {
 
 
@@ -28,7 +41,7 @@ int main(int argc, char *argv[]) {
     Graph *graph = GraphUtils::load(filename);
     if (graph) {
         cout << "Loaded: " << endl << *graph << endl;
-        vector<Node*> nodes = (graph)->getCoverFPT2(2);
+        vector<Node*> nodes = graph->getCoverGlouton();
         cout << "Minimal cover: " << nodes << endl;
         cout <<"size : " << nodes.size()<<endl;
         delete graph;
