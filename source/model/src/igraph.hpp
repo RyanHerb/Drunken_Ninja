@@ -43,16 +43,16 @@ public:
     virtual int kernelize(int K, vector<int> * cover) = 0;
     virtual Node* getHighestDegreeNode() = 0;
 
-    virtual void coverToMinisat(string) = 0;
+    //virtual void coverToMinisat(string) = 0;
     virtual vector<Node*> minisatToCover(string) = 0;
     virtual string getType() = 0;
 
-    //ne marche pas avec un graphe dont on a supprimé des sommets
-    virtual Graph* edgeComplementGraph() = 0;
-    //moins rapide mais marche quel que soit le graphe
-    virtual Graph* edgeComplementGraph2() = 0;
-    virtual vector<int> getIndependentSet(int taille) = 0;
-    virtual vector<int> getClique(int taille) = 0;
+    // FIXME Ne marche pas avec un graphe dont on a supprimé des sommets
+    virtual IGraph* edgeComplementGraph() = 0;
+    // Moins rapide mais marche quel que soit le graphe
+    virtual IGraph* edgeComplementGraph2() = 0;
+    //virtual vector<int> getIndependentSet(int size) = 0;
+    //virtual vector<int> getClique(int size) = 0;
 };
 
 // To print a Graph
