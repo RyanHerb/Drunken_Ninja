@@ -46,6 +46,13 @@ public:
     virtual void coverToMinisat(string) = 0;
     virtual vector<Node*> minisatToCover(string) = 0;
     virtual string getType() = 0;
+
+    //ne marche pas avec un graphe dont on a supprimé des sommets
+    virtual Graph* edgeComplementGraph() = 0;
+    //moins rapide mais marche quel que soit le graphe
+    virtual Graph* edgeComplementGraph2() = 0;
+    virtual vector<int> getIndependentSet(int taille) = 0;
+    virtual vector<int> getClique(int taille) = 0;
 };
 
 // To print a Graph

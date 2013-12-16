@@ -370,3 +370,7 @@ Graph* Graph::edgeComplementGraph2(){
 string Graph::getType() {
     return "graph";
 }
+
+vector<int> Graph::getIndependentSet(int taille){
+    return edgeComplementGraph()->getClique();
+}

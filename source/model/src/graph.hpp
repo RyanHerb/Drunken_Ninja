@@ -65,7 +65,8 @@ public:
     void coverToMinisat(string);
     vector<Node*> minisatToCover(string);
     string getType();
-
+    vector<int> getIndependentSet(int taille);
+    vector<int> getClique(int taille);
 };
 
 #endif // GRAPH_H
