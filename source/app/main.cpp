@@ -15,36 +15,51 @@ using namespace std;
 #include "../model/src/graph.hpp"
 #include "../model/src/tree.hpp"
 #include "../model/src/graphutils.hpp"
+#include "../model/src/bipartitegraph.hpp"
 #include "../model/src/smallcovergraph.hpp"
 
 using namespace std;
 
-const string DEFAULT_INPUT = "../../data/graph12.txt";
+#ifdef _WIN32
+const string DEFAULT_INPUT = "../data/graph1.txt";
+#else
+const string DEFAULT_INPUT = "../../data/graph1.txt";
+#endif //_WIN32
 
 >>>>>>> 22004bbf77731195ff6c5c1daeec817c3aaf5619:source/app/main.cpp
 int main(int argc, char *argv[]) {
-
-
     srand((unsigned)time(0));
 
     string filename = DEFAULT_INPUT;
+    string type = "graph";
     if (argc > 1) {
         if (string (argv[1]).compare("-h") == 0) {
-            cout << "Usage: " << argv[0] << " [filename]" << endl;
-            cout << "use -h for help" << endl;
+            cout << "Usage: " << argv[0] << " [filename] [options]" << endl << endl;
+            cout << "Options:" << endl;
+            cout << "-t <arg> \tType of the input graph. Can be any of the following types:" << endl;
+            cout << "         \t[graph | tree | smallcovergraph | bipartitegraph]." << endl;
             return 0;
         } else {
             filename = argv[1];
+        }
+        if (argc == 4) {
+            if (string (argv[2]).compare("-t") == 0) {
+                type = argv[3];
+            }
         }
     }
 
     Graph *graph = GraphUtils::load(filename);
     if (graph) {
-        cout << "Loaded: " << endl << *graph << endl;
-        vector<Node*> nodes = graph->getCoverGlouton();
-        cout << "Minimal cover: " << nodes << endl;
-        cout <<"size : " << nodes.size()<<endl;
+        vector<Node*> cover;
+        if (type.compare("tree") == 0) cover = ((Tree*)graph)->getCover();
+        else cover = graph->getCover();
+        cout << "Cover size : " << cover.size()<<endl;
+        cout << "Calculated cover: " << cover << endl;
         delete graph;
+        return 0;
+    } else {
+        cout << "Error loading file. Check your specified path." << endl;
     }
 
     Graph *g = GraphUtils::load(filename);
@@ -65,6 +80,8 @@ int main(int argc, char *argv[]) {
 
     }
 }
+
+
 
 void testRemi1(){
     Node* A = new Node(1);
@@ -99,46 +116,5 @@ void test() {
         Node *n = new Node(i);
         cout << n->getId() << endl;
         nodeList.push_back(n);
-
     }
 }
-
-
-/**
- * @brief Tests the identity of an edge when referenced
- *        by any permutation of two nodes.
- */
-void testEdgeIdentity() {
-    Node *a = new Node(1);
-    Node *b = new Node(2);
-
-    Edge *e1 = new Edge(a, b);
-    Edge *e2 = new Edge(b, a);
-
-    if (*e1 == *e2)
-        cout << "Test successful" << endl;
-    else
-        cout << "Test failed" << endl;
-}
-
-void test3() {
-    srand((unsigned)time(0));
-    Graph *g = new Graph(3);
-    g->addEdge(1, 2);
-    g->addEdge(0, 1);
-    g->addEdge(2, 0);
-    cout << *g << endl;
-    g->removeEdge(2, 0);
-    cout << *g << endl;
-    g->removeEdge(2, 0);
-    cout << *g << endl;
-}
-
-void test4() {
-    srand((unsigned)time(0));
-    Tree t(6); // Random tree with 6 vertices;
-    cout << t;
-    vector<Node*> nodes = t.getCover();
-    cout << "Minimal cover :" << nodes << endl;
-}
-

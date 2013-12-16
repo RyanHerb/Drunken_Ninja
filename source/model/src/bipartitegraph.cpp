@@ -6,7 +6,10 @@ BipartiteGraph::BipartiteGraph(int n, int p) {
 
     // ajoute les noeuds
     for (int  i = 0; i < n; ++i) {
-        addNode();
+       if ((i<cut && cut <= n/2) || (i>=cut && cut >= n/2))
+           solution.push_back(addNode());
+       else
+           addNode();
     }
 
     // ajoute des aretes entre les noeuds de parties différentes
@@ -16,4 +19,8 @@ BipartiteGraph::BipartiteGraph(int n, int p) {
                 addEdge(i, j);
         }
     }
+}
+
+vector<Node*> BipartiteGraph::getSolution(){
+    return solution;
 }
