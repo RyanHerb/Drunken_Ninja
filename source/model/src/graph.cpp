@@ -110,6 +110,8 @@ void Graph::removeEdges(int a) {
 }
 
 Node* Graph::getRandomNode() {
+    if (nodes.size() == 0)
+        return 0;
     int select = rand() % nodes.size();
     map<int,Node*>::iterator it = nodes.begin();
     advance(it, select);
@@ -117,6 +119,8 @@ Node* Graph::getRandomNode() {
 }
 
 Edge* Graph::getRandomEdge() {
+    if (edges.size() == 0)
+        return 0;
     int select = rand() % nbEdges();
     unordered_map<int,Edge*>::iterator it = edges.begin();
     advance(it, select);
@@ -292,7 +296,7 @@ vector<Edge*> Graph::getEdges() const {
     return vec;
 }
 
-void Graph::coverToMinisat(string outputfile) {
+/*void Graph::coverToMinisat(string outputfile) {
     ofstream myFile;
     myFile.open(DEFAULT_DIRECTORY + outputfile);
 
@@ -313,7 +317,8 @@ void Graph::coverToMinisat(string outputfile) {
         exit(1);
     }
 }
-
+*/
+/*
 vector<Node*> Graph::getKCoverWithMinisat(int k) {
     bool contains = false;
     vector<Node*> cover;
@@ -328,6 +333,7 @@ vector<Node*> Graph::getKCoverWithMinisat(int k) {
     }
     return cover;
 }
+*/
 
 vector<int> Graph::getClique(int size) {
     Graph clique = new Graph(size, 100);
