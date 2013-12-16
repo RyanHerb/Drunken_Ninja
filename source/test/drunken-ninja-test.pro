@@ -1,4 +1,6 @@
 TEMPLATE = app
+TARGET = drunken-ninja-test
+
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
@@ -8,5 +10,6 @@ release:DESTDIR = release
 debug:DESTDIR = debug
 
 include(../model/model.pri)
-SOURCES += main.cpp
-HEADERS += config.h
+INCLUDEPATH += src
+SOURCES += src/main.cpp
+HEADERS += src/main.hpp src/rlutil.h
