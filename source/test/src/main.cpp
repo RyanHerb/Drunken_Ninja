@@ -24,6 +24,9 @@ int main(int argc, char *argv[]) {
     testGraphRemoveEdge();
     testGraphGetHighestDegreeNode();
 
+    // BipartiteGraph tests
+    testBipartiteGraphInitialisePartitions();
+
     // Tree tests
     testTreeCover();
 
@@ -173,6 +176,20 @@ void testGraphGetHighestDegreeNode() {
     assertEquals(node->getId(), 0);
     assertEquals(node->degree(), 3);
     cout << endl;
+}
+/**
+ * @brief Tests that BipartiteGraph::InitialisePartitions()
+ *        initialise correctly left and right partitions.
+ */
+void testBipartiteGraphInitialisePartitions() {
+    cout << "bipartiteGraph.initialisePartitions:" << endl;
+    Graph * g = new Graph(4);
+    g->addEdge(0, 1);
+    g->addEdge(0, 2);
+    BipartiteGraph * bg = (BipartiteGraph*)g;
+    bg->initialisePartitions();
+    assertEquals(bg->getLeftPartition()[0]->getId(), 0);
+    assertEquals(bg->getRightPartition().size(), 3);
 }
 
 /****************************************/

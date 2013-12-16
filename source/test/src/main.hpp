@@ -4,6 +4,7 @@
 #include "rlutil.h"
 #include "node.hpp"
 #include "graph.hpp"
+#include "bipartitegraph.hpp"
 #include "tree.hpp"
 #include "graphutils.hpp"
 
@@ -21,6 +22,9 @@ void testGraphAddEdge();
 void testGraphHasEdge();
 void testGraphRemoveEdge();
 void testGraphGetHighestDegreeNode();
+
+// BipartiteGraph unit tests
+void testBipartiteGraphInitialisePartitions();
 
 // Tree unit tests
 void testTreeCover();
