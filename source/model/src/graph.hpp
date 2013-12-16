@@ -1,20 +1,20 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "edge.hpp"
-#include "node.hpp"
-
-#include "../app/config.h" //contains useful variables
-
 #include <map>
 #include <unordered_map>
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include "igraph.hpp"
+#include "edge.hpp"
+#include "node.hpp"
+
+#include "../app/config.h" //contains useful variables
 
 using namespace std;
 
-class Graph {
+class Graph : public IGraph {
 
 protected:
     int counter;
@@ -38,28 +38,16 @@ public:
     Node* getNode(int id);
     void removeNode(Node *n);
     void removeNode(int id);
-
-    // Adds an edge between node A and node B
     void addEdge(int a, int b);
-
-    // Returns true if an edge exists between node A and node B
     bool hasEdge(int a, int b);
-
-    // Removes the edge between node A and node B
     void removeEdge(int a, int b);
-
-    // Removes all the edges of the node A
     void removeEdges(int a);
-
-    // Returns the a const list of Graph's Nodes;
     vector<Node*> getNodes() const;
-
     Node* getRandomNode();
     Edge* getRandomEdge();
-    vector<Node*> getCoverGlouton();
 
+    vector<Node*> getCoverGlouton();
     vector<Edge*> getEdges() const;
-    // Default cover
     vector<Node*> getCover();
     vector<Node*> getKCover(int K);
     int nbEdges();
@@ -68,21 +56,16 @@ public:
     int kernelize(int K, vector<int> * cover);
     Node* getHighestDegreeNode();
 
-    void coverToMinisat(std::string);
-    vector<Node*> minisatToCover(std::string);
 
     //ne marche pas avec un graphe dont on a supprimé des sommets
     Graph* edgeComplementGraph();
     //moins rapide mais marche quel que soit le graphe
     Graph* edgeComplementGraph2();
-};
 
-// To print a Graph
-inline ostream& operator<<(ostream &os, const Graph &graph) {
-    for (Node *node : graph.getNodes()) {
-        os << *node << endl;
-    }
-    return os;
-}
+    void coverToMinisat(string);
+    vector<Node*> minisatToCover(string);
+    string getType();
+
+};
 
 #endif // GRAPH_H

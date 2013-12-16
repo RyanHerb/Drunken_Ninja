@@ -54,7 +54,7 @@ Node* Graph::addNode() {
     return n;
 }
 
-Node * Graph::addNode(int id) {
+Node* Graph::addNode(int id) {
     Node *n = new Node(id);
     this->nodes.insert(make_pair(id, n));
     ++counter;
@@ -366,4 +366,7 @@ Graph* Graph::edgeComplementGraph2(){
         }
     }
     return comp;
+}
+string Graph::getType() {
+    return "graph";
 }
