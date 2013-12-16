@@ -6,6 +6,8 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#else
+#include <sys/time.h>
 #endif // _WIN32
 
 using namespace std;
@@ -68,6 +70,7 @@ string GraphUtils::generateFileName() {
 #else
     timeval tv;
     gettimeofday(&tv, 0);
+    ss << tv.tv_sec << "-" << tv.tv_usec;
 #endif // _WIN32
 
     ss << ".txt";
