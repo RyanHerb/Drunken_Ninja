@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
     testGraphHasEdge();
     testGraphRemoveEdge();
     testGraphGetHighestDegreeNode();
+    testGraphCover();
 
     // BipartiteGraph tests
     testBipartiteGraphInitialisePartitions();
@@ -177,6 +178,21 @@ void testGraphGetHighestDegreeNode() {
     assertEquals(node->degree(), 3);
     cout << endl;
 }
+
+/**
+ * @brief Tests that Graph::getCover always returns
+ *        a valid cover.
+ */
+void testGraphCover() {
+    cout << "graph.getCover" << endl;
+    Graph *graph = new Graph(rand() % 20, 50);
+    assertValidCover(graph, graph->getCover());
+    cout << endl;
+}
+
+/****************************************/
+/********* BipartiteGraph tests *********/
+/****************************************/
 
 /**
  * @brief Tests that BipartiteGraph::InitialisePartitions()
