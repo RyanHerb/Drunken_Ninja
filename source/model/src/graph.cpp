@@ -144,6 +144,11 @@ Edge* Graph::getRandomEdge() {
     return it->second;
 }
 
+Edge* Graph::getEdge(int a, int b) {
+    Edge tmp(nodes[a], nodes[b]);
+    return edges[tmp.hash()];
+}
+
 void Graph::removeNode(int id) {
     removeEdges(id);
     nodes.erase(id);
