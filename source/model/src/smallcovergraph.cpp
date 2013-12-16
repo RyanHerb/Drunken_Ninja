@@ -18,9 +18,9 @@ vector<Node*> SmallCoverGraph::getSolution() {
     return solution;
 }
 
-vector<int> getKCoverRec(Graph *localGraph, int K, vector<int>cover) {
+vector<int> getKCoverRec(Graph *localGraph, int k, vector<int>cover) {
     if (localGraph->nbEdges() > 0) {
-        if (localGraph->nbEdges() >= K*localGraph->nbNodes()) {
+        if (localGraph->nbEdges() >= k*localGraph->nbNodes()) {
             delete localGraph;
             cover.clear();
             return cover;
@@ -37,8 +37,8 @@ vector<int> getKCoverRec(Graph *localGraph, int K, vector<int>cover) {
             localGraph1->removeNode(node1);
             cover2.push_back(node2);
             localGraph2->removeNode(node2);
-            cover1 = getKCoverRec(localGraph1,K-1, cover1);
-            cover2 = getKCoverRec(localGraph2,K-1, cover2);
+            cover1 = getKCoverRec(localGraph1,k-1, cover1);
+            cover2 = getKCoverRec(localGraph2,k-1, cover2);
             if (cover2.size() == 0)
                 cover2 = cover1;
             if (cover1.size() == 0)
@@ -51,7 +51,7 @@ vector<int> getKCoverRec(Graph *localGraph, int K, vector<int>cover) {
     }
 }
 
-vector<Node*> SmallCoverGraph::getKCover(int k) {
+vector<Node*> SmallCoverGraph::getCoverK(int k) {
     Graph *localGraph = new Graph(this);
     vector<int> cover;
     vector<Node*>result;

@@ -43,7 +43,7 @@ public:
     virtual int nbEdges() = 0;
     virtual int nbNodes() = 0;
 
-    virtual int kernelize(int K, vector<int> * cover) = 0;
+    virtual int kernelize(int k, vector<int> *cover) = 0;
     virtual Node* getHighestDegreeNode() = 0;
 
     //virtual void coverToMinisat(string) = 0;
@@ -54,6 +54,7 @@ public:
     virtual IGraph* edgeComplementGraph() = 0;
     // Moins rapide mais marche quel que soit le graphe
     virtual IGraph* edgeComplementGraph2() = 0;
+    virtual vector<Node*> getKCoverWithMinisat(int) = 0;
     //virtual vector<int> getIndependentSet(int size) = 0;
     //virtual vector<int> getClique(int size) = 0;
 };

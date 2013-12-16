@@ -52,7 +52,7 @@ public:
     int nbEdges();
     int nbNodes();
 
-    int kernelize(int K, vector<int> * cover);
+    int kernelize(int k, vector<int> *cover);
     Node* getHighestDegreeNode();
 
     // FIXME Ne marche pas avec un graphe dont on a supprimé des sommets

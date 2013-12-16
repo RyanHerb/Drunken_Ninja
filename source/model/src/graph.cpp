@@ -250,7 +250,6 @@ int Graph::kernelize(int k, vector<int> *cover) {
     return Kprime;
 }
 
-
 int Graph::nbEdges() {
     return edges.size();
 }
@@ -289,22 +288,22 @@ vector<Edge*> Graph::getEdges() const {
     }
 }
 */
-/*
+
 vector<Node*> Graph::getKCoverWithMinisat(int k) {
     bool contains = false;
     vector<Node*> cover;
-    vector<int> nodeIds = this->getIndependantSet(this->getNodes().size() - k);
-    for(Node* node : this->getNodes()) {
-        for(int i : nodeIds) {
+    /*vector<int> nodeIds = this->getIndependantSet(this->getNodes().size() - k);
+    for (Node* node : this->getNodes()) {
+        for (int i : nodeIds) {
             if(node->getId() == i)
                 contains = true;
         }
-        if(!contains)
+        if (!contains)
             cover.push_back(node);
-    }
+    }*/
     return cover;
 }
-*/
+
 
 vector<int> Graph::getClique(int size) {
     Graph clique = new Graph(size, 100);
