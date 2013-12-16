@@ -2,7 +2,7 @@
 
 SmallCoverGraph::SmallCoverGraph(int n, int p, int coverSize) {
     for (int i = 0; i < n; i++) {
-        addNode();
+        solution.push_back(addNode());
     }
     for (int i = 0; i < coverSize; i++) {
         for (int j = i+1; j < n; j++) {
@@ -14,6 +14,10 @@ SmallCoverGraph::SmallCoverGraph(int n, int p, int coverSize) {
 
 SmallCoverGraph::SmallCoverGraph(SmallCoverGraph *g):Graph(g) {
 
+}
+
+vector<Node*> SmallCoverGraph::getSolution(){
+    return solution;
 }
 
 vector<int> getCoverFPT2Rec(Graph *localGraph,int K, vector<int>cover ){
