@@ -18,4 +18,4 @@ HEADERS += \
     $$PWD/src/graphutils.hpp \
     $$PWD/src/edge.hpp \
     $$PWD/src/bipartitegraph.hpp \
-    ../model/src/igraph.hpp
+    $$PWD/src/igraph.hpp
