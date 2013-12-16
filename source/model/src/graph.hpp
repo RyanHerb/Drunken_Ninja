@@ -46,14 +46,13 @@ public:
     Node* getRandomNode();
     Edge* getRandomEdge();
     Edge* getEdge(int a, int b);
-    vector<Node*> getCoverGlouton();
+    vector<Node*> getCoverGreedy();
     vector<Edge*> getEdges() const;
     vector<Node*> getCover();
-    vector<Node*> getKCover(int K);
     int nbEdges();
     int nbNodes();
 
-    int kernelize(int K, vector<int> * cover);
+    int kernelize(int k, vector<int> *cover);
     Node* getHighestDegreeNode();
 
     // FIXME Ne marche pas avec un graphe dont on a supprimé des sommets

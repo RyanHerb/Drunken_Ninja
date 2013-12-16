@@ -185,7 +185,7 @@ Node* Graph::getHighestDegreeNode() {
     return selectedNode;
 }
 
-vector<Node*> Graph::getCoverGlouton() {
+vector<Node*> Graph::getCoverGreedy() {
     Graph *localGraph = new Graph(this);
     vector<int> cover;
     vector<int> degrees; //pour un acces direct au degré de chaque noeud;
@@ -237,39 +237,6 @@ vector<Node*> Graph::getNodes() const {
     return dup;
 }
 
-vector<int> getKCoverRec(Graph *localGraph, int K, vector<int>cover) {
-    if (localGraph->nbEdges() > 0) {
-        if (localGraph->nbEdges() >= K*localGraph->nbNodes()) {
-            delete localGraph;
-            cover.clear();
-            return cover;
-        } else {
-            Edge *e = localGraph->getRandomEdge();
-            Graph *localGraph1 = new Graph(localGraph);
-            Graph *localGraph2 = new Graph(localGraph);
-            int node1 = e->first()->getId();
-            int node2 = e->second()->getId();
-            delete localGraph;
-            vector<int> cover1(cover);
-            vector<int> cover2(cover);
-            cover1.push_back(node1);
-            localGraph1->removeNode(node1);
-            cover2.push_back(node2);
-            localGraph2->removeNode(node2);
-            cover1 = getKCoverRec(localGraph1,K-1, cover1);
-            cover2 = getKCoverRec(localGraph2,K-1, cover2);
-            if (cover2.size() == 0)
-                cover2 = cover1;
-            if (cover1.size() == 0)
-                cover1 = cover2;
-            return cover1.size()>cover2.size() ? cover2 : cover1;
-        }
-    } else {
-        delete localGraph;
-        return cover;
-    }
-}
-
 int Graph::kernelize(int k, vector<int> *cover) {
     cout << "kernelize(" << k << ") : k' = ";
     int Kprime = k;
@@ -281,25 +248,6 @@ int Graph::kernelize(int k, vector<int> *cover) {
     }
     cout << Kprime << endl;
     return Kprime;
-}
-
-vector<Node*> Graph::getKCover(int k) {
-    Graph *localGraph = new Graph(this);
-    vector<int> cover;
-    vector<Node*>result;
-
-    int Kprime = localGraph->kernelize(k, &cover);
-    if (localGraph->nbEdges() > Kprime*localGraph->nbNodes()){
-        cout << "nbEdges : " << localGraph->nbEdges() << endl << "Kprime*K : " << Kprime*k << endl;
-        delete localGraph;
-        return result;
-    } else {
-        cover = getKCoverRec(localGraph, Kprime, cover);
-        for (int nodeId : cover) {
-            result.push_back(nodes[nodeId]);
-        }
-        return result;
-    }
 }
 
 int Graph::nbEdges() {
@@ -340,22 +288,22 @@ vector<Edge*> Graph::getEdges() const {
     }
 }
 */
-/*
+
 vector<Node*> Graph::getKCoverWithMinisat(int k) {
     bool contains = false;
     vector<Node*> cover;
-    vector<int> nodeIds = this->getIndependantSet(this->getNodes().size() - k);
-    for(Node* node : this->getNodes()) {
-        for(int i : nodeIds) {
+    /*vector<int> nodeIds = this->getIndependantSet(this->getNodes().size() - k);
+    for (Node* node : this->getNodes()) {
+        for (int i : nodeIds) {
             if(node->getId() == i)
                 contains = true;
         }
-        if(!contains)
+        if (!contains)
             cover.push_back(node);
-    }
+    }*/
     return cover;
 }
-*/
+
 
 vector<int> Graph::getClique(int size) {
     Graph clique = new Graph(size, 100);

@@ -33,18 +33,17 @@ public:
     virtual Node* getRandomNode() = 0;
     virtual Edge* getRandomEdge() = 0;
     virtual Edge* getEdge(int a, int b) = 0;
-    virtual vector<Node*> getCoverGlouton() = 0;
+    virtual vector<Node*> getCoverGreedy() = 0;
 
     virtual vector<Edge*> getEdges() const = 0;
     // Default cover
     virtual vector<Node*> getCover() = 0;
-    virtual vector<Node*> getKCover(int K) = 0;
     virtual vector<Node*> getCoverDFS() = 0;
     virtual Tree* DepthFirstSearch() = 0;
     virtual int nbEdges() = 0;
     virtual int nbNodes() = 0;
 
-    virtual int kernelize(int K, vector<int> * cover) = 0;
+    virtual int kernelize(int k, vector<int> *cover) = 0;
     virtual Node* getHighestDegreeNode() = 0;
 
     //virtual void coverToMinisat(string) = 0;
@@ -55,6 +54,7 @@ public:
     virtual IGraph* edgeComplementGraph() = 0;
     // Moins rapide mais marche quel que soit le graphe
     virtual IGraph* edgeComplementGraph2() = 0;
+    virtual vector<Node*> getKCoverWithMinisat(int) = 0;
     //virtual vector<int> getIndependentSet(int size) = 0;
     //virtual vector<int> getClique(int size) = 0;
 };

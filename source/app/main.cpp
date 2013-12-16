@@ -57,7 +57,44 @@ void handleGraphGeneration(char *argv[]) {
 }
 
 void handleAlgorithmSelection(char *argv[]) {
-    // TODO
+    string input = argv[1];
+    string type = argv[3];
+    IGraph *g = GraphUtils::load(input);
+    vector<Node*> cover;
+
+    IGraph *graph;
+    if (type.compare("graph") == 0) {
+        graph = new Graph(g);
+    } else if (type.compare("tree") == 0) {
+        graph = new Tree(g);
+    } else if (type.compare("bipartitegraph") == 0) {
+        graph = new BipartiteGraph(g);
+    } else if (type.compare("smallcovergraph") == 0) {
+        graph = new SmallCoverGraph(g);
+    }
+
+    if (string (argv[4]).compare("--getcover") == 0) {
+        cover = graph->getCover();
+    } else if (string (argv[4]).compare("--getcover-greedy") == 0) {
+        cover = graph->getCoverGreedy();
+    } else if (string (argv[4]).compare("--getcover-dfs") == 0) {
+        cover = graph->getCoverDFS();
+    } else if (string (argv[4]).compare("--getcover-minisat") == 0) {
+        cover = graph->getKCoverWithMinisat(atoi(argv[5]));
+    } else if (type.compare("smallcovergraph") == 0) {
+        if (string (argv[4]).compare("--getcover-k") == 0) {
+            cover = ((SmallCoverGraph*)graph)->getCoverK(atoi(argv[5]));
+        } else if (string (argv[4]).compare("--getcover-fpt") == 0) {
+            cover = ((SmallCoverGraph*)graph)->getCoverFPT(atoi(argv[5]));
+        }
+    }
+
+    if (cover.size() > 0) {
+        cout << "Cover size: " << cover.size() << endl;
+        cout << "Cover: " << cover << endl;
+    } else {
+        cout << "Could not find a cover with the specified configuration." << endl;
+    }
 }
 
 void test() {
