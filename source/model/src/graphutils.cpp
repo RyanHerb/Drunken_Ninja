@@ -1,7 +1,14 @@
-#include "graphutils.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <ctime>
+#include "graphutils.hpp"
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <sys/time.h>
+#endif // _WIN32
 
 using namespace std;
 
@@ -30,6 +37,44 @@ Graph* GraphUtils::load(string filename) {
         cout << "Error reading file" << endl;
         return NULL;
     }
+}
+
+void GraphUtils::write(Graph *g) {
+    ofstream output;
+    string filename = generateFileName();
+    output.open(filename);
+
+    if (output.is_open()) {
+        output << g->nbNodes() << endl;
+        for (Node *node : g->getNodes()) {
+            output << node->getId() << ":";
+            for (Node *n : node->getNeighbours()) {
+                output << " " << n->getId();
+            }
+            output << endl;
+        }
+    } else {
+        cout << "Error: could not open specified file." << endl;
+    }
+}
+
+string GraphUtils::generateFileName() {
+    stringstream ss;
+    ss << "graph-";
+
+#ifdef _WIN32
+    SYSTEMTIME st;
+    GetSystemTime(&st);
+    ss << st.wYear << st.wMonth << st.wDay << '-' ;
+    ss << st.wHour << st.wMinute << st.wSecond << '-' << st.wMilliseconds;
+#else
+    timeval tv;
+    gettimeofday(&tv, 0);
+    ss << tv.tv_sec << "-" << tv.tv_usec;
+#endif // _WIN32
+
+    ss << ".txt";
+    return ss.str();
 }
 
 vector<string>& GraphUtils::split(string &s, char delim, vector<string> &elems) {

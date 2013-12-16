@@ -1,5 +1,6 @@
 #include <iostream>
 #include <time.h>
+
 #include "../model/src/node.hpp"
 #include "../model/src/graph.hpp"
 #include "../model/src/tree.hpp"
@@ -7,13 +8,9 @@
 #include "../model/src/bipartitegraph.hpp"
 #include "../model/src/smallcovergraph.hpp"
 
-using namespace std;
+#include "config.h" //includes useful variables, such as DEFAULT_DIRECTORY
 
-#ifdef _WIN32
-const string DEFAULT_INPUT = "../data/graph1.txt";
-#else
-const string DEFAULT_INPUT = "../../data/graph1.txt";
-#endif //_WIN32
+using namespace std;
 
 int main(int argc, char *argv[]) {
     srand((unsigned)time(0));
@@ -45,9 +42,36 @@ int main(int argc, char *argv[]) {
         cout << "Cover size : " << cover.size()<<endl;
         cout << "Calculated cover: " << cover << endl;
         delete graph;
-        return 0;
+        //return 0;
     } else {
         cout << "Error loading file. Check your specified path." << endl;
+    }
+
+    /*Graph *g = GraphUtils::load(filename);
+    if(g) {
+        cout << "Graph loaded:" << endl;
+        cout << "Applying ministat convertion:" << endl;
+        g->coverToMinisat("g.cnf");
+        string cmd = "minisat " + string(DEFAULT_DIRECTORY);
+        cmd += "g.cnf "; cmd += string(DEFAULT_DIRECTORY); cmd += "g_res";
+        system(cmd.c_str());
+        vector<Node*> cover = g->minisatToCover("g_res");
+
+        for(Node* n : cover) {
+            cout << n->getId() << " ";
+        }
+        cout << endl;
+        delete g;
+
+    }*/
+
+    Graph *g = new Graph(4, 100);
+    for(Node* n : g->getNodes()) {
+        cout << n->getId() << ":";
+        for(Node* neighbour : n->getNeighbours()) {
+            cout << " " << neighbour->getId();
+        }
+        cout << endl;
     }
 }
 

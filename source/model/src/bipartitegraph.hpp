@@ -17,6 +17,7 @@ public:
     vector<Node*>getLeftPartition();
     vector<Node*>getRightPartition();
     bool initialisePartitions();
+    string getType();
 };
 
 #endif // BIPARTITEGRAPH_HPP

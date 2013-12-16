@@ -54,7 +54,7 @@ Node* Graph::addNode() {
     return n;
 }
 
-Node * Graph::addNode(int id) {
+Node* Graph::addNode(int id) {
     Node *n = new Node(id);
     this->nodes.insert(make_pair(id, n));
     ++counter;
@@ -291,3 +291,129 @@ vector<Edge*> Graph::getEdges() const {
     }
     return vec;
 }
+
+void Graph::coverToMinisat(string outputfile) {
+    ofstream myFile;
+    myFile.open(DEFAULT_DIRECTORY + outputfile);
+
+    if(myFile.is_open()) {
+        int graphSize = this->getNodes().size();
+        myFile << "p cnf " << graphSize << " " << graphSize << endl;
+
+        int literals = 0;
+        for(Node* node : this->getNodes()) {
+            for(Node* neighbour : node->getNeighbours()) {
+                myFile << node->getId()+1 << " " << neighbour->getId()+1 << " 0" << endl;
+                ++literals;
+            }
+        }
+
+    } else {
+        cout << "Unable to open file " << outputfile << endl;
+        exit(1);
+    }
+}
+
+vector<Node*> Graph::getKCoverWithMinisat(int k) {
+    bool contains = false;
+    vector<Node*> cover;
+    vector<int> nodeIds = this->getIndependantSet(this->getNodes().size() - k);
+    for(Node* node : this->getNodes()) {
+        for(int i : nodeIds) {
+            if(node->getId() == i)
+                contains = true;
+        }
+        if(!contains)
+            cover.push_back(node);
+    }
+    return cover;
+}
+
+vector<int> Graph::getClique(int size) {
+    Graph clique = new Graph(size, 100);
+    return this->getIsomorphicSubgraph(clique);
+}
+
+vector<int> Graph::getIsomorphicSubgraph(Graph subgraph) {
+    ofstream myFile;
+    //stringstream total, injective;
+    myFile.open(DEFAULT_DIRECTORY + "g.cnf");
+    if(myFile.is_open()) {
+        for(Node* k : subgraph.getNodes()) {
+            for(Node* i : this->getNodes()) {
+                for(Node* j : this->getNodes()) {
+                    myFile << "-u" << k->getId()+1 << "v" << i->getId()+1 << " -u" << k->getId()+1 << "v" << j->getId()+1 << " 0" << endl;
+                }
+                //total << k->getId()+1 << i->getId()+1 << " ";
+            }
+            //total << "0" << endl;
+            //myFile << total.flush();
+        }
+    } else {
+        cout << "Unable to open file!" << endl;
+        exit(1);
+    }
+}
+
+vector<Node*> Graph::minisatToCover(string inputFile) {
+    ifstream input;
+    input.open(DEFAULT_DIRECTORY + inputFile);
+    vector<Node*> nodes;
+
+    if(input.is_open()) {
+        string line("");
+        getline(input, line);
+        getline(input, line); // read second line from file
+        istringstream ss(line);
+        string buffer;
+        while(ss >> buffer) {
+            int id = stoi(buffer);
+            if(id > 0) {
+                nodes.push_back(new Node(id-1));
+            }
+        }
+    } else {
+        cout << "Unable to read file, exiting" << endl;
+        exit(1);
+    }
+
+    return nodes;
+}
+
+IGraph* Graph::edgeComplementGraph() {
+    Graph *comp = new Graph(nbNodes(),100);
+    for(Edge* e : this->getEdges()){
+        comp->removeEdge(e->first()->getId(),e->second()->getId());
+    }
+    return comp;
+}
+
+IGraph* Graph::edgeComplementGraph2() {
+    Graph * comp = new Graph(this);
+    Graph * local = new Graph(this);
+    for(Node * compNode : comp->getNodes()){
+        for(Node * compNodeNeighbour : comp->getNodes()){
+            if(!(compNodeNeighbour==compNode)){
+                int id1 = compNode->getId();
+                int id2 = compNodeNeighbour->getId();
+                if(local->hasEdge(id1,id2)){
+                    local->removeEdge(id1,id2);
+                    comp->removeEdge(id1,id2);
+                }
+                else if(!comp->hasEdge(id1,id2)){
+                    comp->addEdge(id1,id2);
+                }
+            }
+        }
+    }
+    return comp;
+}
+
+string Graph::getType() {
+    return "graph";
+}
+
+// TODO uncomment when getClique is implemented
+/*vector<int> Graph::getIndependentSet(int size){
+    return edgeComplementGraph()->getClique(size);
+}*/

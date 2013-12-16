@@ -13,7 +13,7 @@ class Node {
 
 private:
     int id;
-    vector<Node*> neighbors;
+    vector<Node*> neighbours;
 
 public:
     Node();

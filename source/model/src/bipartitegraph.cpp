@@ -87,3 +87,7 @@ vector<Node*> BipartiteGraph::getRightPartition() {
     initialisePartitions();
     return rightPartition;
 }
+
+string BipartiteGraph::getType() {
+    return "bipartitegraph";
+}
