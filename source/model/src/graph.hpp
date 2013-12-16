@@ -23,7 +23,7 @@ protected:
 
 public:
     Graph();
-    Graph(Graph*g);
+    Graph(IGraph *g);
     // Generates a graph with n vertices, labeled from 0 to n-1, but no edges;
     Graph(int n);
 

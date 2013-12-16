@@ -13,7 +13,7 @@ private:
     void BFS(Node * root, Graph * dup);
 public:
     BipartiteGraph(int n, int p);
-    BipartiteGraph(Graph * g);
+    BipartiteGraph(IGraph * g);
     vector<Node*>getSolution();
     vector<Node*>getLeftPartition();
     vector<Node*>getRightPartition();

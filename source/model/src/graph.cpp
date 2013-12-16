@@ -7,7 +7,7 @@ using namespace std;
 
 Graph::Graph():counter(0){}
 
-Graph::Graph(Graph *g) : counter(0) {
+Graph::Graph(IGraph *g) : counter(0) {
     vector<Node *> srcNodes = g->getNodes();
     for (int i = 0; i < srcNodes.size(); ++i) {
         addNode(srcNodes[i]->getId());
@@ -56,35 +56,31 @@ Node* Graph::addNode() {
 
 Node* Graph::addNode(int id) {
     map<int, Node*>::iterator it = nodes.find(id);
-    if (it == nodes.end()){
-        Node *n = new Node(id);
-        this->nodes.insert(make_pair(id, n));
-        ++counter;
-        return n;
-    }
-    else{
+    if (it != nodes.end()) {
         return it->second;
     }
+    Node *n = new Node(id);
+    this->nodes.insert(make_pair(id, n));
+    ++counter;
+    return n;
 }
 
 void Graph::addEdge(int a, int b) {
     map<int, Node*>::iterator it = nodes.find(a);
-    if (it != nodes.end()){
+    if (it != nodes.end()) {
         it = nodes.find(b);
-        if (it != nodes.end()){
+        if (it != nodes.end()) {
             Node *n1 = this->nodes[a];
             Node *n2 = this->nodes[b];
             n1->addNeighbour(this->nodes[b]);
             n2->addNeighbour(this->nodes[a]);
             Edge* e= new Edge(n1,n2);
             edges.insert(make_pair(e->hash(),e));
+        } else {
+            cerr << "Node " << b << " does not exist" << endl;
         }
-        else{
-            cout<<b<<" doesnt exist"<<endl;
-        }
-    }
-    else{
-        cout<<a<<" doesnt exist"<<endl;
+    } else {
+        cout << "Node " << a << " does not exist" << endl;
     }
 }
 

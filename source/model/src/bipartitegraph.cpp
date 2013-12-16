@@ -1,5 +1,7 @@
 #include "bipartitegraph.hpp"
 
+BipartiteGraph::BipartiteGraph(IGraph * g) : Graph(g){}
+
 BipartiteGraph::BipartiteGraph(int n, int p) {
     // tire au hasard la taille d'une partie, entre 1 et n-1
     int cut = (rand()%(n-1)) +1;
@@ -21,10 +23,7 @@ BipartiteGraph::BipartiteGraph(int n, int p) {
     }
 }
 
-BipartiteGraph::BipartiteGraph(Graph * g) : Graph(g){
-}
-
-void BipartiteGraph::BFS(Node * root, Graph *dup){
+void BipartiteGraph::BFS(Node * root, Graph *dup) {
     queue<Node*> calls[2];
     vector<Node*> tmpPartitions[2];
     vector<bool> visited(nbNodes(), false);
@@ -33,7 +32,7 @@ void BipartiteGraph::BFS(Node * root, Graph *dup){
     calls[i].push(root);
     while (!calls[i].empty()){
         while (!calls[i].empty()){
-            Node * current = calls[i].front();
+            Node *current = calls[i].front();
             calls[i].pop();
             tmpPartitions[i].push_back(current);
             for (Node * v : current->getNeighbours()){
@@ -49,27 +48,25 @@ void BipartiteGraph::BFS(Node * root, Graph *dup){
 
     if (tmpPartitions[i].size() > tmpPartitions[1-i].size())
         i = 1 - i;
-    for (Node * n : tmpPartitions[i])
+    for (Node *n : tmpPartitions[i])
         leftPartition.push_back(n);
     i = 1 - i;
-    for (Node * n : tmpPartitions[i])
+    for (Node  *n : tmpPartitions[i])
         rightPartition.push_back(n);
     return;
 }
-
-
 
 bool BipartiteGraph::initialisePartitions(){
     if((rightPartition.size() != 0) || (nbNodes() == 0))
         return true;
     Graph dup(this);
 
-    Edge * edge;
+    Edge *edge;
     while((edge = dup.getRandomEdge()) != 0){
         BFS(edge->first(), &dup);
     }
 
-    Node * node;
+    Node *node;
     while((node = dup.getRandomNode()) != 0){
         rightPartition.push_back(getNode(node->getId()));
         dup.removeNode(node);
