@@ -85,22 +85,36 @@ void BipartiteGraph::initialisePartitions(){
 
 vector<Edge *> BipartiteGraph::DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<int> * visited, vector<int> * marked) {
 
-    if ((marked->at(current->getId()) == 0) && (partition[current->getId()] == 0)){
-
+    if ((marked->at(current->getId()) == 0) && (partition[current->getId()] == 0))
         return vector<Edge *>(1,getEdge(current->getId(),previous->getId()));
+    vector<Edge *> resultat;
+    if((marked->at(current->getId()) == 1) &&  (partition[current->getId()] == 0)){
+        for(Edge * e : *matching) {
+            if(e->first() == current){
+                resultat = DFSforAugmentingPathRec(e->second(), current, matching, visited, marked);
+            }
+            else if(e->second() == current)
+                resultat = DFSforAugmentingPathRec(e->first(), current, matching, visited, marked);
+        }
+
     }
-
-    for (Node * v : current->getNeighbours()){
-        if (visited->at(v->getId()) == 0){
-            visited->at(v->getId()) = 1;
-
-            vector<Edge *> resultat = DFSforAugmentingPathRec(v, current, matching, visited, marked);
-            if (resultat.size() != 0) {
-                if(previous != 0)
-                    resultat.push_back(getEdge(current->getId(),previous->getId()));
-                return resultat;
+    else{
+        for (Node * v : current->getNeighbours()){
+            if (visited->at(v->getId()) == 0){
+                visited->at(v->getId()) = 1;
+                resultat = DFSforAugmentingPathRec(v, current, matching, visited, marked);
+                if (resultat.size() != 0) {
+                    if(previous != 0)
+                        resultat.push_back(getEdge(current->getId(),previous->getId()));
+                    return resultat;
+                }
             }
         }
+    }
+    if (resultat.size() != 0) {
+        if(previous != 0)
+            resultat.push_back(getEdge(current->getId(),previous->getId()));
+        return resultat;
     }
     return vector<Edge *>();
 }
@@ -163,7 +177,7 @@ vector<Node*> BipartiteGraph::getRightPartition() {
 vector<Node*> BipartiteGraph::getCover(){
     BipartiteGraph dup(this);
     vector<Node*> result;
-    getMaximumMatching();
+    vector<Edge *> mMatching = getMaximumMatching();
     for (Node * node : dup.getNodes()) {
         if (marked.at(node->getId()) == 0) {
             for(Node * neig : node->getNeighbours()) {
@@ -182,7 +196,13 @@ vector<Node*> BipartiteGraph::getCover(){
     Node * remainingMarkedNode;
     while((remainingMarkedNode = dup.getRandomNode()) != 0) {
         result.push_back(getNode(remainingMarkedNode->getId()));
-        Node * neig = remainingMarkedNode->getNeighbours().at(0);
+        Node * neig;
+        for( Edge * e : mMatching) {
+            if (e->first()->getId() == remainingMarkedNode->getId())
+                neig = dup.getNode(e->second()->getId());
+            else if (e->second()->getId() == remainingMarkedNode->getId())
+                neig = dup.getNode(e->first()->getId());
+        }
         dup.removeNode(neig);
         dup.removeNode(remainingMarkedNode);
     }

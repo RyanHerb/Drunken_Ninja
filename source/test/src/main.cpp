@@ -246,6 +246,7 @@ void testBipartiteGraphGetCover() {
     vector<Node *> cover = bg->getCover();
     assertValidCover(bg,cover);
     assertEquals(cover.size(), 3);
+    cout << "test print cover :"  << cover << endl;
     cout << endl;
 }
 
