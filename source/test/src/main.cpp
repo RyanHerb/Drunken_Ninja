@@ -224,7 +224,6 @@ void testBipartiteGraphGetMaximumMatching() {
     g->addEdge(1, 5);
     g->addEdge(2, 3);
     BipartiteGraph * bg = new BipartiteGraph(g);
-    bg->initialisePartitions();
     vector<Edge *> matching = bg->getMaximumMatching();
     assertEquals(matching.size(), 3);
     cout << endl;
