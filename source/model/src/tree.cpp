@@ -61,7 +61,6 @@ vector<Node*> Tree::getLeaves() {
 }
 
 vector<Node*> Tree::getCover() {
-
     Tree dup(this);
     vector<int> cover;
     vector<Node*> leaves = dup.getLeaves();

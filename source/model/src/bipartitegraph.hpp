@@ -12,6 +12,7 @@ private:
     vector<Node*> rightPartition;
     //pour un acces à la partition d'un Node en O(1)
     vector<int> partition;
+    vector<int> marked;
 
     void BFSforInitialisation(Node * root, Graph * dup);
     vector<Edge *> DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<int> * visited, vector<int> * marked);

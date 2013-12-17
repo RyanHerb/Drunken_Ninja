@@ -27,6 +27,7 @@ void testGraphCover();
 // BipartiteGraph unit tests
 void testBipartiteGraphInitialisePartitions();
 void testBipartiteGraphGetMaximumMatching();
+void testBipartiteGraphGetCover();
 
 // Tree unit tests
 void testTreeCover();

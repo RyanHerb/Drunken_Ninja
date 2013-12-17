@@ -136,7 +136,7 @@ vector<Edge *> BipartiteGraph::getAugmentedMatching(vector<Edge *> *matching, ve
 vector<Edge*> BipartiteGraph::getMaximumMatching() {
     vector<Edge*> matching;
     vector<int> visited(nbNodes(), 0);
-    vector<int> marked(nbNodes(), 0);
+    marked = vector<int>(nbNodes(), 0);
     vector<Edge *> path;
     for(Node * n : leftPartition) {
         visited = vector<int>(nbNodes(), 0);
@@ -161,7 +161,31 @@ vector<Node*> BipartiteGraph::getRightPartition() {
 }
 
 vector<Node*> BipartiteGraph::getCover(){
+    BipartiteGraph dup(this);
     vector<Node*> result;
+    getMaximumMatching();
+    for (Node * node : dup.getNodes()) {
+        if (marked.at(node->getId()) == 0) {
+            for(Node * neig : node->getNeighbours()) {
+                if (marked.at(neig->getId()) == 1) {
+                    result.push_back(getNode(neig->getId()));
+                    for(Node * neig2 : neig->getNeighbours()) {
+                        if (marked.at(neig2->getId()))
+                            dup.removeNode(neig2);
+                    }
+                    dup.removeNode(neig);
+                }
+            }
+            dup.removeNode(node);
+        }
+    }
+    Node * remainingMarkedNode;
+    while((remainingMarkedNode = dup.getRandomNode()) != 0) {
+        result.push_back(getNode(remainingMarkedNode->getId()));
+        Node * neig = remainingMarkedNode->getNeighbours().at(0);
+        dup.removeNode(neig);
+        dup.removeNode(remainingMarkedNode);
+    }
     return result;
 }
 
