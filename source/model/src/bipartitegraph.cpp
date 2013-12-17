@@ -83,16 +83,16 @@ void BipartiteGraph::initialisePartitions(){
         partition[n->getId()] = 1;
 }
 
-vector<Edge *> BipartiteGraph::DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<bool> * visited, vector<bool> * marked) {
+vector<Edge *> BipartiteGraph::DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<int> * visited, vector<int> * marked) {
 
-    if (!marked->at(current->getId()) && (partition[current->getId()] == 0)){
+    if ((marked->at(current->getId()) == 0) && (partition[current->getId()] == 0)){
 
         return vector<Edge *>(1,getEdge(current->getId(),previous->getId()));
     }
 
     for (Node * v : current->getNeighbours()){
-        if (!visited->at(v->getId())){
-            visited->at(v->getId()) = true;
+        if (visited->at(v->getId()) == 0){
+            visited->at(v->getId()) = 1;
 
             vector<Edge *> resultat = DFSforAugmentingPathRec(v, current, matching, visited, marked);
             if (resultat.size() != 0) {
@@ -104,13 +104,16 @@ vector<Edge *> BipartiteGraph::DFSforAugmentingPathRec(Node * current, Node * pr
     }
     return vector<Edge *>();
 }
-vector<Edge *> BipartiteGraph::getAugmentedMatching(vector<Edge *> *matching, vector<Edge *> *path) {
+vector<Edge *> BipartiteGraph::getAugmentedMatching(vector<Edge *> *matching, vector<Edge *> *path, vector<int> * marked) {
     //TODO baisser la complexyté de cette fonction
     vector<Edge *> result;
+    *marked = vector<int>(nbNodes(), 0);
     int i = 0;
     for(Edge * edge : *path) {
         if((i%2) == 0) {
             result.push_back(edge);
+            marked->at(edge->first()->getId()) = 1;
+            marked->at(edge->second()->getId()) = 1;
         }
         ++i;
     }
@@ -121,21 +124,24 @@ vector<Edge *> BipartiteGraph::getAugmentedMatching(vector<Edge *> *matching, ve
             if (edge == pedge)
                 valideEdge = false;
         }
-        if (valideEdge)
+        if (valideEdge){
             result.push_back(edge);
+            marked->at(edge->first()->getId()) = 1;
+            marked->at(edge->second()->getId()) = 1;
+        }
     }
     return result;
 }
 
 vector<Edge*> BipartiteGraph::getMaximumMatching() {
     vector<Edge*> matching;
-    vector<bool> visited(nbNodes(), false);
-    vector<bool> marked(nbNodes(), false);
+    vector<int> visited(nbNodes(), 0);
+    vector<int> marked(nbNodes(), 0);
     vector<Edge *> path;
     for(Node * n : leftPartition) {
-        visited = vector<bool>(nbNodes(), false);
+        visited = vector<int>(nbNodes(), 0);
         path = DFSforAugmentingPathRec(n, 0, &matching, &visited, &marked);
-        matching = getAugmentedMatching(&matching, &path);
+        matching = getAugmentedMatching(&matching, &path, &marked);
     }
     return matching;
 }

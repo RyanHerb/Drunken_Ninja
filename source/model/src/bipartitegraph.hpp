@@ -14,8 +14,8 @@ private:
     vector<int> partition;
 
     void BFSforInitialisation(Node * root, Graph * dup);
-    vector<Edge *> DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<bool> * visited, vector<bool> * marked);
-    vector<Edge *> getAugmentedMatching(vector<Edge *> *matching, vector<Edge *> *path);
+    vector<Edge *> DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<int> * visited, vector<int> * marked);
+    vector<Edge *> getAugmentedMatching(vector<Edge *> *matching, vector<Edge *> *path, vector<int> * marked);
 
 public:
     BipartiteGraph(int n, int p);
