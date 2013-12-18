@@ -68,6 +68,7 @@ public:
     vector<Node*> getKCoverWithMinisat(int);
     vector<int> getClique(int);
     vector<int> getIsomorphicSubgraph(Graph);
+    void supressIsolatedNode();
 };
 
 #endif // GRAPH_H

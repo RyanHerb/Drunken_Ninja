@@ -57,6 +57,7 @@ public:
     virtual vector<Node*> getKCoverWithMinisat(int) = 0;
     //virtual vector<int> getIndependentSet(int size) = 0;
     //virtual vector<int> getClique(int size) = 0;
+    virtual void supressIsolatedNode() = 0;
 };
 
 // To print a Graph

@@ -187,6 +187,7 @@ Node* Graph::getHighestDegreeNode() {
 
 vector<Node*> Graph::getCoverGreedy() {
     Graph *localGraph = new Graph(this);
+    localGraph->supressIsolatedNode();
     vector<int> cover;
     vector<int> degrees; //pour un acces direct au degré de chaque noeud;
     vector< list<int> > nodesByDegree; //pour trier les noeuds en fonction de leur degré
@@ -238,6 +239,7 @@ vector<Node*> Graph::getNodes() const {
 }
 
 int Graph::kernelize(int k, vector<int> *cover) {
+    supressIsolatedNode();
     cout << "kernelize(" << k << ") : k' = ";
     int Kprime = k;
     Node *highestDegreeNode;
@@ -423,8 +425,16 @@ Tree* Graph::DepthFirstSearch(){
 
 
 vector<Node*> Graph::getCoverDFS(){
+    supressIsolatedNode();
     Tree * t = DepthFirstSearch();
     return t->getCover();
+}
+
+void Graph::supressIsolatedNode(){
+    for (Node*n : getNodes()){
+        if (n->degree() == 0)
+            removeNode(n);
+    }
 }
 
 // TODO uncomment when getClique is implemented
