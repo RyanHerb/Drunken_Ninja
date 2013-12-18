@@ -1,6 +1,10 @@
 #include "tree.hpp"
 
-// Generates a random tree with n vertices;
+Tree::Tree(){}
+
+Tree::Tree(IGraph *g): Graph(g){}
+
+// Generates a random tree with n vertices
 Tree::Tree(int n):Graph(1) {
     for(int i=1 ; i<n ; i++){
         addNode();
@@ -47,11 +51,6 @@ Tree::Tree(int n):Graph(1) {
     }
 }
 
-
-Tree::Tree(Tree * t):Graph(t) {
-
-}
-
 vector<Node*> Tree::getLeaves() {
     vector<Node*> leaves;
     for (Node *node : getNodes()) {
@@ -62,7 +61,6 @@ vector<Node*> Tree::getLeaves() {
 }
 
 vector<Node*> Tree::getCover() {
-
     Tree dup(this);
     vector<int> cover;
     vector<Node*> leaves = dup.getLeaves();

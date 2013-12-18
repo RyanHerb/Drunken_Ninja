@@ -1,13 +1,13 @@
+#include <algorithm>
 #include "graph.hpp"
 #include "node.hpp"
-#include <algorithm>
-
+#include "tree.hpp"
 
 using namespace std;
 
-Graph::Graph(){}
+Graph::Graph():counter(0){}
 
-Graph::Graph(Graph *g) : counter(0) {
+Graph::Graph(IGraph *g) : counter(0) {
     vector<Node *> srcNodes = g->getNodes();
     for (int i = 0; i < srcNodes.size(); ++i) {
         addNode(srcNodes[i]->getId());
@@ -55,6 +55,10 @@ Node* Graph::addNode() {
 }
 
 Node* Graph::addNode(int id) {
+    map<int, Node*>::iterator it = nodes.find(id);
+    if (it != nodes.end()) {
+        return it->second;
+    }
     Node *n = new Node(id);
     this->nodes.insert(make_pair(id, n));
     ++counter;
@@ -62,12 +66,22 @@ Node* Graph::addNode(int id) {
 }
 
 void Graph::addEdge(int a, int b) {
-    Node *n1 = this->nodes[a];
-    Node *n2 = this->nodes[b];
-    n1->addNeighbour(this->nodes[b]);
-    n2->addNeighbour(this->nodes[a]);
-    Edge* e= new Edge(n1,n2);
-    edges.insert(make_pair(e->hash(),e));
+    map<int, Node*>::iterator it = nodes.find(a);
+    if (it != nodes.end()) {
+        it = nodes.find(b);
+        if (it != nodes.end()) {
+            Node *n1 = this->nodes[a];
+            Node *n2 = this->nodes[b];
+            n1->addNeighbour(this->nodes[b]);
+            n2->addNeighbour(this->nodes[a]);
+            Edge* e= new Edge(n1,n2);
+            edges.insert(make_pair(e->hash(),e));
+        } else {
+            cerr << "Node " << b << " does not exist" << endl;
+        }
+    } else {
+        cout << "Node " << a << " does not exist" << endl;
+    }
 }
 
 bool Graph::hasEdge(int a, int b) {
@@ -103,13 +117,18 @@ void Graph::removeEdge(int a, int b) {
 }
 
 void Graph::removeEdges(int a) {
-    Node *n = nodes[a];
-    for (Node *node : n->getNeighbours()) {
-        removeEdge(a, node->getId());
+    map<int, Node*>::iterator it = nodes.find(a);
+    if (it != nodes.end()){
+        Node *n = nodes[a];
+        for (Node *node : n->getNeighbours()) {
+            removeEdge(a, node->getId());
+        }
     }
 }
 
 Node* Graph::getRandomNode() {
+    if (nodes.size() == 0)
+        return 0;
     int select = rand() % nodes.size();
     map<int,Node*>::iterator it = nodes.begin();
     advance(it, select);
@@ -117,10 +136,17 @@ Node* Graph::getRandomNode() {
 }
 
 Edge* Graph::getRandomEdge() {
+    if (edges.size() == 0)
+        return 0;
     int select = rand() % nbEdges();
     unordered_map<int,Edge*>::iterator it = edges.begin();
     advance(it, select);
     return it->second;
+}
+
+Edge* Graph::getEdge(int a, int b) {
+    Edge tmp(nodes[a], nodes[b]);
+    return edges[tmp.hash()];
 }
 
 void Graph::removeNode(int id) {
@@ -159,8 +185,9 @@ Node* Graph::getHighestDegreeNode() {
     return selectedNode;
 }
 
-vector<Node*> Graph::getCoverGlouton() {
+vector<Node*> Graph::getCoverGreedy() {
     Graph *localGraph = new Graph(this);
+    localGraph->supressIsolatedNode();
     vector<int> cover;
     vector<int> degrees; //pour un acces direct au degré de chaque noeud;
     vector< list<int> > nodesByDegree; //pour trier les noeuds en fonction de leur degré
@@ -211,40 +238,8 @@ vector<Node*> Graph::getNodes() const {
     return dup;
 }
 
-vector<int> getKCoverRec(Graph *localGraph, int K, vector<int>cover) {
-    if (localGraph->nbEdges() > 0) {
-        if (localGraph->nbEdges() >= K*localGraph->nbNodes()) {
-            delete localGraph;
-            cover.clear();
-            return cover;
-        } else {
-            Edge *e = localGraph->getRandomEdge();
-            Graph *localGraph1 = new Graph(localGraph);
-            Graph *localGraph2 = new Graph(localGraph);
-            int node1 = e->first()->getId();
-            int node2 = e->second()->getId();
-            delete localGraph;
-            vector<int> cover1(cover);
-            vector<int> cover2(cover);
-            cover1.push_back(node1);
-            localGraph1->removeNode(node1);
-            cover2.push_back(node2);
-            localGraph2->removeNode(node2);
-            cover1 = getKCoverRec(localGraph1,K-1, cover1);
-            cover2 = getKCoverRec(localGraph2,K-1, cover2);
-            if (cover2.size() == 0)
-                cover2 = cover1;
-            if (cover1.size() == 0)
-                cover1 = cover2;
-            return cover1.size()>cover2.size() ? cover2 : cover1;
-        }
-    } else {
-        delete localGraph;
-        return cover;
-    }
-}
-
 int Graph::kernelize(int k, vector<int> *cover) {
+    supressIsolatedNode();
     cout << "kernelize(" << k << ") : k' = ";
     int Kprime = k;
     Node *highestDegreeNode;
@@ -255,25 +250,6 @@ int Graph::kernelize(int k, vector<int> *cover) {
     }
     cout << Kprime << endl;
     return Kprime;
-}
-
-vector<Node*> Graph::getKCover(int k) {
-    Graph *localGraph = new Graph(this);
-    vector<int> cover;
-    vector<Node*>result;
-
-    int Kprime = localGraph->kernelize(k, &cover);
-    if (localGraph->nbEdges() > Kprime*localGraph->nbNodes()){
-        cout << "nbEdges : " << localGraph->nbEdges() << endl << "Kprime*K : " << Kprime*k << endl;
-        delete localGraph;
-        return result;
-    } else {
-        cover = getKCoverRec(localGraph, Kprime, cover);
-        for (int nodeId : cover) {
-            result.push_back(nodes[nodeId]);
-        }
-        return result;
-    }
 }
 
 int Graph::nbEdges() {
@@ -314,6 +290,7 @@ vector<Edge*> Graph::getEdges() const {
     }
 }*/
 
+
 vector<Node*> Graph::getKCoverWithMinisat(int k) {
     vector<Node*> cover;
     vector<int> nodeIds = this->getIndependentSet(this->getNodes().size() - k);
@@ -334,6 +311,7 @@ vector<int> Graph::getIndependentSet(int size){
     return result;
 }
 
+
 vector<int> Graph::getClique(int size) {
     Graph *clique = new Graph(size, 100);
     vector<int> result = this->getIsomorphicSubgraph(clique);
@@ -349,7 +327,7 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
     stringstream total, tmp;
     int numSubNodes = subgraph->getNodes().size();
     int numNodes = this->getNodes().size();
-    myFile.open(DEFAULT_DIRECTORY + "g2.cnf");
+    myFile.open(DEFAULT_INPUT_DIRECTORY + "g.cnf");
 
     if(myFile.is_open()) {
         int numClauses = 0;
@@ -456,7 +434,7 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
 
 vector<Node*> Graph::minisatToCover(string inputFile) {
     ifstream input;
-    input.open(DEFAULT_DIRECTORY + inputFile);
+    input.open(DEFAULT_INPUT_DIRECTORY + inputFile);
     vector<Node*> nodes;
 
     if(input.is_open()) {
@@ -509,4 +487,51 @@ Graph* Graph::edgeComplementGraph2() {
 
 string Graph::getType() {
     return "graph";
+}
+
+Tree* Graph::DepthFirstSearch(){
+    Graph * localGraph = new Graph(this);
+    Tree * result = new Tree();
+    list<Node*> stack;
+    vector<bool> done;
+    for (Node* n : getNodes()){
+        while(done.size() <= n->getId()){
+            done.push_back(false);
+        }
+    }
+    Node * current = localGraph->getHighestDegreeNode();
+    stack.push_front(current);
+    result->addNode(current->getId());
+    while(stack.size() > 0){
+        current = stack.front();
+        int id = current->getId();
+        stack.pop_front();
+        if(!done[id]){
+            done[id] = true;
+            for(Node* neighbour : current->getNeighbours()){
+                int nId =neighbour->getId();
+                if(!done[nId]){
+                    result->removeEdges(nId);
+                    result->addNode(nId);
+                    result->addEdge(nId, id);
+                    stack.push_front(neighbour);
+                }
+            }
+        }
+    }
+    return result;
+}
+
+
+vector<Node*> Graph::getCoverDFS(){
+    supressIsolatedNode();
+    Tree * t = DepthFirstSearch();
+    return t->getCover();
+}
+
+void Graph::supressIsolatedNode(){
+    for (Node*n : getNodes()){
+        if (n->degree() == 0)
+            removeNode(n);
+    }
 }

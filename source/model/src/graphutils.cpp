@@ -39,9 +39,9 @@ Graph* GraphUtils::load(string filename) {
     }
 }
 
-void GraphUtils::write(Graph *g) {
+void GraphUtils::write(IGraph *g, string type) {
     ofstream output;
-    string filename = generateFileName();
+    string filename = generateFileName(type);
     output.open(filename);
 
     if (output.is_open()) {
@@ -58,9 +58,9 @@ void GraphUtils::write(Graph *g) {
     }
 }
 
-string GraphUtils::generateFileName() {
+string GraphUtils::generateFileName(string type) {
     stringstream ss;
-    ss << "graph-";
+    ss << DEFAULT_OUTPUT_DIRECTORY << type << "-";
 
 #ifdef _WIN32
     SYSTEMTIME st;

@@ -23,7 +23,7 @@ protected:
 
 public:
     Graph();
-    Graph(Graph*g);
+    Graph(IGraph *g);
     // Generates a graph with n vertices, labeled from 0 to n-1, but no edges;
     Graph(int n);
 
@@ -45,15 +45,14 @@ public:
     vector<Node*> getNodes() const;
     Node* getRandomNode();
     Edge* getRandomEdge();
-
-    vector<Node*> getCoverGlouton();
+    Edge* getEdge(int a, int b);
+    vector<Node*> getCoverGreedy();
     vector<Edge*> getEdges() const;
     vector<Node*> getCover();
-    vector<Node*> getKCover(int K);
     int nbEdges();
     int nbNodes();
 
-    int kernelize(int K, vector<int> * cover);
+    int kernelize(int k, vector<int> *cover);
     Node* getHighestDegreeNode();
 
     // FIXME Ne marche pas avec un graphe dont on a supprimé des sommets
@@ -66,9 +65,12 @@ public:
     string getType();
 
     vector<int> getIndependentSet(int);
+    vector<Node*> getCoverDFS();
+    Tree* DepthFirstSearch();
     vector<Node*> getKCoverWithMinisat(int);
     vector<int> getClique(int);
     vector<int> getIsomorphicSubgraph(Graph*);
+    void supressIsolatedNode();
 };
 
 #endif // GRAPH_H
