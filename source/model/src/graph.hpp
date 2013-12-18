@@ -73,4 +73,6 @@ public:
     void supressIsolatedNode();
 };
 
+vector<int> getSatCover(unordered_map<int, int>, unordered_map<int, int>);
+
 #endif // GRAPH_H

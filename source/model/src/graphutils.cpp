@@ -91,3 +91,7 @@ vector<string> GraphUtils::split(string &s, char delim) {
     split(s, delim, elems);
     return elems;
 }
+
+int GraphUtils::hashPair(int i, int j) {
+    return (i + j) * (i + j + 1)/2 + j;
+}

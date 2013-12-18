@@ -1,4 +1,5 @@
 #include <algorithm>
+#include "graphutils.hpp"
 #include "graph.hpp"
 #include "node.hpp"
 #include "tree.hpp"
@@ -292,6 +293,8 @@ vector<Edge*> Graph::getEdges() const {
 
 
 vector<Node*> Graph::getKCoverWithMinisat(int k) {
+    if(k >= (this->getNodes()).size())
+        return this->getNodes();
     vector<Node*> cover;
     vector<int> nodeIds = this->getIndependentSet(this->getNodes().size() - k);
     if(nodeIds.size() > 0) {
@@ -320,33 +323,34 @@ vector<int> Graph::getClique(int size) {
 }
 
 vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
-    unordered_map<int, int> vars, reverse_vars;
-    unordered_map<int, int > hashes;
-    vector<int> poo;
+    unordered_map<int, int> vars, reverse_vars, hashes;
     ofstream myFile;
     stringstream total, tmp;
+
     int numSubNodes = subgraph->getNodes().size();
     int numNodes = this->getNodes().size();
+
     myFile.open(DEFAULT_INPUT_DIRECTORY + "g.cnf");
 
     if(myFile.is_open()) {
         int numClauses = 0;
         int numLits = 0;
-        myFile << "c" <<endl;
-        myFile << "c #vars:" << numNodes*numSubNodes;
+
         for(Node* k : subgraph->getNodes()) {
             for(Node* i : this->getNodes()) {
-                int ki = ((k->getId()+1) + (i->getId()+1)) * ((k->getId()+1) + (i->getId()+1) + 1)/2 + (i->getId()+1);
+                int ki = GraphUtils::hashPair(k->getId()+1, i->getId()+1);
                 hashes.insert(make_pair(ki, i->getId()));
+
                 if(vars.find(ki) == vars.end()) {
                     reverse_vars.insert(make_pair(vars.size()+1, ki));
                     vars.insert(make_pair(ki, vars.size()+1));
                 }
+
                 for(Node* j : this->getNodes()) {
                     if(i->getId() != j->getId()) {
-                        // function is a function
-                        int kj = ((k->getId()+1) + (j->getId()+1)) * ((k->getId()+1) + (j->getId()+1) + 1)/2 + (j->getId()+1);
+                        int kj = GraphUtils::hashPair(k->getId()+1, j->getId()+1);
                         hashes.insert(make_pair(kj, j->getId()));
+
                         if(vars.find(kj) == vars.end()) {
                             reverse_vars.insert(make_pair(vars.size()+1, kj));
                             vars.insert(make_pair(kj, vars.size()+1));
@@ -356,27 +360,32 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
                         numLits += 2;
                     }
                 }
+
                 // function is total
                 total << vars[ki] << " ";
                 ++numLits;
+
                 for(Node* k2 : subgraph->getNodes()) {
                     if(k->getId() != k2->getId()) {
-                        int k2i = ((k2->getId()+1) + (i->getId()+1)) * ((k2->getId()+1) + (i->getId()+1) + 1)/2 + (i->getId()+1);
+
+                        int k2i = GraphUtils::hashPair(k2->getId()+1, i->getId()+1);
                         hashes.insert(make_pair(k2i, i->getId()));
                         if(vars.find(k2i) == vars.end()) {
                             reverse_vars.insert(make_pair(vars.size()+1, k2i));
                             vars.insert(make_pair(k2i, vars.size()+1));
                         }
+
                         // function is injective
                         tmp << "-" << vars[ki] << " -" << vars[k2i] << " 0" << endl;
                         ++numClauses;
                         numLits += 2;
                         for(Node* i2 : this->getNodes()) {
                             if(i->getId() != i2->getId()) {
+
                                 // in our case, subgraph is a clique, so whichever pair of vertices we chose, there will always be an edge to join them
                                 // Therefore we can remove the conditions stating that the edge must not be in the subgraph.
                                 if(!this->hasEdge(i->getId(), i2->getId())) {
-                                    int k2i2 = ((k2->getId()+1) + (i2->getId()+1)) * ((k2->getId()+1) + (i2->getId()+1) + 1)/2 + (i2->getId()+1);
+                                    int k2i2 = GraphUtils::hashPair(k2->getId()+1, i2->getId()+1);
                                     hashes.insert(make_pair(k2i2, i2->getId()));
                                     if(vars.find(k2i2) == vars.end()) {
                                         reverse_vars.insert(make_pair(vars.size()+1, k2i2));
@@ -392,44 +401,55 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
                     }
                 }
             }
+
             total << "0" << endl;
             tmp << total.rdbuf();
             ++numClauses;
             total.flush();
         }
-        myFile << "    #clauses:" << numClauses << "    #lits:" << numLits << endl;
+
+        // Useful information for minisat
+        myFile << "c" <<endl;
+        myFile << "c #vars:" << numNodes*numSubNodes << "    #clauses:" << numClauses << "    #lits:" << numLits << endl;
         myFile << "c" << endl;
+
+        // append all clauses to myFile
         myFile << tmp.rdbuf();
         tmp.flush();
         myFile.close();
-        stringstream cmd;
-        cmd << "minisat " << DEFAULT_DIRECTORY << "g2.cnf " << DEFAULT_DIRECTORY << "g2_res";
-        string cmdString = cmd.str();
-        system(cmdString.c_str());
-        ifstream result;
-        stringstream fileRes;
-        fileRes << DEFAULT_DIRECTORY << "g2_res";
-        result.open(fileRes.str());
-        if(result.is_open()) {
-            string line("");
-            getline(result, line);
-            if(line == "SAT") {
-                getline(result, line);
-                istringstream iss(line);
-                string buffer;
-                while(iss >> buffer) {
-                    int val = stoi(buffer);
-                    if(val > 0) {
-                        poo.push_back(hashes.find(reverse_vars.find(val)->second)->second);
-                    }
+
+        vector<int> result = getSatCover(reverse_vars, hashes);
+        return result;
+    }
+}
+
+vector<int> getSatCover(unordered_map<int, int> reverse_vars, unordered_map<int, int> hashes) {
+    vector<int> result;
+    stringstream cmd;
+    cmd << "minisat " << DEFAULT_INPUT_DIRECTORY << "g.cnf " << DEFAULT_OUTPUT_DIRECTORY << "g_res";
+    string cmdString = cmd.str();
+    system(cmdString.c_str());
+    ifstream satResult;
+    stringstream fileRes;
+    fileRes << DEFAULT_OUTPUT_DIRECTORY << "g_res";
+    satResult.open(fileRes.str());
+
+    if(satResult.is_open()) {
+        string line("");
+        getline(satResult, line);
+        if(line == "SAT") {
+            getline(satResult, line);
+            istringstream iss(line);
+            string buffer;
+            while(iss >> buffer) {
+                int val = stoi(buffer);
+                if(val > 0) {
+                    result.push_back(hashes.find(reverse_vars.find(val)->second)->second);
                 }
             }
         }
-    } else {
-        cout << "Unable to open file!" << endl;
-        exit(1);
     }
-    return poo;
+    return result;
 }
 
 vector<Node*> Graph::minisatToCover(string inputFile) {

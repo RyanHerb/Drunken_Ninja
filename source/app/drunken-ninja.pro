@@ -1,4 +1,4 @@
-TEMPLATE = app
+`TEMPLATE = app
 TARGET = drunken-ninja
 
 CONFIG += console

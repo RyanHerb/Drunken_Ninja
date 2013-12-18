@@ -11,6 +11,7 @@ class GraphUtils {
 public:
     static Graph* load(string filename);
     static void write(IGraph *graph, string type);
+    static int hashPair(int i, int j);
 
 private:
     static string generateFileName(string type);
