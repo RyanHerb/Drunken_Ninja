@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     if (graph) {
         vector<Node*> cover;
         if (type.compare("tree") == 0) cover = ((Tree*)graph)->getCover();
-        else cover = graph->getCover();
+        else cover = graph->getKCover(13);
         cout << "Cover size : " << cover.size()<<endl;
         cout << "Calculated cover: " << cover << endl;
         delete graph;
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
         cout << endl;
         delete g;
 
-    }*/
+    }
 
     Graph *g = new Graph(4, 100);
     for(Node* n : g->getNodes()) {
@@ -72,6 +72,21 @@ int main(int argc, char *argv[]) {
             cout << " " << neighbour->getId();
         }
         cout << endl;
+    }*/
+
+    Graph *g = GraphUtils::load(filename);
+
+    if(g) {
+        vector<Node*> cover;
+        cover = g->getKCoverWithMinisat(2);
+
+        cout << "cover: ";
+        for(Node* n : cover) {
+            cout << n->getId() << " ";
+        }
+        cout << endl;
+        cout << "Size: " << cover.size() << endl;
+        delete g;
     }
 }
 

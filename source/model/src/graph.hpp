@@ -57,17 +57,18 @@ public:
     Node* getHighestDegreeNode();
 
     // FIXME Ne marche pas avec un graphe dont on a supprimé des sommets
-    IGraph* edgeComplementGraph();
+    Graph* edgeComplementGraph();
     // Moins rapide mais marche quel que soit le graphe
-    IGraph* edgeComplementGraph2();
+    Graph* edgeComplementGraph2();
 
     //void coverToMinisat(string);
     vector<Node*> minisatToCover(string);
     string getType();
 
+    vector<int> getIndependentSet(int);
     vector<Node*> getKCoverWithMinisat(int);
     vector<int> getClique(int);
-    vector<int> getIsomorphicSubgraph(Graph);
+    vector<int> getIsomorphicSubgraph(Graph*);
 };
 
 #endif // GRAPH_H

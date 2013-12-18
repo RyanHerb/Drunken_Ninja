@@ -51,8 +51,8 @@ public:
     virtual IGraph* edgeComplementGraph() = 0;
     // Moins rapide mais marche quel que soit le graphe
     virtual IGraph* edgeComplementGraph2() = 0;
-    //virtual vector<int> getIndependentSet(int size) = 0;
-    //virtual vector<int> getClique(int size) = 0;
+    virtual vector<int> getIndependentSet(int size) = 0;
+    virtual vector<int> getClique(int size) = 0;
 };
 
 // To print a Graph
