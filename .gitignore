@@ -4,6 +4,8 @@
 *.o
 build-*
 out/
+Makefile
+bin/
 
 # Compiled Dynamic libraries
 *.so
