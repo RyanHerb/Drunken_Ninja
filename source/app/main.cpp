@@ -98,11 +98,14 @@ void handleAlgorithmSelection(char *argv[]) {
 }
 
 void test(){
-    GraphUtils gu;
-    Graph*g = gu.load("../../../data/tree1.txt");
-    Tree* t = new Tree(g);
-    t->shuffle();
-    cout << *t << endl;
-    vector<Node*> cover = t->getCover();
+    BipartiteGraph bpg(6);
+    bpg.initialisePartitions();
+    bpg.addEdge(0,3);
+    bpg.addEdge(1,3);
+    bpg.addEdge(2,3);
+    bpg.addEdge(0,4);
+    bpg.addEdge(1,5);
+    cout << bpg << endl;
+    vector<Node*> cover = bpg.getCover();
     cout << cover << endl;
 }
