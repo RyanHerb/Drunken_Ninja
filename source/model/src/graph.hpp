@@ -60,7 +60,7 @@ public:
     // Moins rapide mais marche quel que soit le graphe
     Graph* edgeComplementGraph2();
 
-    //void coverToMinisat(string);
+    void coverToMinisat(string);
     vector<Node*> minisatToCover(string);
     string getType();
 

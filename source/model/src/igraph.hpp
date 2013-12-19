@@ -48,7 +48,7 @@ public:
     virtual int kernelize(int k, vector<int> *cover) = 0;
     virtual Node* getHighestDegreeNode() = 0;
 
-    //virtual void coverToMinisat(string) = 0;
+    virtual void coverToMinisat(string) = 0;
     virtual vector<Node*> minisatToCover(string) = 0;
     virtual string getType() = 0;
 

@@ -289,9 +289,9 @@ vector<Edge*> Graph::getEdges() const {
     return vec;
 }
 
-/*void Graph::coverToMinisat(string outputfile) {
+void Graph::coverToMinisat(string outputfile) {
     ofstream myFile;
-    myFile.open(DEFAULT_DIRECTORY + outputfile);
+    myFile.open(DEFAULT_OUTPUT_DIR + outputfile);
 
     if(myFile.is_open()) {
         int graphSize = this->getNodes().size();
@@ -306,11 +306,35 @@ vector<Edge*> Graph::getEdges() const {
         }
 
     } else {
-        cout << "Unable to open file " << outputfile << endl;
+        cout << "Unable to open file" << endl;
         exit(1);
     }
-}*/
+}
 
+vector<Node*> Graph::minisatToCover(string inputFile) {
+    ifstream input;
+    input.open(DEFAULT_INPUT_DIR + inputFile);
+    vector<Node*> nodes;
+
+    if(input.is_open()) {
+        string line("");
+        getline(input, line);
+        getline(input, line); // read second line from file
+        istringstream ss(line);
+        string buffer;
+        while(ss >> buffer) {
+            int id = stoi(buffer);
+            if(id > 0) {
+                nodes.push_back(new Node(id-1));
+            }
+        }
+    } else {
+        cout << "Unable to read file, exiting" << endl;
+        exit(1);
+    }
+
+    return nodes;
+}
 
 vector<Node*> Graph::getKCoverWithMinisat(int k) {
     if(k >= (this->getNodes()).size())
@@ -470,31 +494,6 @@ vector<int> getSatCover(unordered_map<int, int> reverse_vars, unordered_map<int,
         }
     }
     return result;
-}
-
-vector<Node*> Graph::minisatToCover(string inputFile) {
-    ifstream input;
-    input.open(DEFAULT_INPUT_DIR + inputFile);
-    vector<Node*> nodes;
-
-    if(input.is_open()) {
-        string line("");
-        getline(input, line);
-        getline(input, line); // read second line from file
-        istringstream ss(line);
-        string buffer;
-        while(ss >> buffer) {
-            int id = stoi(buffer);
-            if(id > 0) {
-                nodes.push_back(new Node(id-1));
-            }
-        }
-    } else {
-        cout << "Unable to read file, exiting" << endl;
-        exit(1);
-    }
-
-    return nodes;
 }
 
 Graph* Graph::edgeComplementGraph() {
