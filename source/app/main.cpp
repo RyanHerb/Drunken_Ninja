@@ -83,10 +83,10 @@ void handleAlgorithmSelection(char *argv[]) {
         cover = graph->getKCoverWithMinisat(atoi(argv[5]));
     }else if (string (argv[4]).compare("--getcover-minisat") == 0) {
         stringstream cmd;
-        cmd << DEFAULT_MINISAT_DIR << " " << DEFAULT_INPUT_DIR << "g.cnf " << DEFAULT_OUTPUT_DIR << "g_res";
-        graph->coverToMinisat("g2.cnf");
+        cmd << DEFAULT_MINISAT_DIR << " " << DEFAULT_OUTPUT_DIR << "g.cnf " << DEFAULT_OUTPUT_DIR << "g_res";
+        graph->coverToMinisat("g.cnf");
         system(cmd.str().c_str());
-        cover = graph->minisatToCover("g2_res");
+        cover = graph->minisatToCover("g_res");
     } else if (type.compare("smallcovergraph") == 0) {
         if (string (argv[4]).compare("--getcover-k") == 0) {
             cover = ((SmallCoverGraph*)graph)->getCoverK(atoi(argv[5]));

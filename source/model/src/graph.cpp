@@ -319,7 +319,7 @@ void Graph::coverToMinisat(string outputfile) {
 
 vector<Node*> Graph::minisatToCover(string inputFile) {
     ifstream input;
-    input.open(DEFAULT_INPUT_DIR + inputFile);
+    input.open(DEFAULT_OUTPUT_DIR + inputFile);
     vector<Node*> nodes;
 
     if(input.is_open()) {
