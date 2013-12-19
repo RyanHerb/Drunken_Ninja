@@ -30,7 +30,7 @@ public:
     // Generates a graph with n vertices, labeled from 0 to n-1,
     // with a propbality p for having an edge between two vertices
     Graph(int n, int p);
-
+    vector<int> shuffle();
     ~Graph();
 
     Node* addNode();

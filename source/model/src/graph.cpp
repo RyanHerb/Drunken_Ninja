@@ -37,6 +37,7 @@ Graph::Graph(int n, int p) : counter(0) {
                 addEdge(i, j);
         }
     }
+    shuffle();
 }
 
 Graph::~Graph() {
@@ -46,6 +47,25 @@ Graph::~Graph() {
     for (int i = 0; i < edges.size(); ++i) {
         delete edges[i];
     }
+}
+
+
+vector<int> Graph::shuffle(){
+    vector<int> randomId;
+    for (int i=0 ; i<nodes.size() ; i++){
+        randomId.push_back(i);
+    }
+    random_shuffle(randomId.begin(),randomId.end());
+    vector<Edge*> myEdges = getEdges();
+    for(Node* n : getNodes()){
+        removeEdges(n->getId());
+    }
+    for(Edge*e : myEdges){
+        int first = e->first()->getId();
+        int second = e->second()->getId();
+        addEdge(randomId[first], randomId[second]);
+    }
+    return randomId;
 }
 
 Node* Graph::addNode() {
