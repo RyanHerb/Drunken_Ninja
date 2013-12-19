@@ -49,6 +49,7 @@ Tree::Tree(int n):Graph(1) {
     else if (n==2){
         addEdge(0,1);
     }
+    shuffle();
 }
 
 vector<Node*> Tree::getLeaves() {

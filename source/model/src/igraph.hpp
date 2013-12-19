@@ -9,6 +9,8 @@ class Tree;
 class IGraph {
 
 public:
+
+    virtual vector<int> shuffle() = 0;
     virtual Node* addNode() = 0;
     virtual Node* addNode(int id) = 0;
     virtual Node* getNode(int id) = 0;

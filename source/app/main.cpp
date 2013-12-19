@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
             handleAlgorithmSelection(argv);
         }
     }
-    //test();
+    test();
     return 0;
 }
 
@@ -95,4 +95,14 @@ void handleAlgorithmSelection(char *argv[]) {
     } else {
         cout << "Could not find a cover with the specified configuration." << endl;
     }
+}
+
+void test(){
+    GraphUtils gu;
+    Graph*g = gu.load("../../../data/tree1.txt");
+    Tree* t = new Tree(g);
+    t->shuffle();
+    cout << *t << endl;
+    vector<Node*> cover = t->getCover();
+    cout << cover << endl;
 }
