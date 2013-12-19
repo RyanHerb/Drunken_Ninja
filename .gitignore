@@ -5,8 +5,9 @@
 *.cnf
 build-*
 out/
-Makefile
 bin/
+source/app/Makefile
+source/test/Makefile
 
 # Compiled Dynamic libraries
 *.so
