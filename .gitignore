@@ -19,7 +19,7 @@ bin/
 
 # Generated objects
 *.mk
-minisat/simp/minisat
+source/minisat/simp/minisat
 
 
 *.autosave
