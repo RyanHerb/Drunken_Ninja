@@ -4,6 +4,8 @@ BipartiteGraph::BipartiteGraph(IGraph * g) : Graph(g){
     initialisePartitions();
 }
 
+BipartiteGraph::BipartiteGraph(int n) : Graph(n){}
+
 BipartiteGraph::BipartiteGraph(int n, int p) {
     // tire au hasard la taille d'une partie, entre 1 et n-1
     int cut = (rand()%(n-1)) +1;
@@ -26,6 +28,25 @@ BipartiteGraph::BipartiteGraph(int n, int p) {
             if (rand()%101 <= p)
                 addEdge(i, j);
         }
+    }
+}
+
+void BipartiteGraph::addDirectedEdge(int a, int b) {
+    map<int, Node*>::iterator it = nodes.find(a);
+    if (it != nodes.end()) {
+        it = nodes.find(b);
+        if (it != nodes.end()) {
+            Node *n1 = this->nodes[a];
+            Node *n2 = this->nodes[b];
+            n1->addNeighbour(this->nodes[b]);
+            n2->addNeighbour(this->nodes[a]);
+            Edge* e= new DirectedEdge(n1,n2);
+            edges.insert(make_pair(e->hash(),e));
+        } else {
+            cerr << "Node " << b << " does not exist" << endl;
+        }
+    } else {
+        cout << "Node " << a << " does not exist" << endl;
     }
 }
 
@@ -62,10 +83,18 @@ void BipartiteGraph::BFSforInitialisation(Node * root, Graph *dup){
     return;
 }
 
+void BipartiteGraph::resetPartitions(){
+    rightPartition = vector<Node*>();
+    initialisePartitions();
+}
+
 void BipartiteGraph::initialisePartitions(){
     if((rightPartition.size() != 0) || (nbNodes() == 0))
         return;
     Graph dup(this);
+    rightPartition = vector<Node*>();
+    leftPartition = vector<Node*>();
+    partition = vector<int>(nbNodes(), 0);
 
     Edge *edge;
     while((edge = dup.getRandomEdge()) != 0){
@@ -78,11 +107,10 @@ void BipartiteGraph::initialisePartitions(){
         dup.removeNode(node);
     }
 
-    partition = vector<int>(nbNodes(), 0);
     for(Node * n : leftPartition)
         partition[n->getId()] = 1;
 }
-
+/*
 vector<Edge *> BipartiteGraph::DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<int> * visited, vector<int> * marked) {
 
     if ((marked->at(current->getId()) == 0) && (partition[current->getId()] == 0))
@@ -159,10 +187,44 @@ vector<Edge*> BipartiteGraph::getMaximumMatching() {
     }
     return matching;
 }
-
+*/
 vector<Node*> BipartiteGraph::getSolution() {
     return getLeftPartition();
 }
+
+NodeColor BipartiteGraph::color(Node * node){
+    return colorVector[node->getId()];
+}
+
+vector<Node*> BipartiteGraph::getCover(){
+    //initialise colorVector
+    colorVector = vector<NodeColor>();
+    for(Node * node : getNodes())
+        colorVector.push_back(NodeColor::white);
+
+    //initialise orientedGraph dup
+    BipartiteGraph dup(nbNodes());
+    for(Edge * e : getEdges()){
+        if(partition[e->first()->getId()] == 1)
+            dup.addDirectedEdge(e->first()->getId(), e->second()->getId());
+        else
+            dup.addDirectedEdge(e->second()->getId(), e->first()->getId());
+    }
+    dup.resetPartitions();
+    cout << "left : " << leftPartition << endl << "right : " << rightPartition << endl;
+    Node * s = dup.addNode();
+    for(Node * n : leftPartition)
+        dup.addDirectedEdge(s->getId(),n->getId());
+    Node * t = dup.addNode();
+    for(Node * n : rightPartition)
+        dup.addDirectedEdge(n->getId(),t->getId());
+
+    cout << "vla le dup :" << endl << dup <<endl;
+    //initialise queue
+    queue<int> waitingQueue();
+
+}
+
 
 vector<Node*> BipartiteGraph::getLeftPartition() {
     initialisePartitions();
@@ -174,6 +236,7 @@ vector<Node*> BipartiteGraph::getRightPartition() {
     return rightPartition;
 }
 
+/*
 vector<Node*> BipartiteGraph::getCover(){
     BipartiteGraph dup(this);
     vector<Node*> result;
@@ -208,6 +271,7 @@ vector<Node*> BipartiteGraph::getCover(){
     }
     return result;
 }
+*/
 
 string BipartiteGraph::getType() {
     return "bipartitegraph";

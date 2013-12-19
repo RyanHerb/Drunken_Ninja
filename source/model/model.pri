@@ -8,7 +8,8 @@ SOURCES += \
     $$PWD/src/smallcovergraph.cpp \
     $$PWD/src/graphutils.cpp \
     $$PWD/src/edge.cpp \
-    $$PWD/src/bipartitegraph.cpp
+    $$PWD/src/bipartitegraph.cpp \
+    $$PWD/src/directededge.cpp
 
 HEADERS += \
     $$PWD/src/node.hpp \
@@ -18,4 +19,5 @@ HEADERS += \
     $$PWD/src/graphutils.hpp \
     $$PWD/src/edge.hpp \
     $$PWD/src/bipartitegraph.hpp \
-    $$PWD/src/igraph.hpp
+    $$PWD/src/igraph.hpp \
+    $$PWD/src/directededge.hpp

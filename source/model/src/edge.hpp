@@ -5,7 +5,7 @@
 
 class Edge
 {
-private:
+protected:
     Node* n1;
     Node* n2;
 public:
@@ -15,7 +15,7 @@ public:
     Node* second();
     const Node* first()const;
     const Node* second()const;
-    int hash()const;
+    virtual int hash()const;
 };
 
 inline bool operator==(const Edge& e1, const Edge& e2){

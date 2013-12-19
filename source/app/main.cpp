@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
             handleAlgorithmSelection(argv);
         }
     }
-    test();
+    //test();
     return 0;
 }
 
@@ -44,7 +44,7 @@ void handleGraphGeneration(char *argv[]) {
         graph = new Graph(atoi(argv[3]), atoi(argv[4]));
     } else if (type.compare("bipartitegraph") == 0) {
         graph = new BipartiteGraph(atoi(argv[3]), atoi(argv[4]));
-    } else if (type.compare("smallcover") == 0) {
+    } else if (type.compare("smallcovergraph") == 0) {
         graph = new SmallCoverGraph(atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
     }
 
@@ -104,11 +104,14 @@ void handleAlgorithmSelection(char *argv[]) {
 }
 
 void test(){
-    GraphUtils gu;
-    Graph*g = gu.load("../../../data/tree1.txt");
-    Tree* t = new Tree(g);
-    t->shuffle();
-    cout << *t << endl;
-    vector<Node*> cover = t->getCover();
+    BipartiteGraph bpg(6);
+    bpg.initialisePartitions();
+    bpg.addEdge(0,3);
+    bpg.addEdge(1,3);
+    bpg.addEdge(2,3);
+    bpg.addEdge(0,4);
+    bpg.addEdge(1,5);
+    cout << bpg << endl;
+    vector<Node*> cover = bpg.getCover();
     cout << cover << endl;
 }

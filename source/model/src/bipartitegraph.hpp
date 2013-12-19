@@ -1,8 +1,15 @@
 #ifndef BIPARTITEGRAPH_HPP
 #define BIPARTITEGRAPH_HPP
 
-#include "graph.hpp"
 #include <queue>
+#include "graph.hpp"
+#include "directededge.hpp"
+
+enum NodeColor {
+    grey,
+    white,
+    black
+};
 
 class BipartiteGraph : public Graph {
 
@@ -13,6 +20,7 @@ private:
     //pour un acces à la partition d'un Node en O(1)
     vector<int> partition;
     vector<int> marked;
+    vector<NodeColor> colorVector;
 
     void BFSforInitialisation(Node * root, Graph * dup);
     vector<Edge *> DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<int> * visited, vector<int> * marked);
@@ -21,9 +29,13 @@ private:
 public:
     BipartiteGraph(int n, int p);
     BipartiteGraph(IGraph * g);
+    BipartiteGraph(int n);
+    void addDirectedEdge(int a, int b);
+    NodeColor color(Node * node);
     vector<Node*>getSolution();
     vector<Node*>getLeftPartition();
     vector<Node*>getRightPartition();
+    void resetPartitions();
     void initialisePartitions();
     vector<Edge *> getMaximumMatching();
     vector<Node*> getCover();
