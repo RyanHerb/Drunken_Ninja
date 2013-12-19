@@ -7,9 +7,6 @@
 
 class Tree : public Graph {
 
-private:
-    Node *root;
-
 public:
     Tree();
     Tree(int n); // Generates a random tree with n vertices, labeled from 0 to n-1;

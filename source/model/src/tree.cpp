@@ -55,7 +55,7 @@ Tree::Tree(int n):Graph(1) {
 vector<Node*> Tree::getLeaves() {
     vector<Node*> leaves;
     for (Node *node : getNodes()) {
-        if (node->degree() == 1 && (node != root))
+        if (node->degree() == 1)
             leaves.push_back(node);
     }
     return leaves;
