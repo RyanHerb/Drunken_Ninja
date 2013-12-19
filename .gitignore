@@ -17,6 +17,10 @@ bin/
 *.la
 *.a
 
+# Generated objects
+*.mk
+minisat/simp/minisat
+
 
 *.autosave
 *~
