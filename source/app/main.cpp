@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
             handleAlgorithmSelection(argv);
         }
     }
-    test();
+    //test();
     return 0;
 }
 
@@ -44,7 +44,7 @@ void handleGraphGeneration(char *argv[]) {
         graph = new Graph(atoi(argv[3]), atoi(argv[4]));
     } else if (type.compare("bipartitegraph") == 0) {
         graph = new BipartiteGraph(atoi(argv[3]), atoi(argv[4]));
-    } else if (type.compare("smallcover") == 0) {
+    } else if (type.compare("smallcovergraph") == 0) {
         graph = new SmallCoverGraph(atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
     }
 

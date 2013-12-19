@@ -261,16 +261,22 @@ vector<Node*> Graph::getNodes() const {
 
 int Graph::kernelize(int k, vector<int> *cover) {
     supressIsolatedNode();
-    cout << "kernelize(" << k << ") : k' = ";
-    int Kprime = k;
-    Node *highestDegreeNode;
-    while ((Kprime > 0) && ((highestDegreeNode = getHighestDegreeNode())->degree() > Kprime)) {
-        cover->push_back(highestDegreeNode->getId());
-        this->removeNode(highestDegreeNode->getId());
-        --Kprime;
-    }
-    cout << Kprime << endl;
-    return Kprime;
+    int thresholdDegree = k;
+    int nbNodesToAdd = k;
+    do{
+        for(Node* n : getNodes()){
+            if(n->degree() > thresholdDegree){
+                cover->push_back(n->getId());
+                removeNode(n);
+                --nbNodesToAdd;
+            }
+        }
+        thresholdDegree = nbNodesToAdd;
+    }while ((nbNodesToAdd > 0) && (nbEdges() <= thresholdDegree * nbNodesToAdd) && (getHighestDegreeNode()->degree() >= thresholdDegree));
+
+    if(nbEdges() > thresholdDegree * nbNodesToAdd)
+        return -1;
+    return nbNodesToAdd;
 }
 
 int Graph::nbEdges() {

@@ -61,8 +61,7 @@ vector<Node*> SmallCoverGraph::getCoverK(int k) {
     vector<Node*>result;
 
     int Kprime = localGraph->kernelize(k, &cover);
-    if (localGraph->nbEdges() > Kprime*localGraph->nbNodes()){
-        cout << "nbEdges : " << localGraph->nbEdges() << endl << "Kprime*K : " << Kprime*k << endl;
+    if (Kprime < 0){
         delete localGraph;
         return result;
     } else {
@@ -118,8 +117,7 @@ vector<Node *> SmallCoverGraph::getCoverFPT(int k) {
     vector<Node*> result;
 
     int Kprime = localGraph->kernelize(k, &cover);
-    if (localGraph->nbEdges() > Kprime * localGraph->nbNodes()) {
-        cout << "nbEdges : " << localGraph->nbEdges() << endl << "Kprime*k : " << Kprime*k <<endl;
+    if (Kprime <0) {
         delete localGraph;
         return result;
     } else {
