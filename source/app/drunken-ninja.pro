@@ -1,11 +1,10 @@
-`TEMPLATE = app
+TEMPLATE = app
 TARGET = drunken-ninja
 
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 CONFIG += debug
-unix : QMAKE_CXXFLAGS += -std=c++11
 
 debug:DESTDIR = bin/debug
 release:DESTDIR = bin/release
@@ -23,5 +22,13 @@ RCC_DIR = $$DESTDIR/.qrc
 UI_DIR = $$DESTDIR/.ui
 
 include(../model/model.pri)
+include(../main.pri)
+MINISAT_DIR = $$PROJECT_DIR/minisat
 SOURCES += main.cpp
 HEADERS += config.h
+
+unix {
+    QMAKE_CXXFLAGS += -std=c++11
+    #QMAKE_POST_LINK += $$quote(export MROOT=$$MINISAT_DIR$$escape_expand(\n\t))
+    #QMAKE_POST_LINK += $$quote(make -C $$MINISAT_DIR/simp)
+}

@@ -330,7 +330,7 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
     int numSubNodes = subgraph->getNodes().size();
     int numNodes = this->getNodes().size();
 
-    myFile.open(DEFAULT_INPUT_DIRECTORY + "g.cnf");
+    myFile.open(DEFAULT_INPUT_DIR + "g.cnf");
 
     if(myFile.is_open()) {
         int numClauses = 0;
@@ -426,12 +426,12 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
 vector<int> getSatCover(unordered_map<int, int> reverse_vars, unordered_map<int, int> hashes) {
     vector<int> result;
     stringstream cmd;
-    cmd << "minisat " << DEFAULT_INPUT_DIRECTORY << "g.cnf " << DEFAULT_OUTPUT_DIRECTORY << "g_res";
+    cmd << DEFAULT_MINISAT_DIR << " " << DEFAULT_INPUT_DIR << "g.cnf " << DEFAULT_OUTPUT_DIR << "g_res";
     string cmdString = cmd.str();
     system(cmdString.c_str());
     ifstream satResult;
     stringstream fileRes;
-    fileRes << DEFAULT_OUTPUT_DIRECTORY << "g_res";
+    fileRes << DEFAULT_OUTPUT_DIR << "g_res";
     satResult.open(fileRes.str());
 
     if(satResult.is_open()) {
@@ -454,7 +454,7 @@ vector<int> getSatCover(unordered_map<int, int> reverse_vars, unordered_map<int,
 
 vector<Node*> Graph::minisatToCover(string inputFile) {
     ifstream input;
-    input.open(DEFAULT_INPUT_DIRECTORY + inputFile);
+    input.open(DEFAULT_INPUT_DIR + inputFile);
     vector<Node*> nodes;
 
     if(input.is_open()) {

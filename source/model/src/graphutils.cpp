@@ -60,7 +60,7 @@ void GraphUtils::write(IGraph *g, string type) {
 
 string GraphUtils::generateFileName(string type) {
     stringstream ss;
-    ss << DEFAULT_OUTPUT_DIRECTORY << type << "-";
+    ss << DEFAULT_OUTPUT_DIR << type << "-";
 
 #ifdef _WIN32
     SYSTEMTIME st;
