@@ -19,23 +19,23 @@ public:
 };
 
 // Parameters: fixture, method, runs, iterations, arguments
-BENCHMARK_P_F(SmallCoverGraph200, getCover, 10, 100, ()) {
+BENCHMARK_P_F(SmallCoverGraph200, getCover, 10, 10, ()) {
     graph->getCover();
 }
 
-BENCHMARK_P_F(SmallCoverGraph200, getCoverGreedy, 10, 100, ()) {
+BENCHMARK_P_F(SmallCoverGraph200, getCoverGreedy, 10, 10, ()) {
     graph->getCoverGreedy();
 }
 
-BENCHMARK_P_F(SmallCoverGraph200, getCoverDFS, 10, 100, ()) {
+BENCHMARK_P_F(SmallCoverGraph200, getCoverDFS, 10, 10, ()) {
     graph->getCoverDFS();
 }
 
-BENCHMARK_P_F(SmallCoverGraph200, getCoverFPT, 10, 100, (int k)) {
+BENCHMARK_P_F(SmallCoverGraph200, getCoverFPT, 10, 10, (int k)) {
     graph->getCoverFPT(k);
 }
 
-BENCHMARK_P_F(SmallCoverGraph200, getCoverK, 10, 100, (int k)) {
+BENCHMARK_P_F(SmallCoverGraph200, getCoverK, 10, 10, (int k)) {
     graph->getCoverK(k);
 }
 

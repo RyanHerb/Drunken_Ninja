@@ -20,15 +20,15 @@ public:
 
 
 // Parameters: fixture, method, runs, iterations, arguments
-BENCHMARK_P_F(Tree800, getCover, 10, 100, ()) {
+BENCHMARK_P_F(Tree800, getCover, 10, 10, ()) {
     tree->getCover();
 }
 
-BENCHMARK_P_F(Tree800, getCoverGreedy, 10, 100, ()) {
+BENCHMARK_P_F(Tree800, getCoverGreedy, 10, 10, ()) {
     tree->getCoverGreedy();
 }
 
-BENCHMARK_P_F(Tree800, getCoverDFS, 10, 100, ()) {
+BENCHMARK_P_F(Tree800, getCoverDFS, 10, 10, ()) {
     tree->getCoverDFS();
 }
 

@@ -20,15 +20,15 @@ public:
 
 
 // Parameters: fixture, method, runs, iterations, arguments
-BENCHMARK_P_F(Graph800, getCover, 10, 100, ()) {
+BENCHMARK_P_F(Graph800, getCover, 10, 10, ()) {
     graph->getCover();
 }
 
-BENCHMARK_P_F(Graph800, getCoverGreedy, 10, 100, ()) {
+BENCHMARK_P_F(Graph800, getCoverGreedy, 10, 10, ()) {
     graph->getCoverGreedy();
 }
 
-BENCHMARK_P_F(Graph800, getCoverDFS, 10, 100, ()) {
+BENCHMARK_P_F(Graph800, getCoverDFS, 10, 10, ()) {
     graph->getCoverDFS();
 }
 
