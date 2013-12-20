@@ -3,11 +3,38 @@ drunken-ninja
 
 ## How to compile
 
-// TODO
+In order to build the provided modules, you need to have qmake installed: `sudo apt-get install qtcreator`
 
-## How to run
+To build and run the app:
+```bash
+cd source/app
+qmake drunken-ninja.pro
+make
+cd bin/release
+./drunken-ninja [arguments...]
+```
 
-drunken-ninja provides two different modules:
+To build and run the provided tests:
+```bash
+cd source/test
+qmake drunken-ninja-test.pro
+make
+cd bin/release
+./drunken-ninja-test
+```
+
+To build and run the provided benchmarks:
+```bash
+cd source/benchmark
+qmake drunken-ninja-benchmark.pro
+make
+cd bin/release
+./drunken-ninja-benchmark
+```
+
+## User Manual
+
+The main drunken-ninja application provides two different modules:
 * Graph generator
 * Vertex cover solver
 
@@ -36,7 +63,7 @@ The type of the input graph. Can be any of the following types:
 * `graph`
 * `tree`
 * `bipartitegraph`
-* `smallcover`
+* `smallcovergraph`
 
 #### Algorithm
 The algorithm used to calculate a vertex cover. Can be any of the following types:
