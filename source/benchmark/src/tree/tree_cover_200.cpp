@@ -11,6 +11,7 @@ public:
 
     virtual void SetUp() {
         this->tree = new Tree(200);
+        //tree->coverToMinisat("g.cnf");
     }
 
     virtual void TearDown() {
@@ -30,6 +31,10 @@ BENCHMARK_P_F(Tree200, getCoverGreedy, 10, 10, ()) {
 
 BENCHMARK_P_F(Tree200, getCoverDFS, 10, 10, ()) {
     tree->getCoverDFS();
+}
+
+BENCHMARK_P_F(Tree200, getCoverMinisat, 10, 10, ()) {
+    tree->minisatToCover("g_res");
 }
 
 BENCHMARK_P_INSTANCE(Tree200, getCover, ())

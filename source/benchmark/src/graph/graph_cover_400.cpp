@@ -11,6 +11,7 @@ public:
 
     virtual void SetUp() {
         this->graph = new Graph(400, 70);
+        //graph->coverToMinisat("g.cnf");
     }
 
     virtual void TearDown() {
@@ -28,8 +29,12 @@ BENCHMARK_P_F(Graph400, getCoverGreedy, 10, 10, ()) {
     graph->getCoverGreedy();
 }
 
-BENCHMARK_P_F(Graph400, getCoverDFS, 10, 10, ()) {
+BENCHMARK_P_F(Graph400, getCoverDFS, 2, 2, ()) {
     graph->getCoverDFS();
+}
+
+BENCHMARK_P_F(Graph400, getCoverMinisat, 10, 10, ()) {
+    graph->minisatToCover("g_res");
 }
 
 BENCHMARK_P_INSTANCE(Graph400, getCover, ())
