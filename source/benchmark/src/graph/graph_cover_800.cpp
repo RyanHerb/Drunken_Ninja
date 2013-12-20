@@ -10,7 +10,7 @@ public:
     Graph *graph;
 
     virtual void SetUp() {
-        this->graph = new Graph(200, 70);
+        this->graph = new Graph(800, 70);
     }
 
     virtual void TearDown() {
