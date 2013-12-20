@@ -4,14 +4,13 @@
 #include "hayai/hayai.hpp"
 #include "../../model/src/tree.hpp"
 
-
-class TreeGetCover : public ::hayai::Fixture {
+class TreeGetCover800 : public ::hayai::Fixture {
 
 public:
     Tree *tree;
 
     virtual void SetUp() {
-        this->tree = new Tree(20);
+        this->tree = new Tree(800);
     }
 
     virtual void TearDown() {
@@ -21,11 +20,9 @@ public:
 
 
 // Parameters: fixture, method, runs, iterations, arguments
-BENCHMARK_P_F(TreeGetCover, getCover, 10, 100, ())
+BENCHMARK_P_F(TreeGetCover800, getCover, 10, 100, ())
 {
     tree->getCover();
 }
 
-BENCHMARK_P_INSTANCE(TreeGetCover, getCover, ())
-BENCHMARK_P_INSTANCE(TreeGetCover, getCover, ())
-BENCHMARK_P_INSTANCE(TreeGetCover, getCover, ())
+BENCHMARK_P_INSTANCE(TreeGetCover800, getCover, ())
