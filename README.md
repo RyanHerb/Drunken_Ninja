@@ -70,6 +70,7 @@ The algorithm used to calculate a vertex cover. Can be any of the following type
 * `--getcover`
 * `--getcover-greedy`
 * `--getcover-dfs`
-* `--getcover-minisat [k]` 
+* `--getcover-minisat` 
+* `--getcover-minisat-k [k]` 
 * `--getcover-k [k]` (supported for smallcovergraph type only)
 * `--getcover-fpt [k]` (supported for smallcovergraph type only)
