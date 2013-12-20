@@ -6,8 +6,12 @@ CONFIG -= app_bundle
 CONFIG -= qt
 unix : QMAKE_CXXFLAGS += -std=c++11
 
-release:DESTDIR = release
-debug:DESTDIR = debug
+DESTDIR = bin
+
+OBJECTS_DIR = $$DESTDIR/.obj
+MOC_DIR = $$DESTDIR/.moc
+RCC_DIR = $$DESTDIR/.qrc
+UI_DIR = $$DESTDIR/.ui
 
 include(../model/model.pri)
 INCLUDEPATH += src

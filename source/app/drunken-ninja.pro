@@ -4,7 +4,7 @@ TARGET = drunken-ninja
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
-CONFIG += debug
+CONFIG += release
 
 debug:DESTDIR = bin/debug
 release:DESTDIR = bin/release
