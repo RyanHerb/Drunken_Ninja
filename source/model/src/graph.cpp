@@ -41,11 +41,11 @@ Graph::Graph(int n, int p) : counter(0) {
 }
 
 Graph::~Graph() {
-    for (int i = 0; i < nodes.size(); ++i) {
-        delete nodes[i];
-    }
     for (int i = 0; i < edges.size(); ++i) {
         delete edges[i];
+    }
+    for (int i = 0; i < nodes.size(); ++i) {
+        delete nodes[i];
     }
 }
 
@@ -95,7 +95,7 @@ void Graph::addEdge(int a, int b) {
             Node *n2 = this->nodes[b];
             n1->addNeighbour(this->nodes[b]);
             n2->addNeighbour(this->nodes[a]);
-            Edge* e= new Edge(n1,n2);
+            Edge* e = new Edge(n1,n2);
             edges.insert(make_pair(e->hash(),e));
         } else {
             cerr << "Node " << b << " does not exist" << endl;
@@ -134,6 +134,7 @@ void Graph::removeEdge(int a, int b) {
         n1->removeNeighbour(this->nodes[b]);
         n2->removeNeighbour(this->nodes[a]);
         edges.erase(it);
+        delete e;
     }
 }
 
@@ -369,7 +370,6 @@ vector<int> Graph::getIndependentSet(int size){
 vector<int> Graph::getClique(int size) {
     Graph *clique = new Graph(size, 100);
     vector<int> result = this->getIsomorphicSubgraph(clique);
-    delete clique;
     return result;
 }
 
@@ -386,7 +386,6 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
     if(myFile.is_open()) {
         int numClauses = 0;
         int numLits = 0;
-
         for(Node* k : subgraph->getNodes()) {
             for(Node* i : this->getNodes()) {
                 int ki = GraphUtils::hashPair(k->getId()+1, i->getId()+1);
@@ -471,6 +470,7 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
         myFile.close();
 
         vector<int> result = getSatCover(reverse_vars, hashes);
+        delete subgraph;
         return result;
     }
 }

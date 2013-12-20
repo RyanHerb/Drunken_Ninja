@@ -11,6 +11,7 @@ protected:
 public:
     Edge();
     Edge(Node*, Node*);
+    ~Edge();
     Node* first();
     Node* second();
     const Node* first()const;

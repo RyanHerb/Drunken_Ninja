@@ -11,6 +11,8 @@
 
 using namespace std;
 
+void test();
+void test2();
 void handleGraphGeneration(char *argv[]);
 void handleAlgorithmSelection(char *argv[]);
 

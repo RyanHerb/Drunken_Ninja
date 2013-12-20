@@ -4,6 +4,8 @@
 Edge::Edge(){}
 Edge::Edge(Node*a, Node*b):n1(a), n2(b){}
 
+Edge::~Edge() {}
+
 Node* Edge::first() {
     return n1;
 }
