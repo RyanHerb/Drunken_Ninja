@@ -3,7 +3,6 @@
 
 #include <queue>
 #include "graph.hpp"
-#include "directededge.hpp"
 
 enum NodeColor {
     grey,
@@ -19,25 +18,24 @@ private:
     vector<Node*> rightPartition;
     //pour un acces à la partition d'un Node en O(1)
     vector<int> partition;
-    vector<int> marked;
-    vector<NodeColor> colorVector;
-
+    map<Edge *, int> flux;
+    void initialiseFlux();
     void BFSforInitialisation(Node * root, Graph * dup);
-    vector<Edge *> DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<int> * visited, vector<int> * marked);
-    vector<Edge *> getAugmentedMatching(vector<Edge *> *matching, vector<Edge *> *path, vector<int> * marked);
-
+    bool FordFulkerson(vector<NodeColor> * colorVector);
+    vector<Node *> succ(Node * n);
+    vector<Node *> pred(Node * n);
+    Node * s, * t;
+    void setST(Node * s, Node * t);
 public:
     BipartiteGraph(int n, int p);
     BipartiteGraph(IGraph * g);
     BipartiteGraph(int n);
-    void addDirectedEdge(int a, int b);
     NodeColor color(Node * node);
     vector<Node*>getSolution();
     vector<Node*>getLeftPartition();
     vector<Node*>getRightPartition();
     void resetPartitions();
     void initialisePartitions();
-    vector<Edge *> getMaximumMatching();
     vector<Node*> getCover();
     string getType();
 };
