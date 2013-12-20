@@ -50,17 +50,17 @@ Graph::~Graph() {
 }
 
 
-vector<int> Graph::shuffle(){
+vector<int> Graph::shuffle() {
     vector<int> randomId;
-    for (int i=0 ; i<nodes.size() ; i++){
+    for (int i = 0; i<nodes.size(); i++) {
         randomId.push_back(i);
     }
-    random_shuffle(randomId.begin(),randomId.end());
+    random_shuffle(randomId.begin(), randomId.end());
     vector<Edge*> myEdges = getEdges();
-    for(Node* n : getNodes()){
+    for (Node *n : getNodes()) {
         removeEdges(n->getId());
     }
-    for(Edge*e : myEdges){
+    for (Edge *e : myEdges) {
         int first = e->first()->getId();
         int second = e->second()->getId();
         addEdge(randomId[first], randomId[second]);
@@ -209,15 +209,16 @@ Node* Graph::getHighestDegreeNode() {
 
 vector<Node*> Graph::getCoverGreedy() {
     Graph *localGraph = new Graph(this);
-    localGraph->supressIsolatedNode();
+    localGraph->discardIsolatedNodes();
     vector<int> cover;
     vector<int> degrees; // for quick access to each nodes degree
     vector< list<int> > nodesByDegree;
+
     // Sort nodes by degree
     for(int i = 0; i < nbNodes(); i++) {
         int degree = nodes[i]->degree();
         degrees.push_back(degree);
-        while (nodesByDegree.size()<=degree){
+        while (nodesByDegree.size() <= degree) {
             list<int> init;
             nodesByDegree.push_back(init);
         }
@@ -225,7 +226,7 @@ vector<Node*> Graph::getCoverGreedy() {
     }
 
     while (localGraph->nbEdges() > 0) {
-        while(nodesByDegree[nodesByDegree.size() - 1].size() == 0) {
+        while (nodesByDegree[nodesByDegree.size() - 1].size() == 0) {
             nodesByDegree.pop_back();
         }
         int node = nodesByDegree[nodesByDegree.size() - 1].front();
@@ -244,7 +245,7 @@ vector<Node*> Graph::getCoverGreedy() {
     }
     delete localGraph;
     vector<Node*> result;
-    for(int i = 0; i < cover.size(); i++)
+    for (int i = 0; i < cover.size(); i++)
         result.push_back(nodes[cover[i]]);
     return result;
 }
@@ -262,21 +263,23 @@ vector<Node*> Graph::getNodes() const {
 }
 
 int Graph::kernelize(int k, vector<int> *cover) {
-    supressIsolatedNode();
+    discardIsolatedNodes();
     int thresholdDegree = k;
     int nbNodesToAdd = k;
-    do{
-        for(Node* n : getNodes()){
-            if(n->degree() > thresholdDegree){
+    do {
+        for (Node *n : getNodes()) {
+            if (n->degree() > thresholdDegree) {
                 cover->push_back(n->getId());
                 removeNode(n);
                 --nbNodesToAdd;
             }
         }
         thresholdDegree = nbNodesToAdd;
-    }while ((nbNodesToAdd > 0) && (nbEdges() <= thresholdDegree * nbNodesToAdd) && (getHighestDegreeNode()->degree() >= thresholdDegree));
+    } while ((nbNodesToAdd > 0) &&
+             (nbEdges() <= thresholdDegree * nbNodesToAdd) &&
+             (getHighestDegreeNode()->degree() >= thresholdDegree));
 
-    if(nbEdges() > thresholdDegree * nbNodesToAdd)
+    if (nbEdges() > thresholdDegree * nbNodesToAdd)
         return -1;
     return nbNodesToAdd;
 }
@@ -312,7 +315,6 @@ void Graph::coverToMinisat(string outputfile) {
                 ++literals;
             }
         }
-
     } else {
         cout << "Unable to open file" << endl;
         exit(1);
@@ -324,15 +326,15 @@ vector<Node*> Graph::minisatToCover(string inputFile) {
     input.open(DEFAULT_OUTPUT_DIR + inputFile);
     vector<Node*> nodes;
 
-    if(input.is_open()) {
+    if (input.is_open()) {
         string line("");
         getline(input, line);
         getline(input, line); // read second line from file
         istringstream ss(line);
         string buffer;
-        while(ss >> buffer) {
+        while (ss >> buffer) {
             int id = stoi(buffer);
-            if(id > 0) {
+            if (id > 0) {
                 nodes.push_back(new Node(id-1));
             }
         }
@@ -340,32 +342,30 @@ vector<Node*> Graph::minisatToCover(string inputFile) {
         cout << "Unable to read file, exiting" << endl;
         exit(1);
     }
-
     return nodes;
 }
 
 vector<Node*> Graph::getKCoverWithMinisat(int k) {
-    if(k >= (this->getNodes()).size())
+    if (k >= (this->getNodes()).size())
         return this->getNodes();
     vector<Node*> cover;
     vector<int> nodeIds = this->getIndependentSet(this->getNodes().size() - k);
-    if(nodeIds.size() > 0) {
-        for(Node* node : this->getNodes()) {
-            if(find(nodeIds.begin(), nodeIds.end(), node->getId()) == nodeIds.end())
+    if (nodeIds.size() > 0) {
+        for (Node *node : this->getNodes()) {
+            if (find(nodeIds.begin(), nodeIds.end(), node->getId()) == nodeIds.end()) {
                 cover.push_back(node);
+            }
         }
     }
     return cover;
 }
 
-vector<int> Graph::getIndependentSet(int size){
+vector<int> Graph::getIndependentSet(int size) {
     Graph * g = edgeComplementGraph();
     vector<int> result =  g->getClique(size);
-
     delete g;
     return result;
 }
-
 
 vector<int> Graph::getClique(int size) {
     Graph *clique = new Graph(size, 100);
@@ -373,7 +373,7 @@ vector<int> Graph::getClique(int size) {
     return result;
 }
 
-vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
+vector<int> Graph::getIsomorphicSubgraph(Graph *subgraph) {
     unordered_map<int, int> vars, reverse_vars, hashes;
     ofstream myFile;
     stringstream total, tmp;
@@ -383,25 +383,31 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
 
     myFile.open(DEFAULT_INPUT_DIR + "g.cnf");
 
-    if(myFile.is_open()) {
+    if (myFile.is_open()) {
         int numClauses = 0;
         int numLits = 0;
+<<<<<<< HEAD
         for(Node* k : subgraph->getNodes()) {
             for(Node* i : this->getNodes()) {
+=======
+
+        for (Node *k : subgraph->getNodes()) {
+            for (Node *i : this->getNodes()) {
+>>>>>>> bfe3b8e234a561beaca9a94ecc5ecfdeb21038f8
                 int ki = GraphUtils::hashPair(k->getId()+1, i->getId()+1);
                 hashes.insert(make_pair(ki, i->getId()));
 
-                if(vars.find(ki) == vars.end()) {
+                if (vars.find(ki) == vars.end()) {
                     reverse_vars.insert(make_pair(vars.size()+1, ki));
                     vars.insert(make_pair(ki, vars.size()+1));
                 }
 
-                for(Node* j : this->getNodes()) {
-                    if(i->getId() != j->getId()) {
+                for (Node *j : this->getNodes()) {
+                    if (i->getId() != j->getId()) {
                         int kj = GraphUtils::hashPair(k->getId()+1, j->getId()+1);
                         hashes.insert(make_pair(kj, j->getId()));
 
-                        if(vars.find(kj) == vars.end()) {
+                        if (vars.find(kj) == vars.end()) {
                             reverse_vars.insert(make_pair(vars.size()+1, kj));
                             vars.insert(make_pair(kj, vars.size()+1));
                         }
@@ -415,12 +421,12 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
                 total << vars[ki] << " ";
                 ++numLits;
 
-                for(Node* k2 : subgraph->getNodes()) {
-                    if(k->getId() != k2->getId()) {
+                for (Node *k2 : subgraph->getNodes()) {
+                    if (k->getId() != k2->getId()) {
 
                         int k2i = GraphUtils::hashPair(k2->getId()+1, i->getId()+1);
                         hashes.insert(make_pair(k2i, i->getId()));
-                        if(vars.find(k2i) == vars.end()) {
+                        if (vars.find(k2i) == vars.end()) {
                             reverse_vars.insert(make_pair(vars.size()+1, k2i));
                             vars.insert(make_pair(k2i, vars.size()+1));
                         }
@@ -429,15 +435,16 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
                         tmp << "-" << vars[ki] << " -" << vars[k2i] << " 0" << endl;
                         ++numClauses;
                         numLits += 2;
-                        for(Node* i2 : this->getNodes()) {
-                            if(i->getId() != i2->getId()) {
+                        for (Node *i2 : this->getNodes()) {
+                            if (i->getId() != i2->getId()) {
 
-                                // in our case, subgraph is a clique, so whichever pair of vertices we chose, there will always be an edge to join them
+                                // In our case, subgraph is a clique, so whichever pair of vertices we chose,
+                                // there will always be an edge to join them.
                                 // Therefore we can remove the conditions stating that the edge must not be in the subgraph.
-                                if(!this->hasEdge(i->getId(), i2->getId())) {
+                                if (!this->hasEdge(i->getId(), i2->getId())) {
                                     int k2i2 = GraphUtils::hashPair(k2->getId()+1, i2->getId()+1);
                                     hashes.insert(make_pair(k2i2, i2->getId()));
-                                    if(vars.find(k2i2) == vars.end()) {
+                                    if (vars.find(k2i2) == vars.end()) {
                                         reverse_vars.insert(make_pair(vars.size()+1, k2i2));
                                         vars.insert(make_pair(k2i2, vars.size()+1));
                                     }
@@ -464,7 +471,7 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
         myFile << "c #vars:" << numNodes*numSubNodes << "    #clauses:" << numClauses << "    #lits:" << numLits << endl;
         myFile << "c" << endl;
 
-        // append all clauses to myFile
+        // Append all clauses to myFile
         myFile << tmp.rdbuf();
         tmp.flush();
         myFile.close();
@@ -486,16 +493,16 @@ vector<int> getSatCover(unordered_map<int, int> reverse_vars, unordered_map<int,
     fileRes << DEFAULT_OUTPUT_DIR << "g_res";
     satResult.open(fileRes.str());
 
-    if(satResult.is_open()) {
+    if (satResult.is_open()) {
         string line("");
         getline(satResult, line);
-        if(line == "SAT") {
+        if (line == "SAT") {
             getline(satResult, line);
             istringstream iss(line);
             string buffer;
-            while(iss >> buffer) {
+            while (iss >> buffer) {
                 int val = stoi(buffer);
-                if(val > 0) {
+                if (val > 0) {
                     result.push_back(hashes.find(reverse_vars.find(val)->second)->second);
                 }
             }
@@ -505,26 +512,26 @@ vector<int> getSatCover(unordered_map<int, int> reverse_vars, unordered_map<int,
 }
 
 Graph* Graph::edgeComplementGraph() {
-    Graph *comp = new Graph(nbNodes(),100);
-    for(Edge* e : this->getEdges()){
-        comp->removeEdge(e->first()->getId(),e->second()->getId());
+    Graph *comp = new Graph(nbNodes(), 100);
+    for (Edge *e : this->getEdges()) {
+        comp->removeEdge(e->first()->getId(), e->second()->getId());
     }
     return comp;
 }
 
 Graph* Graph::edgeComplementGraph2() {
-    Graph * comp = new Graph(this);
-    Graph * local = new Graph(this);
-    for(Node * compNode : comp->getNodes()){
-        for(Node * compNodeNeighbour : comp->getNodes()){
-            if(!(compNodeNeighbour==compNode)){
+    Graph *comp = new Graph(this);
+    Graph *local = new Graph(this);
+    for (Node *compNode : comp->getNodes()) {
+        for (Node *compNodeNeighbour : comp->getNodes()) {
+            if (!(compNodeNeighbour == compNode)) {
                 int id1 = compNode->getId();
                 int id2 = compNodeNeighbour->getId();
-                if(local->hasEdge(id1,id2)){
+                if (local->hasEdge(id1, id2)) {
                     local->removeEdge(id1,id2);
                     comp->removeEdge(id1,id2);
-                } else if(!comp->hasEdge(id1,id2)){
-                    comp->addEdge(id1,id2);
+                } else if (!comp->hasEdge(id1, id2)) {
+                    comp->addEdge(id1, id2);
                 }
             }
         }
@@ -536,28 +543,28 @@ string Graph::getType() {
     return "graph";
 }
 
-Tree* Graph::DepthFirstSearch(){
-    Graph * localGraph = new Graph(this);
-    Tree * result = new Tree();
+Tree* Graph::depthFirstSearch() {
+    Graph *localGraph = new Graph(this);
+    Tree *result = new Tree();
     list<Node*> stack;
     vector<bool> done;
-    for (Node* n : getNodes()){
-        while(done.size() <= n->getId()){
+    for (Node *n : getNodes()) {
+        while (done.size() <= n->getId()) {
             done.push_back(false);
         }
     }
-    Node * current = localGraph->getHighestDegreeNode();
+    Node *current = localGraph->getHighestDegreeNode();
     stack.push_front(current);
     result->addNode(current->getId());
-    while(stack.size() > 0){
+    while (stack.size() > 0) {
         current = stack.front();
         int id = current->getId();
         stack.pop_front();
-        if(!done[id]){
+        if (!done[id]) {
             done[id] = true;
-            for(Node* neighbour : current->getNeighbours()){
-                int nId =neighbour->getId();
-                if(!done[nId]){
+            for (Node *neighbour : current->getNeighbours()) {
+                int nId = neighbour->getId();
+                if (!done[nId]) {
                     result->removeEdges(nId);
                     result->addNode(nId);
                     result->addEdge(nId, id);
@@ -569,15 +576,14 @@ Tree* Graph::DepthFirstSearch(){
     return result;
 }
 
-
-vector<Node*> Graph::getCoverDFS(){
-    supressIsolatedNode();
-    Tree * t = DepthFirstSearch();
+vector<Node*> Graph::getCoverDFS() {
+    discardIsolatedNodes();
+    Tree *t = depthFirstSearch();
     vector<Node*> leaves = t->getLeaves();
     Node *root = this->getHighestDegreeNode();
-    for(Node* leaf : leaves) {
+    for (Node *leaf : leaves) {
         int lid = leaf->getId();
-        if(lid != root->getId()) {
+        if (lid != root->getId()) {
             t->removeEdges(lid);
             t->removeNode(lid);
         }
@@ -585,9 +591,10 @@ vector<Node*> Graph::getCoverDFS(){
     return t->getNodes();
 }
 
-void Graph::supressIsolatedNode(){
-    for (Node*n : getNodes()){
-        if (n->degree() == 0)
+void Graph::discardIsolatedNodes() {
+    for (Node *n : getNodes()) {
+        if (n->degree() == 0) {
             removeNode(n);
+        }
     }
 }

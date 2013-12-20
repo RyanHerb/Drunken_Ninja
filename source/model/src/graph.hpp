@@ -55,9 +55,9 @@ public:
     int kernelize(int k, vector<int> *cover);
     Node* getHighestDegreeNode();
 
-    // FIXME Ne marche pas avec un graphe dont on a supprimé des sommets
+    // Does not work on graphs from which a node was removed
     Graph* edgeComplementGraph();
-    // Moins rapide mais marche quel que soit le graphe
+    // Less efficient but works on any type of graph
     Graph* edgeComplementGraph2();
 
     void coverToMinisat(string);
@@ -66,11 +66,11 @@ public:
 
     vector<int> getIndependentSet(int);
     vector<Node*> getCoverDFS();
-    Tree* DepthFirstSearch();
+    Tree* depthFirstSearch();
     vector<Node*> getKCoverWithMinisat(int);
     vector<int> getClique(int);
     vector<int> getIsomorphicSubgraph(Graph*);
-    void supressIsolatedNode();
+    void discardIsolatedNodes();
 };
 
 vector<int> getSatCover(unordered_map<int, int>, unordered_map<int, int>);
