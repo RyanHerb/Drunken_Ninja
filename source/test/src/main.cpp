@@ -27,7 +27,6 @@ int main(int argc, char *argv[]) {
 
     // BipartiteGraph tests
     testBipartiteGraphInitialisePartitions();
-    testBipartiteGraphGetMaximumMatching();
     testBipartiteGraphGetCover();
 
     // Tree tests
@@ -213,40 +212,23 @@ void testBipartiteGraphInitialisePartitions() {
 }
 
 /**
- * @brief Tests that BipartiteGraph::getMaximumMatching() returns
- *        a valide maximum matching.
- */
-void testBipartiteGraphGetMaximumMatching() {
-    cout << "bipartiteGraph.getMaximumMatching:" << endl;
-    Graph * g = new Graph(6);
-    g->addEdge(0, 3);
-    g->addEdge(0, 4);
-    g->addEdge(1, 3);
-    g->addEdge(1, 5);
-    g->addEdge(2, 3);
-    BipartiteGraph * bg = new BipartiteGraph(g);
-    vector<Edge *> matching = bg->getMaximumMatching();
-    assertEquals(matching.size(), 3);
-    cout << endl;
-}
-
-/**
  * @brief Tests that BipartiteGraph::getCover() returns
  *        a valide minimal cover.
  */
+
 void testBipartiteGraphGetCover() {
     cout << "bipartiteGraph.getCover:" << endl;
-    Graph * g = new Graph(6);
-    g->addEdge(0, 3);
-    g->addEdge(0, 4);
-    g->addEdge(1, 3);
-    g->addEdge(1, 5);
-    g->addEdge(2, 3);
-    BipartiteGraph * bg = new BipartiteGraph(g);
-    vector<Node *> cover = bg->getCover();
-    assertValidCover(bg,cover);
+    BipartiteGraph bpg(6);
+    bpg.addEdge(3,0);
+    bpg.addEdge(3,1);
+    bpg.addEdge(3,2);
+    bpg.addEdge(0,4);
+    bpg.addEdge(1,5);
+    bpg.shuffle();
+    bpg.initialisePartitions();
+    vector<Node *> cover = bpg.getCover();
+    assertValidCover(&bpg, cover);
     assertEquals(cover.size(), 3);
-    cout << "test print cover :"  << cover << endl;
     cout << endl;
 }
 
