@@ -11,6 +11,7 @@ public:
 
     virtual void SetUp() {
         this->graph = new SmallCoverGraph(800, 70, 12);
+        //graph->coverToMinisat("g.cnf");
     }
 
     virtual void TearDown() {
@@ -39,6 +40,9 @@ BENCHMARK_P_F(SmallCoverGraph800, getCoverK, 10, 10, (int k)) {
     graph->getCoverK(k);
 }
 
+BENCHMARK_P_F(SmallCoverGraph800, getCoverMinisat, 10, 10, ()) {
+    graph->minisatToCover("g_res");
+}
 BENCHMARK_P_INSTANCE(SmallCoverGraph800, getCover, ())
 BENCHMARK_P_INSTANCE(SmallCoverGraph800, getCoverGreedy, ())
 BENCHMARK_P_INSTANCE(SmallCoverGraph800, getCoverDFS, ())
