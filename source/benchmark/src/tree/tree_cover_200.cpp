@@ -35,5 +35,4 @@ BENCHMARK_P_F(Tree200, getCoverDFS, 10, 100, ()) {
 BENCHMARK_P_INSTANCE(Tree200, getCover, ())
 BENCHMARK_P_INSTANCE(Tree200, getCoverGreedy, ())
 BENCHMARK_P_INSTANCE(Tree200, getCoverDFS, ())
-BENCHMARK_P_INSTANCE(Tree200, getCoverDFS, ())
 //BENCHMARK_P_INSTANCE(Tree200, getCoverMinisat, ())

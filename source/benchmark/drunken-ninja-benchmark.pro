@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = drunken-ninja-benchmark
-CONFIG += debug
+CONFIG += release
 
 debug:DESTDIR = bin/debug
 release:DESTDIR = bin/release
@@ -21,10 +21,18 @@ include(../model/model.pri)
 
 SOURCES += \
     hayai/hayai_posix_main.cpp \
-    src/tree/tree_getcover_200.cpp \
-    src/tree/tree_getcover_400.cpp \
-    src/tree/tree_getcover_800.cpp \
-    src/smallcovergraph/smallcovergraph_getcoverfpt_200.cpp
+    src/graph/graph_cover_200.cpp \
+    src/graph/graph_cover_400.cpp \
+    src/graph/graph_cover_800.cpp \
+    src/tree/tree_cover_200.cpp \
+    src/tree/tree_cover_400.cpp \
+    src/tree/tree_cover_800.cpp \
+    src/bipartitegraph/bipartitegraph_cover_200.cpp \
+    src/bipartitegraph/bipartitegraph_cover_400.cpp \
+    src/bipartitegraph/bipartitegraph_cover_800.cpp \
+    src/smallcovergraph/smallcovergraph_cover_200.cpp \
+    src/smallcovergraph/smallcovergraph_cover_400.cpp \
+    src/smallcovergraph/smallcovergraph_cover_800.cpp
 
 HEADERS += \
     hayai/hayai.hpp \
