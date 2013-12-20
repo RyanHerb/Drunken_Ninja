@@ -8,6 +8,7 @@ out/
 bin/
 source/app/Makefile
 source/test/Makefile
+source/benchmark/Makefile
 
 # Compiled Dynamic libraries
 *.so
