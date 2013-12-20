@@ -210,8 +210,9 @@ vector<Node*> Graph::getCoverGreedy() {
     Graph *localGraph = new Graph(this);
     localGraph->supressIsolatedNode();
     vector<int> cover;
-    vector<int> degrees; //pour un acces direct au degré de chaque noeud;
-    vector< list<int> > nodesByDegree; //pour trier les noeuds en fonction de leur degré
+    vector<int> degrees; // for quick access to each nodes degree
+    vector< list<int> > nodesByDegree;
+    // Sort nodes by degree
     for(int i = 0; i < nbNodes(); i++) {
         int degree = nodes[i]->degree();
         degrees.push_back(degree);
@@ -459,6 +460,7 @@ vector<int> Graph::getIsomorphicSubgraph(Graph* subgraph) {
         }
 
         // Useful information for minisat
+        myFile << "p cnf " << numNodes*numSubNodes << " " << numClauses << endl;
         myFile << "c" <<endl;
         myFile << "c #vars:" << numNodes*numSubNodes << "    #clauses:" << numClauses << "    #lits:" << numLits << endl;
         myFile << "c" << endl;
@@ -571,7 +573,16 @@ Tree* Graph::DepthFirstSearch(){
 vector<Node*> Graph::getCoverDFS(){
     supressIsolatedNode();
     Tree * t = DepthFirstSearch();
-    return t->getCover();
+    vector<Node*> leaves = t->getLeaves();
+    Node *root = this->getHighestDegreeNode();
+    for(Node* leaf : leaves) {
+        int lid = leaf->getId();
+        if(lid != root->getId()) {
+            t->removeEdges(lid);
+            t->removeNode(lid);
+        }
+    }
+    return t->getNodes();
 }
 
 void Graph::supressIsolatedNode(){
