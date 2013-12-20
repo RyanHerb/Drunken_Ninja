@@ -386,14 +386,8 @@ vector<int> Graph::getIsomorphicSubgraph(Graph *subgraph) {
     if (myFile.is_open()) {
         int numClauses = 0;
         int numLits = 0;
-<<<<<<< HEAD
-        for(Node* k : subgraph->getNodes()) {
-            for(Node* i : this->getNodes()) {
-=======
-
         for (Node *k : subgraph->getNodes()) {
             for (Node *i : this->getNodes()) {
->>>>>>> bfe3b8e234a561beaca9a94ecc5ecfdeb21038f8
                 int ki = GraphUtils::hashPair(k->getId()+1, i->getId()+1);
                 hashes.insert(make_pair(ki, i->getId()));
 

@@ -6,6 +6,7 @@
 build-*
 out/
 bin/
+bin/*
 source/app/Makefile
 source/test/Makefile
 source/benchmark/Makefile

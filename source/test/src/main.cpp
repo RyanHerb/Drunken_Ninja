@@ -185,7 +185,7 @@ void testGraphGetHighestDegreeNode() {
  *        a valid cover.
  */
 void testGraphCover() {
-    cout << "graph.getCover" << endl;
+    cout << "graph.getCover:" << endl;
     Graph *graph = new Graph(rand() % 20, 50);
     assertValidCover(graph, graph->getCover());
     cout << endl;
@@ -197,7 +197,7 @@ void testGraphCover() {
 
 /**
  * @brief Tests that BipartiteGraph::InitialisePartitions()
- *        initialise correctly left and right partitions.
+ *        correctly initialises left and right partitions.
  */
 void testBipartiteGraphInitialisePartitions() {
     cout << "bipartiteGraph.initialisePartitions:" << endl;
@@ -212,8 +212,8 @@ void testBipartiteGraphInitialisePartitions() {
 }
 
 /**
- * @brief Tests that BipartiteGraph::getCover() returns
- *        a valide minimal cover.
+ * @brief Tests that BipartiteGraph::getCover()
+ *        returns a valid minimal cover.
  */
 
 void testBipartiteGraphGetCover() {
@@ -226,7 +226,7 @@ void testBipartiteGraphGetCover() {
     bpg.addEdge(1,5);
     bpg.shuffle();
     bpg.initialisePartitions();
-    vector<Node *> cover = bpg.getCover();
+    vector<Node*> cover = bpg.getCover();
     assertValidCover(&bpg, cover);
     assertEquals(cover.size(), 3);
     cout << endl;
