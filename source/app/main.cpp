@@ -11,7 +11,6 @@
 
 using namespace std;
 
-void test();
 void handleGraphGeneration(char *argv[]);
 void handleAlgorithmSelection(char *argv[]);
 
@@ -31,7 +30,6 @@ int main(int argc, char *argv[]) {
             handleAlgorithmSelection(argv);
         }
     }
-    //test();
     return 0;
 }
 
@@ -101,17 +99,4 @@ void handleAlgorithmSelection(char *argv[]) {
     } else {
         cout << "Could not find a cover with the specified configuration." << endl;
     }
-}
-
-void test(){
-    BipartiteGraph bpg(6);
-    bpg.initialisePartitions();
-    bpg.addEdge(0,3);
-    bpg.addEdge(1,3);
-    bpg.addEdge(2,3);
-    bpg.addEdge(0,4);
-    bpg.addEdge(1,5);
-    cout << bpg << endl;
-    vector<Node*> cover = bpg.getCover();
-    cout << cover << endl;
 }
