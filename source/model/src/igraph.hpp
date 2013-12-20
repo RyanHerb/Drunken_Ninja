@@ -41,7 +41,7 @@ public:
     // Default cover
     virtual vector<Node*> getCover() = 0;
     virtual vector<Node*> getCoverDFS() = 0;
-    virtual Tree* DepthFirstSearch() = 0;
+    virtual Tree* depthFirstSearch() = 0;
     virtual int nbEdges() = 0;
     virtual int nbNodes() = 0;
 
@@ -59,7 +59,7 @@ public:
     virtual vector<int> getIndependentSet(int size) = 0;
     virtual vector<int> getClique(int size) = 0;
     virtual vector<Node*> getKCoverWithMinisat(int) = 0;
-    virtual void supressIsolatedNode() = 0;
+    virtual void discardIsolatedNodes() = 0;
 };
 
 // To print a Graph
