@@ -21,10 +21,10 @@ include(../model/model.pri)
 
 SOURCES += \
     hayai/hayai_posix_main.cpp \
-    src/tree_getcover_200.cpp \
-    src/tree_getcover_400.cpp \
-    src/tree_getcover_800.cpp \
-    src/smallcovergraph_getcoverfpt_200.cpp
+    src/tree/tree_getcover_200.cpp \
+    src/tree/tree_getcover_400.cpp \
+    src/tree/tree_getcover_800.cpp \
+    src/smallcovergraph/smallcovergraph_getcoverfpt_200.cpp
 
 HEADERS += \
     hayai/hayai.hpp \
