@@ -31,25 +31,6 @@ BipartiteGraph::BipartiteGraph(int n, int p) {
     }
 }
 
-void BipartiteGraph::addDirectedEdge(int a, int b) {
-    map<int, Node*>::iterator it = nodes.find(a);
-    if (it != nodes.end()) {
-        it = nodes.find(b);
-        if (it != nodes.end()) {
-            Node *n1 = this->nodes[a];
-            Node *n2 = this->nodes[b];
-            n1->addNeighbour(this->nodes[b]);
-            n2->addNeighbour(this->nodes[a]);
-            Edge* e= new DirectedEdge(n1,n2);
-            edges.insert(make_pair(e->hash(),e));
-        } else {
-            cerr << "Node " << b << " does not exist" << endl;
-        }
-    } else {
-        cout << "Node " << a << " does not exist" << endl;
-    }
-}
-
 void BipartiteGraph::BFSforInitialisation(Node * root, Graph *dup){
     queue<Node*> calls[2];
     vector<Node*> tmpPartitions[2];
@@ -110,118 +91,127 @@ void BipartiteGraph::initialisePartitions(){
     for(Node * n : leftPartition)
         partition[n->getId()] = 1;
 }
-/*
-vector<Edge *> BipartiteGraph::DFSforAugmentingPathRec(Node * current, Node * previous, vector<Edge*> * matching, vector<int> * visited, vector<int> * marked) {
 
-    if ((marked->at(current->getId()) == 0) && (partition[current->getId()] == 0))
-        return vector<Edge *>(1,getEdge(current->getId(),previous->getId()));
-    vector<Edge *> resultat;
-    if((marked->at(current->getId()) == 1) &&  (partition[current->getId()] == 0)){
-        for(Edge * e : *matching) {
-            if(e->first() == current){
-                resultat = DFSforAugmentingPathRec(e->second(), current, matching, visited, marked);
-            }
-            else if(e->second() == current)
-                resultat = DFSforAugmentingPathRec(e->first(), current, matching, visited, marked);
-        }
-
-    }
-    else{
-        for (Node * v : current->getNeighbours()){
-            if (visited->at(v->getId()) == 0){
-                visited->at(v->getId()) = 1;
-                resultat = DFSforAugmentingPathRec(v, current, matching, visited, marked);
-                if (resultat.size() != 0) {
-                    if(previous != 0)
-                        resultat.push_back(getEdge(current->getId(),previous->getId()));
-                    return resultat;
-                }
-            }
-        }
-    }
-    if (resultat.size() != 0) {
-        if(previous != 0)
-            resultat.push_back(getEdge(current->getId(),previous->getId()));
-        return resultat;
-    }
-    return vector<Edge *>();
-}
-vector<Edge *> BipartiteGraph::getAugmentedMatching(vector<Edge *> *matching, vector<Edge *> *path, vector<int> * marked) {
-    //TODO baisser la complexyté de cette fonction
-    vector<Edge *> result;
-    *marked = vector<int>(nbNodes(), 0);
-    int i = 0;
-    for(Edge * edge : *path) {
-        if((i%2) == 0) {
-            result.push_back(edge);
-            marked->at(edge->first()->getId()) = 1;
-            marked->at(edge->second()->getId()) = 1;
-        }
-        ++i;
-    }
-    for(Edge * edge : *matching) {
-        //TODO surtout ici
-        bool valideEdge = true;
-        for(Edge * pedge : *path) {
-            if (edge == pedge)
-                valideEdge = false;
-        }
-        if (valideEdge){
-            result.push_back(edge);
-            marked->at(edge->first()->getId()) = 1;
-            marked->at(edge->second()->getId()) = 1;
-        }
-    }
-    return result;
-}
-
-vector<Edge*> BipartiteGraph::getMaximumMatching() {
-    vector<Edge*> matching;
-    vector<int> visited(nbNodes(), 0);
-    marked = vector<int>(nbNodes(), 0);
-    vector<Edge *> path;
-    for(Node * n : leftPartition) {
-        visited = vector<int>(nbNodes(), 0);
-        path = DFSforAugmentingPathRec(n, 0, &matching, &visited, &marked);
-        matching = getAugmentedMatching(&matching, &path, &marked);
-    }
-    return matching;
-}
-*/
 vector<Node*> BipartiteGraph::getSolution() {
     return getLeftPartition();
 }
 
-NodeColor BipartiteGraph::color(Node * node){
-    return colorVector[node->getId()];
+vector<Node*> BipartiteGraph::succ(Node * n){
+    if (n == s)
+        return leftPartition;
+    if (n == t)
+        return vector<Node*>();
+    if (partition[n->getId()] == 1)
+        return n->getNeighbours();
+    return vector<Node*>(1, t);
+}
+
+
+vector<Node *> BipartiteGraph::pred(Node * n){
+    if (n == s)
+        return vector<Node*>();
+    if (n == t)
+        return rightPartition;
+    if (partition[n->getId()] == 0)
+        return n->getNeighbours();
+    return vector<Node*>(1, s);
+}
+
+bool BipartiteGraph::FordFulkerson(vector<NodeColor> * colorVector) {
+    //initialise tmpFlux adn father
+    map<Edge*, int> tmpFlux;
+    for( Edge * e : getEdges()){
+        tmpFlux.insert(make_pair(e, 0));
+    }
+    vector<int> father = vector<int>(nbNodes(), -1);
+    *colorVector = vector<NodeColor>();
+    for(int i = 0; i < nbNodes(); ++i){
+        colorVector->push_back(NodeColor::white);
+    }
+    colorVector->at(s->getId()) = NodeColor::grey; //color of s
+
+    //initialise queue
+    queue<Node *> calls;
+    calls.push(s);
+    while((colorVector->at(t->getId()) == NodeColor::white) && !calls.empty()){
+        Node * v = calls.front();
+        calls.pop();
+        for (Node * w : succ(v)){
+            Edge * vw = getEdge(v->getId(), w->getId());
+            if ((colorVector->at(w->getId()) == NodeColor::white) && (flux.at(vw) == 0)) {
+                colorVector->at(w->getId()) = NodeColor::grey;
+                tmpFlux.at(vw) = 1;
+                father[w->getId()] = v->getId();
+                calls.push(w);
+            }
+        }
+        for (Node * u : pred(v)){
+            Edge * uv = getEdge(u->getId(), v->getId());
+            if((colorVector->at(u->getId()) == NodeColor::white) && (flux.at(uv) == 1)){
+                colorVector->at(u->getId()) = NodeColor::grey;
+                tmpFlux.at(uv) = 0;
+                father[u->getId()] = v->getId();
+                calls.push(u);
+            }
+        }
+        colorVector->at(v->getId()) = NodeColor::black;
+    }
+    if(colorVector->at(t->getId()) == NodeColor::grey){
+        Node * v = t;
+        Node * u = getNode(father[v->getId()]);
+        Edge * uv = getEdge(u->getId(), v->getId());
+        flux.at(uv) = tmpFlux.at(uv);
+        while(u->getId() != s->getId()){
+            v = u;
+            u = getNode(father[v->getId()]);
+            Edge * uv = getEdge(u->getId(), v->getId());
+            flux.at(uv) = tmpFlux.at(uv);
+        }
+        return true;
+    }
+    return false;
+}
+
+void BipartiteGraph::initialiseFlux() {
+    for( Edge * e : getEdges()){
+        flux.insert(make_pair(e, 0));
+    }
+}
+
+void BipartiteGraph::setST(Node * s, Node * t) {
+    this->s = s;
+    this->t = t;
 }
 
 vector<Node*> BipartiteGraph::getCover(){
-    //initialise colorVector
-    colorVector = vector<NodeColor>();
-    for(Node * node : getNodes())
-        colorVector.push_back(NodeColor::white);
 
-    //initialise orientedGraph dup
-    BipartiteGraph dup(nbNodes());
-    for(Edge * e : getEdges()){
-        if(partition[e->first()->getId()] == 1)
-            dup.addDirectedEdge(e->first()->getId(), e->second()->getId());
-        else
-            dup.addDirectedEdge(e->second()->getId(), e->first()->getId());
-    }
-    dup.resetPartitions();
-    cout << "left : " << leftPartition << endl << "right : " << rightPartition << endl;
-    Node * s = dup.addNode();
+    //initialise orientedGraph dups
+    BipartiteGraph dup(this);
+    dup.initialisePartitions();
+    s = dup.addNode();
     for(Node * n : leftPartition)
-        dup.addDirectedEdge(s->getId(),n->getId());
-    Node * t = dup.addNode();
+        dup.addEdge(s->getId(),n->getId());
+    t = dup.addNode();
     for(Node * n : rightPartition)
-        dup.addDirectedEdge(n->getId(),t->getId());
+        dup.addEdge(n->getId(),t->getId());
+    dup.setST(s, t);
 
-    cout << "vla le dup :" << endl << dup <<endl;
-    //initialise queue
-    queue<int> waitingQueue();
+    //initialise dup flux
+    dup.initialiseFlux();
+    vector<NodeColor> colorVector;
+
+    //repeat Ford Fulkerson algorithme until found maximum matching.
+    while(dup.FordFulkerson(&colorVector));
+
+    vector<Node *> cover;
+    for(Node * n : leftPartition)
+        if(colorVector[n->getId()] == NodeColor::white)
+            cover.push_back(n);
+    for(Node * n : rightPartition)
+        if(colorVector[n->getId()] == NodeColor::black)
+            cover.push_back(n);
+
+    return cover;
 
 }
 
@@ -236,42 +226,7 @@ vector<Node*> BipartiteGraph::getRightPartition() {
     return rightPartition;
 }
 
-/*
-vector<Node*> BipartiteGraph::getCover(){
-    BipartiteGraph dup(this);
-    vector<Node*> result;
-    vector<Edge *> mMatching = getMaximumMatching();
-    for (Node * node : dup.getNodes()) {
-        if (marked.at(node->getId()) == 0) {
-            for(Node * neig : node->getNeighbours()) {
-                if (marked.at(neig->getId()) == 1) {
-                    result.push_back(getNode(neig->getId()));
-                    for(Node * neig2 : neig->getNeighbours()) {
-                        if (marked.at(neig2->getId()))
-                            dup.removeNode(neig2);
-                    }
-                    dup.removeNode(neig);
-                }
-            }
-            dup.removeNode(node);
-        }
-    }
-    Node * remainingMarkedNode;
-    while((remainingMarkedNode = dup.getRandomNode()) != 0) {
-        result.push_back(getNode(remainingMarkedNode->getId()));
-        Node * neig;
-        for( Edge * e : mMatching) {
-            if (e->first()->getId() == remainingMarkedNode->getId())
-                neig = dup.getNode(e->second()->getId());
-            else if (e->second()->getId() == remainingMarkedNode->getId())
-                neig = dup.getNode(e->first()->getId());
-        }
-        dup.removeNode(neig);
-        dup.removeNode(remainingMarkedNode);
-    }
-    return result;
-}
-*/
+
 
 string BipartiteGraph::getType() {
     return "bipartitegraph";
